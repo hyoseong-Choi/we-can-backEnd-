@@ -18,4 +18,7 @@ public class User {
     String imgEndpoint;
     int candy;
     
+    public void changePassword(String newPassword) {
+        this.password = newPassword;
+    }
 }
