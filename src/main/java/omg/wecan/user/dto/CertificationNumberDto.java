@@ -7,7 +7,7 @@ import lombok.NoArgsConstructor;
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
-public class FindPasswordDto {
+public class CertificationNumberDto {
  
     private String address;
     private String title;
