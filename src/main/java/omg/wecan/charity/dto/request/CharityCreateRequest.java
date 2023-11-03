@@ -11,7 +11,6 @@ public class CharityCreateRequest {
     @NotNull(message = "null일 수 없습니다.")
     private String name;
 
-    //JSON 문자열에서 ENUM으로 파싱이 잘 될까?
     //기본값 설정
     private CharityCategory category = CharityCategory.ALL;
 
