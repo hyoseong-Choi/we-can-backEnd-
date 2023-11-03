@@ -25,13 +25,6 @@ public class CharityService {
     }
 
     //2. 기부 단체 전체 조회
-    public CharityResponses findAll(){
-        List<Charity> charityList = charityRepository.findAll();
-        return new CharityResponses(charityList);
-    }
-
-    //3. 기부 단체 검색창 조회
-
     //4. 기부 단체 카테고리별 조회
     public CharityResponses findAllByCategory(CharityCategory category){
         List<Charity> charities;
@@ -40,6 +33,18 @@ public class CharityService {
             charities = charityRepository.findAll();
         else
             charities = charityRepository.findAllByCategory(category);
+
+        return new CharityResponses(charities);
+    }
+
+    //4. 기부 단체 카테고리별 + 검색 입력
+    public CharityResponses findAllByCategoryAndExplanation(CharityCategory category, String explanation){
+        List<Charity> charities;
+
+        if(category.equals(CharityCategory.ALL))
+            charities = charityRepository.findAllByExplanationLike("%" + explanation + "%");
+        else
+            charities = charityRepository.findAllByCategoryAndExplanationIsLike(category, "%" + explanation + "%");
 
         return new CharityResponses(charities);
     }

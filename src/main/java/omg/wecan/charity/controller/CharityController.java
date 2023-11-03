@@ -25,9 +25,17 @@ public class CharityController {
     }
 
     @GetMapping()
-    ResponseEntity<CharityResponses> findAllByCategory(@RequestParam(name = "category", defaultValue = "ALL") String category){
+    ResponseEntity<CharityResponses> findAll(@RequestParam(name = "category", defaultValue = "ALL") String category,
+                                             @RequestParam(name = "explanation", required = false) String explanation){
+
         CharityCategory charityCategory = CharityCategory.valueOf(category.toUpperCase());
-        CharityResponses response = charityService.findAllByCategory(charityCategory);
+        CharityResponses response;
+
+        if(explanation == null)
+            response = charityService.findAllByCategory(charityCategory);
+        else
+            response = charityService.findAllByCategoryAndExplanation(charityCategory, explanation);
+
         return ResponseEntity.ok().body(response);
     }
 }
