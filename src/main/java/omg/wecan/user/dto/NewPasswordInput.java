@@ -1,5 +1,6 @@
 package omg.wecan.user.dto;
 
+import jakarta.validation.constraints.NotBlank;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -7,10 +8,7 @@ import lombok.NoArgsConstructor;
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
-public class CertificationNumberDto {
- 
-    private String address;
-    private String title;
-    private String message;
-
+public class NewPasswordInput {
+    @NotBlank
+    private String newPassword;
 }
