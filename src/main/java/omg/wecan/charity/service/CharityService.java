@@ -2,11 +2,14 @@ package omg.wecan.charity.service;
 
 import omg.wecan.charity.dto.request.CharityCreateRequest;
 import omg.wecan.charity.dto.response.CharityResponse;
+import omg.wecan.charity.dto.response.CharityResponses;
 import omg.wecan.charity.entity.Charity;
 import org.springframework.transaction.annotation.Transactional;
 import lombok.RequiredArgsConstructor;
 import omg.wecan.charity.repository.CharityRepository;
 import org.springframework.stereotype.Service;
+
+import java.util.List;
 
 @Transactional
 @Service
@@ -21,6 +24,10 @@ public class CharityService {
     }
 
     //2. 기부 단체 전체 조회
+    public CharityResponses findAll(){
+        List<Charity> charityList = charityRepository.findAll();
+        return new CharityResponses(charityList);
+    }
 
     //3. 기부 단체 검색창 조회
 
