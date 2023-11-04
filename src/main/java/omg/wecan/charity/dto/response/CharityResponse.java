@@ -15,11 +15,14 @@ public class CharityResponse {
 
     private final String imgEndpoint;
 
+    private final String pageEndpoint;
+
     public CharityResponse(final Charity charity){
         id = charity.getId();
         name = charity.getName();
         category = charity.getCategory().toString();
         explanation = charity.getExplanation();
         imgEndpoint = charity.getImgEndpoint();
+        pageEndpoint = charity.getPageEndpoint();
     }
 }

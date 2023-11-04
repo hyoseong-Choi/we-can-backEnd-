@@ -66,7 +66,8 @@ public class CharityService {
         charity.change(charityUpdateRequest.getName(),
                 charityUpdateRequest.getCategory(),
                 charityUpdateRequest.getExplanation(),
-                charityUpdateRequest.getImgEndPoint());
+                charityUpdateRequest.getImgEndPoint(),
+                charityUpdateRequest.getPageEndpoint());
     }
 
     //7. 기부 단체 정보 삭제

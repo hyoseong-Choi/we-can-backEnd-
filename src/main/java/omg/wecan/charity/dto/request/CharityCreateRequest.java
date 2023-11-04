@@ -18,12 +18,15 @@ public class CharityCreateRequest {
 
     private String imgEndpoint;
 
+    private String pageEndpoint;
+
     public Charity toEntity(){
         return Charity.builder()
                 .name(name)
                 .category(category)
                 .explanation(explanation)
                 .imgEndpoint(imgEndpoint)
+                .pageEndpoint(pageEndpoint)
                 .build();
     }
 }

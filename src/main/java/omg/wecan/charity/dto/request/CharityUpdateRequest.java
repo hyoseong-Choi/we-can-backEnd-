@@ -13,4 +13,6 @@ public class CharityUpdateRequest {
     private String explanation;
 
     private String imgEndPoint;
+
+    private String pageEndpoint;
 }
