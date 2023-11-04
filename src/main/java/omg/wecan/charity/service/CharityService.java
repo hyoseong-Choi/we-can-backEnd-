@@ -9,6 +9,8 @@ import org.springframework.transaction.annotation.Transactional;
 import lombok.RequiredArgsConstructor;
 import omg.wecan.charity.repository.CharityRepository;
 import org.springframework.stereotype.Service;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 
 import java.util.List;
 
@@ -50,6 +52,11 @@ public class CharityService {
     }
 
     //5. 기부 단체 상세 조회
+
+    public CharityResponse findById(Long id){
+        Charity charity = charityRepository.getById(id);
+        return new CharityResponse(charity);
+    }
 
     //6. 기부 단체 정보 수정
 

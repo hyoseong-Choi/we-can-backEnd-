@@ -7,7 +7,6 @@ import omg.wecan.charity.dto.response.CharityResponse;
 import omg.wecan.charity.dto.response.CharityResponses;
 import omg.wecan.charity.entity.CharityCategory;
 import omg.wecan.charity.service.CharityService;
-import org.springframework.data.repository.query.Param;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -36,6 +35,12 @@ public class CharityController {
         else
             response = charityService.findAllByCategoryAndExplanation(charityCategory, explanation);
 
+        return ResponseEntity.ok().body(response);
+    }
+
+    @GetMapping("/{id}")
+    ResponseEntity<CharityResponse> findById(@PathVariable Long id){
+        CharityResponse response = charityService.findById(id);
         return ResponseEntity.ok().body(response);
     }
 }
