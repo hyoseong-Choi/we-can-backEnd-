@@ -3,6 +3,7 @@ package omg.wecan.charity.controller;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import omg.wecan.charity.dto.request.CharityCreateRequest;
+import omg.wecan.charity.dto.request.CharityUpdateRequest;
 import omg.wecan.charity.dto.response.CharityResponse;
 import omg.wecan.charity.dto.response.CharityResponses;
 import omg.wecan.charity.entity.CharityCategory;
@@ -42,6 +43,12 @@ public class CharityController {
     ResponseEntity<CharityResponse> findById(@PathVariable Long id){
         CharityResponse response = charityService.findById(id);
         return ResponseEntity.ok().body(response);
+    }
+
+    @PutMapping("/{id}")
+    ResponseEntity<Void> update(@PathVariable Long id, @RequestBody CharityUpdateRequest request){
+        charityService.update(id, request);
+        return ResponseEntity.noContent().build();
     }
 }
 

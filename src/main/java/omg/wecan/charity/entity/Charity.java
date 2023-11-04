@@ -33,4 +33,11 @@ public class Charity extends BaseEntity {
     public Charity() {
 
     }
+
+    public void change(String name, CharityCategory category, String explanation, String imgEndpoint){
+        this.name = name;
+        this.category = category;
+        this.explanation = explanation;
+        this.imgEndpoint = imgEndpoint;
+    }
 }

@@ -1,6 +1,7 @@
 package omg.wecan.charity.service;
 
 import omg.wecan.charity.dto.request.CharityCreateRequest;
+import omg.wecan.charity.dto.request.CharityUpdateRequest;
 import omg.wecan.charity.dto.response.CharityResponse;
 import omg.wecan.charity.dto.response.CharityResponses;
 import omg.wecan.charity.entity.Charity;
@@ -59,6 +60,14 @@ public class CharityService {
     }
 
     //6. 기부 단체 정보 수정
+    public void update(Long id, CharityUpdateRequest charityUpdateRequest) {
+        Charity charity = charityRepository.getById(id);
+
+        charity.change(charityUpdateRequest.getName(),
+                charityUpdateRequest.getCategory(),
+                charityUpdateRequest.getExplanation(),
+                charityUpdateRequest.getImgEndPoint());
+    }
 
     //7. 기부 단체 정보 삭제
 
