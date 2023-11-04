@@ -18,6 +18,8 @@ import java.net.URI;
 @RequiredArgsConstructor
 public class CharityController {
     private final CharityService charityService;
+
+    //권한 추가 필요
     @PostMapping
     ResponseEntity<CharityResponse> create(@Valid @RequestBody CharityCreateRequest request){
         CharityResponse response = charityService.save(request);
@@ -45,9 +47,17 @@ public class CharityController {
         return ResponseEntity.ok().body(response);
     }
 
+    //admin 권한 추가 필요
     @PutMapping("/{id}")
     ResponseEntity<Void> update(@PathVariable Long id, @RequestBody CharityUpdateRequest request){
         charityService.update(id, request);
+        return ResponseEntity.noContent().build();
+    }
+
+    //admin 권한 추가 필요
+    @DeleteMapping("/{id}")
+    ResponseEntity<Void> delete(@PathVariable Long id) {
+        charityService.deleteById(id);
         return ResponseEntity.noContent().build();
     }
 }

@@ -71,6 +71,8 @@ public class CharityService {
     }
 
     //7. 기부 단체 정보 삭제
-
+    public void deleteById(Long id){
+        charityRepository.deleteById(id);
+    }
 
 }
