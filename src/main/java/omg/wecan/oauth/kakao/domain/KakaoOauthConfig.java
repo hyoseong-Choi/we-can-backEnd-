@@ -1,4 +1,4 @@
-package omg.wecan.oauth.kakao.config;
+package omg.wecan.oauth.kakao.domain;
 
 import org.springframework.boot.context.properties.ConfigurationProperties;
 

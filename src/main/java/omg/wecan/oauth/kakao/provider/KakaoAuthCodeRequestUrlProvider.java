@@ -1,7 +1,7 @@
 package omg.wecan.oauth.kakao.provider;
 
 import lombok.RequiredArgsConstructor;
-import omg.wecan.oauth.kakao.config.KakaoOauthConfig;
+import omg.wecan.oauth.kakao.domain.KakaoOauthConfig;
 import omg.wecan.oauth.kakao.domain.OauthServerType;
 import omg.wecan.oauth.provider.AuthCodeRequestUrlProvider;
 import org.springframework.stereotype.Component;
