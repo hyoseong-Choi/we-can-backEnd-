@@ -1,7 +1,7 @@
 package omg.wecan.user.service;
 
 import lombok.RequiredArgsConstructor;
-import omg.wecan.exception.NoUserWithNameAndeEmailException;
+import omg.wecan.exception.NoUserWithNameAndEmailException;
 import omg.wecan.user.dto.CertificationMailOutput;
 import omg.wecan.user.dto.NewPasswordInput;
 import omg.wecan.user.dto.UserCertificationInput;
@@ -22,7 +22,7 @@ public class UserFindPasswordService {
     //이메일 주소랑 이름 받아서 검증
     public UserCertificationInput certifyUser(UserCertificationInput userCertificationInput) {
         userRepository.findByEmailAndName(userCertificationInput.getEmail(), userCertificationInput.getName())
-                .orElseThrow(() -> new NoUserWithNameAndeEmailException("해당 이메일, 이름을 가진 유저가 없음"));
+                .orElseThrow(() -> new NoUserWithNameAndEmailException("해당 이메일, 이름을 가진 유저가 없음"));
         return userCertificationInput;
     }
     

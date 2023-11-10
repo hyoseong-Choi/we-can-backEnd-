@@ -12,7 +12,7 @@ import org.springframework.web.bind.annotation.RestControllerAdvice;
 public class UserControllerAdvice {
     
     @ExceptionHandler
-    public ResponseEntity<ErrorResult> noUserWithNameAndeEmailExHandle(NoUserWithNameAndeEmailException e) {
+    public ResponseEntity<ErrorResult> noUserWithNameAndeEmailExHandle(NoUserWithNameAndEmailException e) {
         ErrorResult errorResult = new ErrorResult(e.getMessage());
         return new ResponseEntity<>(errorResult, HttpStatus.NOT_FOUND);
     }
