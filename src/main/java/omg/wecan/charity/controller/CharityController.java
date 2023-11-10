@@ -36,7 +36,7 @@ public class CharityController {
         if(explanation == null)
             response = charityService.findAllByCategory(charityCategory);
         else
-            response = charityService.findAllByCategoryAndExplanation(charityCategory, explanation);
+            response = charityService.findAllByCategoryAndName(charityCategory, explanation);
 
         return ResponseEntity.ok().body(response);
     }

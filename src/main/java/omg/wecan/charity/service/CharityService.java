@@ -41,13 +41,13 @@ public class CharityService {
     }
 
     //4. 기부 단체 카테고리별 + 검색 입력
-    public CharityResponses findAllByCategoryAndExplanation(CharityCategory category, String explanation){
+    public CharityResponses findAllByCategoryAndName(CharityCategory category, String name){
         List<Charity> charities;
 
         if(category.equals(CharityCategory.ALL))
-            charities = charityRepository.findAllByExplanationLike("%" + explanation + "%");
+            charities = charityRepository.findAllByExplanationLike("%" + name + "%");
         else
-            charities = charityRepository.findAllByCategoryAndExplanationIsLike(category, "%" + explanation + "%");
+            charities = charityRepository.findAllByCategoryAndNameIsLike(category, "%" + name + "%");
 
         return new CharityResponses(charities);
     }
