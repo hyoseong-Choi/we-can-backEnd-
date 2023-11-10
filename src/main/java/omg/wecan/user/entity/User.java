@@ -11,14 +11,14 @@ public class User {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "user_id")
-    Long id;
+    private Long id;
     
-    String email;
-    String password;
-    String name;
-    String nickname;
-    String imgEndpoint;
-    int candy;
+    private String email;
+    private String password;
+    private String name;
+    private String nickname;
+    private String imgEndpoint;
+    private int candy;
     
     public void changePassword(String newPassword) {
         this.password = newPassword;
