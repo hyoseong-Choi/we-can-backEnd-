@@ -1,7 +1,7 @@
 package omg.wecan.global.config;
 
 import lombok.RequiredArgsConstructor;
-import omg.wecan.oauth.domain.OauthServerTypeConverter;
+import omg.wecan.infrastructure.oauth.basic.domain.OauthServerTypeConverter;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.format.FormatterRegistry;
 import org.springframework.http.HttpMethod;
