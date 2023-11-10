@@ -51,7 +51,7 @@ public class OauthController {
         AuthToken authToken = jwtService.createAuthToken(testUser.getUserId());
         testUserService.updateRefreshToken(testUser.getUserId(), authToken.getRefreshToken());
 
-        OauthResponse response = new OauthResponse(authToken, testUser.getRole());
+        OauthResponse response = new OauthResponse(authToken);
 
         return ResponseEntity.ok(response);
     }

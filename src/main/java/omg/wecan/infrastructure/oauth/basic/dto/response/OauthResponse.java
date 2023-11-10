@@ -7,10 +7,8 @@ import omg.wecan.jwt.domain.AuthToken;
 @Getter
 public class OauthResponse {
     private AuthToken authToken;
-    private ROLE userRole;
 
-    public OauthResponse(AuthToken authToken, ROLE userRole) {
+    public OauthResponse(AuthToken authToken) {
         this.authToken = authToken;
-        this.userRole = userRole;
     }
 }

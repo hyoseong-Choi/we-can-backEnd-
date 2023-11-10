@@ -35,21 +35,14 @@ public class AuthenticationPrincipalArgumentResolver implements HandlerMethodArg
                                   final NativeWebRequest webRequest, final WebDataBinderFactory binderFactory) {
         HttpServletRequest request = webRequest.getNativeRequest(HttpServletRequest.class);
         String accessToken = AuthorizationExtractor.extract(request);
+
+        jwtService.validateToken(accessToken);
         Long id = jwtService.extractId(accessToken).orElseThrow(
                 () -> {
                     throw new InvalidTokenException("토큰에 이메일이 없습니다");
                 }
         );
 
-        validateRole(id);
-
         return new LoginUser(id);
-    }
-
-    private void validateRole(Long id){
-        TestUser testUser = userService.findById(id);
-
-        if(testUser.getRole() != ROLE.USER)
-            throw new UserRoleException();
     }
 }

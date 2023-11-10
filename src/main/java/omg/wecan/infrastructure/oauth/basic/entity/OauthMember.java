@@ -53,6 +53,6 @@ public class OauthMember {
     }
 
     public TestUser toUser(){
-        return new TestUser(null, nickname, nickname, profileImageUrl, oauthId.getOauthServerId(),oauthId.getOauthServerType(), ROLE.GUEST);
+        return new TestUser(null, nickname, nickname, profileImageUrl, oauthId.getOauthServerId(),oauthId.getOauthServerType(), ROLE.USER);
     }
 }
