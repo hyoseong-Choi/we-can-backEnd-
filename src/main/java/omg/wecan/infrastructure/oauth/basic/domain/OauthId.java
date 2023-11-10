@@ -28,4 +28,12 @@ public class OauthId {
     public OauthServerType oauthServer() {
         return oauthServerType;
     }
+
+    public OauthServerType getOauthServerType() {
+        return oauthServerType;
+    }
+
+    public String getOauthServerId() {
+        return oauthServerId;
+    }
 }

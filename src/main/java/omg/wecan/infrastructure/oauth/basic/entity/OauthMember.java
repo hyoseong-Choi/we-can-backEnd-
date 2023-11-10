@@ -4,6 +4,8 @@ import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.NoArgsConstructor;
+import omg.wecan.auth.Testuser.entity.ROLE;
+import omg.wecan.auth.Testuser.entity.TestUser;
 import omg.wecan.infrastructure.oauth.basic.domain.OauthId;
 
 import static lombok.AccessLevel.PROTECTED;
@@ -48,5 +50,9 @@ public class OauthMember {
 
     public String profileImageUrl() {
         return profileImageUrl;
+    }
+
+    public TestUser toUser(){
+        return new TestUser(null, nickname, nickname, profileImageUrl, oauthId.getOauthServerId(),oauthId.getOauthServerType(), ROLE.GUEST);
     }
 }
