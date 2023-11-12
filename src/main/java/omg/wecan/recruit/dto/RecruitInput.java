@@ -11,28 +11,33 @@ import omg.wecan.recruit.Enum.PaymentType;
 import java.time.LocalDate;
 
 @Data
-public class AddRecruitInput {
-    @NotBlank
-    String charityName;
-    @NotBlank
-    ChallengeType challengetype;
-    @NotBlank
-    @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd", timezone = "Asia/Seoul")
-    LocalDate challengeStartDate;
-    @NotBlank
-    @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd", timezone = "Asia/Seoul")
-    LocalDate challengeEndDate;
-    @NotBlank
-    int minPeople;
-    @NotBlank
-    String checkDay;
-    @NotBlank
-    PaymentType paymentType;
+public class RecruitInput {
     
-    String content;
+    @Positive
+    private Long id;
     @NotBlank
-    String coverImageEndpoint;
+    private String charityName;
+    @NotBlank
+    private String title;
+    @NotBlank
+    private ChallengeType challengetype;
+    @NotBlank
+    @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd", timezone = "Asia/Seoul")
+    private LocalDate challengeStartDate;
+    @NotBlank
+    @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd", timezone = "Asia/Seoul")
+    private LocalDate challengeEndDate;
+    @NotBlank
+    private int minPeople;
+    @NotBlank
+    private String checkDay;
+    @NotBlank
+    private PaymentType paymentType;
+    
+    private String content;
+    @NotBlank
+    private String coverImageEndpoint;
     @NotNull
     @Positive
-    int fine;
+    private int fine;
 }

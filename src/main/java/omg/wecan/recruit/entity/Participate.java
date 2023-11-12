@@ -10,16 +10,32 @@ public class Participate {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "participate_id")
-    Long id;
+    private Long id;
     
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "recruit_id")
-    Recruit recruit;
+    private Recruit recruit;
     
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "user_id")
-    User user;
+    private User user;
     
-    boolean leader;
-    boolean payment;
+    private boolean leader;
+    private boolean payment;
+    
+    public static Participate createLeaderParticipate(User user, Recruit recruit) {
+        Participate participate = new Participate();
+        participate.user = user;
+        participate.recruit = recruit;
+        participate.leader = true;
+        return participate;
+    }
+    
+    public static Participate createParticipate(User user, Recruit recruit) {
+        Participate participate = new Participate();
+        participate.user = user;
+        participate.recruit = recruit;
+        participate.leader = false;
+        return participate;
+    }
 }
