@@ -6,6 +6,8 @@ import omg.wecan.recruit.entity.Heart;
 import omg.wecan.recruit.entity.Participate;
 import omg.wecan.recruit.entity.Recruit;
 import omg.wecan.recruit.service.RecruitService;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -36,14 +38,14 @@ public class RecruitController {
         return recruitService.findRecruitDetail(id);
     }
     
-    @GetMapping("/recruit/home")
+    @GetMapping("/recruits/home")
     public List<RecruitOutput> recruitFindThree() {
         return recruitService.findThreeRecruit();
     }
     
-    @GetMapping("/recruits/recent")
-    public List<RecruitOutput> recruitFindRecent() {
-    
+    @GetMapping("/recruits")
+    public Page<RecruitOutput> recruitFindRecent(Pageable pageable) {
+        return recruitService.findRecentRecruit(pageable);
     }
     
     

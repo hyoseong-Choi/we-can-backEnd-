@@ -7,6 +7,7 @@ import omg.wecan.user.entity.User;
 
 @Entity
 @NoArgsConstructor
+@Getter
 public class Heart {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)

@@ -1,10 +1,8 @@
 package omg.wecan.recruit.dto;
 
-import com.querydsl.core.annotations.QueryProjection;
 import lombok.Data;
-import omg.wecan.recruit.entity.Heart;
+import omg.wecan.recruit.entity.Recruit;
 
-import java.time.LocalDate;
 
 @Data
 public class RecruitOutput {
@@ -12,10 +10,9 @@ public class RecruitOutput {
     private String recruitPeriod;
     private boolean isHeart;
     
-    @QueryProjection
-    public RecruitOutput(String title, LocalDate endDate, LocalDate challengeEndDate, boolean isHeart) {
-        this.title = title;
-        this.recruitPeriod = endDate.plusDays(1).toString() + " ~ " + challengeEndDate.toString();
+    public RecruitOutput(Recruit recruit, boolean isHeart) {
+        this.title = recruit.getTitle();
+        this.recruitPeriod = recruit.getEndDate().plusDays(1) + " ~ " + recruit.getChallengeEndTime().toString();
         this.isHeart = isHeart;
     }
 }

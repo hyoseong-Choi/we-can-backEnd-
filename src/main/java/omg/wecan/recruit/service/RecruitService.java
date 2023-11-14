@@ -12,10 +12,14 @@ import omg.wecan.recruit.repository.ParticipateRepository;
 import omg.wecan.recruit.repository.RecruitRepository;
 import omg.wecan.user.entity.User;
 import omg.wecan.user.repository.UserRepository;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageImpl;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.ArrayList;
+import java.util.LinkedList;
 import java.util.List;
 
 @Service
@@ -54,7 +58,7 @@ public class RecruitService {
         User user = userRepository.findById(1L).get();//토큰으로 찾은 유저로 수정
         Recruit recruit = recruitRepository.findById(id).get();
         if (heartRepository.findByUserAndRecruit(user, recruit).orElse(null) == null) {
-            return  new RecruitDetailOutput(recruit, false);
+            return new RecruitDetailOutput(recruit, false);
         }
         return new RecruitDetailOutput(recruit, true);
     }
@@ -65,19 +69,40 @@ public class RecruitService {
         List<RecruitOutput> recruitOutputs = new ArrayList<>();
         for (Recruit recruit : recruits) {
             if (heartRepository.findByUserAndRecruit(user, recruit).orElse(null) == null) {
-                RecruitOutput recruitOutput = new RecruitOutput(recruit.getTitle(), recruit.getEndDate(), recruit.getChallengeEndTime(), false);
+                RecruitOutput recruitOutput = new RecruitOutput(recruit, false);
                 recruitOutputs.add(recruitOutput);
                 continue;
             }
-            RecruitOutput recruitOutput = new RecruitOutput(recruit.getTitle(), recruit.getEndDate(), recruit.getChallengeEndTime(), true);
+            RecruitOutput recruitOutput = new RecruitOutput(recruit, true);
             recruitOutputs.add(recruitOutput);
         }
         return recruitOutputs;
     }
     
-    public List<RecruitOutput> findRecentRecruit() {
-        User user = userRepository.findById(1L).get();//토큰으로 찾은 유저로 수정
-        //페이징 해야됨
+    public Page<RecruitOutput> findRecentRecruit(Pageable pageable) {
+        User user = userRepository.findById(5L).get();//토큰으로 찾은 유저로 수정
+        //모집글 중에 찜한거 있으면 표시해주기 위해 heart 가져와서 그중에 유저가 찜한 recruit 있는지 확인.
+        //유저가 찜한 모집글이 없으면 전부 false로 리턴
+        List<Heart> heartsByUser = heartRepository.findAllByUser(user);
+        if (heartsByUser.isEmpty()) {
+            return recruitRepository.findAll(pageable).map(recruit -> new RecruitOutput(recruit, false));
+        }
+        //유저가 찜한 모집글이 있으면 그것만 true, 나머지 false로 리턴
+        List<RecruitOutput> recruitOutputs = new LinkedList<>();
+        Page<Recruit> recruits = recruitRepository.findAll(pageable);
+        for (Recruit recruit : recruits) {
+            recruitOutputs.add(getRecruitOutputByHeart(recruit, heartsByUser));
+        }
+        return new PageImpl<>(recruitOutputs);
+    }
+    
+    private RecruitOutput getRecruitOutputByHeart(Recruit recruit, List<Heart> heartsByUser) {
+        for (Heart heart : heartsByUser) {
+            if (heart.getRecruit().equals(recruit)) {
+                return new RecruitOutput(recruit, true);
+            }
+        }
+        return new RecruitOutput(recruit, false);
     }
     
     public Participate addParticipate(AddParticipateInput addParticipateInput) {
