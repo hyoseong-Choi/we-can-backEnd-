@@ -1,6 +1,7 @@
 package omg.wecan.recruit.controller;
 
 import lombok.RequiredArgsConstructor;
+import omg.wecan.recruit.Enum.ChallengeType;
 import omg.wecan.recruit.dto.*;
 import omg.wecan.recruit.entity.Heart;
 import omg.wecan.recruit.entity.Participate;
@@ -8,6 +9,7 @@ import omg.wecan.recruit.entity.Recruit;
 import omg.wecan.recruit.service.RecruitService;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
+import org.springframework.data.web.PageableDefault;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -44,10 +46,9 @@ public class RecruitController {
     }
     
     @GetMapping("/recruits")
-    public Page<RecruitOutput> recruitFindRecent(Pageable pageable) {
-        return recruitService.findRecentRecruit(pageable);
+    public Page<RecruitOutput> recruitFind(@ModelAttribute RecruitFindCond recruitFindCond, @PageableDefault(size = 15)Pageable pageable) {
+        return recruitService.findRecruit(recruitFindCond, pageable);
     }
-    
     
     @PostMapping("/recruit/participation")
     public Participate participateAdd(@RequestBody AddParticipateInput addParticipateInput) {

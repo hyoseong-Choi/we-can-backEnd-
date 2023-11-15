@@ -79,7 +79,7 @@ public class RecruitService {
         return recruitOutputs;
     }
     
-    public Page<RecruitOutput> findRecentRecruit(Pageable pageable) {
+    public Page<RecruitOutput> findRecruit(RecruitFindCond recruitFindCond, Pageable pageable) {
         User user = userRepository.findById(5L).get();//토큰으로 찾은 유저로 수정
         //모집글 중에 찜한거 있으면 표시해주기 위해 heart 가져와서 그중에 유저가 찜한 recruit 있는지 확인.
         //유저가 찜한 모집글이 없으면 전부 false로 리턴
@@ -89,11 +89,11 @@ public class RecruitService {
         }
         //유저가 찜한 모집글이 있으면 그것만 true, 나머지 false로 리턴
         List<RecruitOutput> recruitOutputs = new LinkedList<>();
-        Page<Recruit> recruits = recruitRepository.findAll(pageable);
+        List<Recruit> recruits = recruitRepository.findAll();
         for (Recruit recruit : recruits) {
             recruitOutputs.add(getRecruitOutputByHeart(recruit, heartsByUser));
         }
-        return new PageImpl<>(recruitOutputs);
+        return new PageImpl<>(recruitOutputs, pageable, recruits.size());
     }
     
     private RecruitOutput getRecruitOutputByHeart(Recruit recruit, List<Heart> heartsByUser) {
