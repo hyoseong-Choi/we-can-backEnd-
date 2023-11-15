@@ -47,8 +47,7 @@ public class RecruitService {
         recruit.changeRecruit(charity, recruitInput);
         return recruit;
     }
-    
-    @Transactional
+
     public Long deleteRecruit(Long id) {
         recruitRepository.deleteById(id);
         return id;
@@ -62,7 +61,7 @@ public class RecruitService {
         }
         return new RecruitDetailOutput(recruit, true);
     }
-    
+    //디테일 참여, 댓글 해야함
     public List<RecruitOutput> findThreeRecruit() {
         User user = userRepository.findById(1L).get();//토큰으로 찾은 유저로 수정
         List<Recruit> recruits = recruitRepository.findTop3ByOrderByHeartNumDesc();
@@ -85,11 +84,12 @@ public class RecruitService {
         //유저가 찜한 모집글이 없으면 전부 false로 리턴
         List<Heart> heartsByUser = heartRepository.findAllByUser(user);
         if (heartsByUser.isEmpty()) {
-            return recruitRepository.findAll(pageable).map(recruit -> new RecruitOutput(recruit, false));
+            return recruitRepository.findAllByCond(recruitFindCond, pageable)
+                    .map(recruit -> new RecruitOutput(recruit, false));
         }
         //유저가 찜한 모집글이 있으면 그것만 true, 나머지 false로 리턴
         List<RecruitOutput> recruitOutputs = new LinkedList<>();
-        List<Recruit> recruits = recruitRepository.findAll();
+        List<Recruit> recruits = recruitRepository.findAllByCond(recruitFindCond);
         for (Recruit recruit : recruits) {
             recruitOutputs.add(getRecruitOutputByHeart(recruit, heartsByUser));
         }
@@ -111,6 +111,12 @@ public class RecruitService {
         Participate participate = Participate.createParticipate(user, recruit);
         return participateRepository.save(participate);
     }
+
+    public Long deleteParticipate(Long participateId) {
+        User user = userRepository.findById(1L).get();//토큰으로 찾은 유저로 수정
+        participateRepository.deleteById(participateId);
+        return participateId;
+    }
     
     @Transactional
     public Heart addHeart(AddHeartInput addHeartInput) {
@@ -119,5 +125,14 @@ public class RecruitService {
         Heart heart = Heart.createHeart(user, recruit);
         recruit.addHeart();
         return heartRepository.save(heart);
+    }
+    @Transactional
+    public Long deleteHeart(Long heartId) {
+        User user = userRepository.findById(5L).get();//토큰으로 찾은 유저로 수정
+        Heart heart = heartRepository.findById(heartId).get();
+        Recruit recruit = recruitRepository.findById(heart.getRecruit().getId()).get();
+        recruit.subHeart();
+        heartRepository.delete(heart);
+        return heartId;
     }
 }

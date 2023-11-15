@@ -95,5 +95,7 @@ public class Recruit {
     public void addHeart() {
         this.heartNum =+ 1;
     }
-    
+    public void subHeart() {
+        this.heartNum =- 1;
+    }
 }

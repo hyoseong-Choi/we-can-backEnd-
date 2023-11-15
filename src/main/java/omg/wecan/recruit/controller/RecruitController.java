@@ -46,7 +46,7 @@ public class RecruitController {
     }
     
     @GetMapping("/recruits")
-    public Page<RecruitOutput> recruitFind(@ModelAttribute RecruitFindCond recruitFindCond, @PageableDefault(size = 15)Pageable pageable) {
+    public Page<RecruitOutput> recruitFind(@ModelAttribute RecruitFindCond recruitFindCond, @PageableDefault(size = 4)Pageable pageable) {
         return recruitService.findRecruit(recruitFindCond, pageable);
     }
     
@@ -54,10 +54,19 @@ public class RecruitController {
     public Participate participateAdd(@RequestBody AddParticipateInput addParticipateInput) {
         return recruitService.addParticipate(addParticipateInput);
     }
+
+    @DeleteMapping("/recruit/participation")
+    public Long participateDelete(@RequestBody Long  participateId) {
+        return recruitService.deleteParticipate(participateId);
+    }
     
     @PostMapping("/recruit/heart")
     public Heart heartAdd(@RequestBody AddHeartInput addHeartInput) {
         return recruitService.addHeart(addHeartInput);
     }
-    
+
+    @DeleteMapping("/recruit/heart")
+    public Long heartDelete(@RequestBody Long heartId) {
+        return recruitService.deleteHeart(heartId);
+    }
 }
