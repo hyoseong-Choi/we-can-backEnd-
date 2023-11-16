@@ -7,8 +7,10 @@ import omg.wecan.recruit.dto.*;
 import omg.wecan.recruit.entity.Heart;
 import omg.wecan.recruit.entity.Participate;
 import omg.wecan.recruit.entity.Recruit;
+import omg.wecan.recruit.entity.RecruitComment;
 import omg.wecan.recruit.repository.HeartRepository;
 import omg.wecan.recruit.repository.ParticipateRepository;
+import omg.wecan.recruit.repository.RecruitCommentRepository;
 import omg.wecan.recruit.repository.RecruitRepository;
 import omg.wecan.user.entity.User;
 import omg.wecan.user.repository.UserRepository;
@@ -30,6 +32,7 @@ public class RecruitService {
     private final CharityRepository charityRepository;
     private final ParticipateRepository participateRepository;
     private final HeartRepository heartRepository;
+    private final RecruitCommentRepository recruitCommentRepository;
     
     public Recruit addRecruit(RecruitInput recruitInput) {
         User user = userRepository.findById(1L).get();//토큰으로 찾은 유저로 수정
@@ -103,6 +106,12 @@ public class RecruitService {
             }
         }
         return new RecruitOutput(recruit, false);
+    }
+
+    public RecruitComment addRecruitComment(CommentAddInput commentAddInput) {
+        User user = userRepository.findById(1L).get();//토큰으로 찾은 유저로 수정
+        Recruit recruit = recruitRepository.findById(commentAddInput.getRecruitId()).get();
+        return recruitCommentRepository.save(RecruitComment.createRecruitComment(user, recruit, commentAddInput));
     }
     
     public Participate addParticipate(AddParticipateInput addParticipateInput) {

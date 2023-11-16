@@ -1,11 +1,13 @@
 package omg.wecan.recruit.entity;
 
 import jakarta.persistence.*;
+import lombok.Getter;
 import lombok.NoArgsConstructor;
 import omg.wecan.user.entity.User;
 
 @Entity
 @NoArgsConstructor
+@Getter
 public class Participate {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)

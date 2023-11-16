@@ -6,6 +6,7 @@ import omg.wecan.recruit.dto.*;
 import omg.wecan.recruit.entity.Heart;
 import omg.wecan.recruit.entity.Participate;
 import omg.wecan.recruit.entity.Recruit;
+import omg.wecan.recruit.entity.RecruitComment;
 import omg.wecan.recruit.service.RecruitService;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -48,6 +49,11 @@ public class RecruitController {
     @GetMapping("/recruits")
     public Page<RecruitOutput> recruitFind(@ModelAttribute RecruitFindCond recruitFindCond, @PageableDefault(size = 4)Pageable pageable) {
         return recruitService.findRecruit(recruitFindCond, pageable);
+    }
+
+    @PostMapping("/recruit/comment")
+    public RecruitComment recruitCommentAdd(@RequestBody CommentAddInput commentAddInput) {
+        return recruitService.addRecruitComment(commentAddInput);
     }
     
     @PostMapping("/recruit/participation")

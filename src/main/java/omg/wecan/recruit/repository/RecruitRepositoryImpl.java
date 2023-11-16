@@ -28,7 +28,7 @@ public class RecruitRepositoryImpl implements RecruitRepositoryCustom{
     public Page<Recruit> findAllByCond(RecruitFindCond recruitFindCond, Pageable pageable) {
         List<Recruit> results = queryFactory
                 .selectFrom(recruit)
-                .where(titleEq(recruitFindCond.getTitle()),
+                .where(titleContains(recruitFindCond.getTitle()),
                         categoryEq(recruitFindCond.getCategory()),
                         recruit.finished.eq(false))
                 .fetch();
@@ -39,15 +39,15 @@ public class RecruitRepositoryImpl implements RecruitRepositoryCustom{
     public List<Recruit> findAllByCond(RecruitFindCond recruitFindCond) {
         return queryFactory
                 .selectFrom(recruit)
-                .where(titleEq(recruitFindCond.getTitle()),
+                .where(titleContains(recruitFindCond.getTitle()),
                         categoryEq(recruitFindCond.getCategory()),
                         recruit.finished.eq(false))
                 .fetch();
     }
 
-    private BooleanExpression titleEq(String title) {
+    private BooleanExpression titleContains(String title) {
         if (hasText(title)) {
-            return recruit.title.eq(title);
+            return recruit.title.contains(title);
         }
         return null;
     }
