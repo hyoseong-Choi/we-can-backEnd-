@@ -8,6 +8,7 @@ import omg.wecan.recruit.entity.Recruit;
 import omg.wecan.user.entity.User;
 
 import java.time.LocalDate;
+import java.util.List;
 
 @Data
 public class RecruitDetailOutput {
@@ -19,15 +20,19 @@ public class RecruitDetailOutput {
     private LocalDate challengeStartTime;
     private LocalDate challengeEndTime;
     private int minPeople;
+    private Long participatePeople;
     private String checkDay;
     private PaymentType paymentType;
     private String content;
     private String coverImageEndpoint;
     private int fine;
     private boolean finished;
+    private boolean isParticipate;
     private boolean isHeart;
+    private List<>
     
-    public RecruitDetailOutput(Recruit recruit, boolean isHeart) {
+    public RecruitDetailOutput(Recruit recruit, Long participatePeople, boolean isParticipate, boolean isHeart,
+                               ) {
         this.id = recruit.getId();
         this.writer = recruit.getWriter().getNickname();
         this.charityName = recruit.getCharity().getName();
@@ -36,6 +41,7 @@ public class RecruitDetailOutput {
         this.challengeStartTime = recruit.getEndDate().plusDays(1);
         this.challengeEndTime = recruit.getChallengeEndTime();
         this.minPeople = recruit.getMinPeople();
+        this.participatePeople = participatePeople;
         this.checkDay = recruit.getCheckDay();
         this.paymentType = recruit.getPaymentType();
         this.content = recruit.getContent();
@@ -43,5 +49,6 @@ public class RecruitDetailOutput {
         this.fine = recruit.getFine();
         this.finished = recruit.isFinished();
         this.isHeart = isHeart;
+        this.isParticipate = isParticipate;
     }
 }

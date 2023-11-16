@@ -5,6 +5,7 @@ import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import omg.wecan.charity.entity.Charity;
+import omg.wecan.global.entity.BaseEntity;
 import omg.wecan.recruit.Enum.ChallengeType;
 import omg.wecan.recruit.Enum.PaymentType;
 import omg.wecan.recruit.dto.RecruitInput;
@@ -18,7 +19,7 @@ import java.util.List;
 @Entity
 @Getter
 @NoArgsConstructor
-public class Recruit {
+public class Recruit extends BaseEntity {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "recruit_id")

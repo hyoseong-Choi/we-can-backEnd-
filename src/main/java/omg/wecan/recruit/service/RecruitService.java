@@ -59,24 +59,19 @@ public class RecruitService {
     public RecruitDetailOutput findRecruitDetail(Long id) {
         User user = userRepository.findById(1L).get();//토큰으로 찾은 유저로 수정
         Recruit recruit = recruitRepository.findById(id).get();
-        if (heartRepository.findByUserAndRecruit(user, recruit).orElse(null) == null) {
-            return new RecruitDetailOutput(recruit, false);
-        }
-        return new RecruitDetailOutput(recruit, true);
+        return new RecruitDetailOutput(recruit, participateRepository.countByRecruit(recruit),
+                heartRepository.existsByUserAndRecruit(user, recruit),
+                participateRepository.existsByUserAndRecruit(user, recruit),
+                recruitCommentRepository.findByRecruit(recruit));
     }
     //디테일 참여, 댓글 해야함
+
     public List<RecruitOutput> findThreeRecruit() {
         User user = userRepository.findById(1L).get();//토큰으로 찾은 유저로 수정
         List<Recruit> recruits = recruitRepository.findTop3ByOrderByHeartNumDesc();
         List<RecruitOutput> recruitOutputs = new ArrayList<>();
         for (Recruit recruit : recruits) {
-            if (heartRepository.findByUserAndRecruit(user, recruit).orElse(null) == null) {
-                RecruitOutput recruitOutput = new RecruitOutput(recruit, false);
-                recruitOutputs.add(recruitOutput);
-                continue;
-            }
-            RecruitOutput recruitOutput = new RecruitOutput(recruit, true);
-            recruitOutputs.add(recruitOutput);
+            recruitOutputs.add(new RecruitOutput(recruit, heartRepository.existsByUserAndRecruit(user, recruit)));
         }
         return recruitOutputs;
     }
@@ -85,8 +80,7 @@ public class RecruitService {
         User user = userRepository.findById(5L).get();//토큰으로 찾은 유저로 수정
         //모집글 중에 찜한거 있으면 표시해주기 위해 heart 가져와서 그중에 유저가 찜한 recruit 있는지 확인.
         //유저가 찜한 모집글이 없으면 전부 false로 리턴
-        List<Heart> heartsByUser = heartRepository.findAllByUser(user);
-        if (heartsByUser.isEmpty()) {
+        if (!heartRepository.existsByUser(user)) {
             return recruitRepository.findAllByCond(recruitFindCond, pageable)
                     .map(recruit -> new RecruitOutput(recruit, false));
         }

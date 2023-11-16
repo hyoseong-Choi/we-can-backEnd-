@@ -10,7 +10,7 @@ import java.util.List;
 import java.util.Optional;
 
 public interface HeartRepository extends JpaRepository<Heart, Long> {
-    Optional<Heart> findByUserAndRecruit(User user, Recruit recruit);
-    
+    Boolean existsByUserAndRecruit(User user, Recruit recruit);
+    Boolean existsByUser(User user);
     List<Heart> findAllByUser(User user);
 }
