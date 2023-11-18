@@ -53,7 +53,7 @@ jobs:
         if: contains(github.ref, 'main')
         with:
           host: ${{ secrets.HOST_EC2 }}
-          username: ec2-user
+          username: ec2 ubuntu
           password: ${{ secrets.PASSWORD }}
           port: 22
           script: |
