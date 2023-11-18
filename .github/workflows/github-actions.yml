@@ -53,11 +53,11 @@ jobs:
         if: contains(github.ref, 'main')
         with:
           host: ${{ secrets.HOST_EC2 }}
-          username: root
+          username: ubuntu
           password: ${{ secrets.PASSWORD }}
           port: 22
           script: |
             sudo docker rm -f wecan
             docker image rm ${{ secrets.DOCKER_REPO }} -f
             sudo docker pull ${{ secrets.DOCKER_REPO }}
-            docker run --name wecan --network host -d -p 8080:8080 ${{ secrets.DOCKER_REPO }}
+            sudo docker run --name wecan --network host -d -p 8080:8080 ${{ secrets.DOCKER_REPO }}
