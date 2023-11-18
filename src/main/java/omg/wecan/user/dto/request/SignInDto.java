@@ -1,4 +1,4 @@
-package omg.wecan.auth.Testuser.dto.request;
+package omg.wecan.user.dto.request;
 
 import lombok.Getter;
 import lombok.Setter;
@@ -7,5 +7,5 @@ import lombok.Setter;
 @Setter
 public class SignInDto {
     String email;
-    String name;
+    String password;
 }

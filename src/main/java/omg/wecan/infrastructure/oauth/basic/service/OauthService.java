@@ -1,13 +1,13 @@
 package omg.wecan.infrastructure.oauth.basic.service;
 
 import lombok.RequiredArgsConstructor;
-import omg.wecan.auth.Testuser.entity.TestUser;
-import omg.wecan.auth.Testuser.service.TestUserService;
 import omg.wecan.infrastructure.oauth.basic.provider.AuthCodeRequestUrlProviderComposite;
 import omg.wecan.infrastructure.oauth.basic.repository.OauthMemberRepository;
 import omg.wecan.infrastructure.oauth.basic.domain.client.OauthMemberClientComposite;
 import omg.wecan.infrastructure.oauth.basic.entity.OauthMember;
 import omg.wecan.infrastructure.oauth.basic.domain.OauthServerType;
+import omg.wecan.user.entity.User;
+import omg.wecan.user.service.UserService;
 import org.springframework.stereotype.Service;
 
 @Service
@@ -16,20 +16,20 @@ public class OauthService {
     private final OauthMemberClientComposite oauthMemberClientComposite;
     private final OauthMemberRepository oauthMemberRepository;
     private final AuthCodeRequestUrlProviderComposite authCodeRequestUrlProviderComposite;
-    private final TestUserService testUserService;
+    private final UserService userService;
 
     public String getAuthCodeRequestUrl(OauthServerType oauthServerType) {
         return authCodeRequestUrlProviderComposite.provide(oauthServerType);
     }
 
-    public TestUser login(OauthServerType oauthServerType, String authCode) {
+    public User login(OauthServerType oauthServerType, String authCode) {
         OauthMember oauthMember = oauthMemberClientComposite.fetch(oauthServerType, authCode);
 
-        TestUser testUser = testUserService.findByOauthServerIdAndSocial(
+        User user = userService.findByOauthServerIdAndSocial(
                         oauthMember.oauthId().getOauthServerId(),
                         oauthServerType.toString())
-                .orElseGet(() -> testUserService.save(oauthMember.toUser()));
+                .orElseGet(() -> userService.save(oauthMember.toUser()));
 
-        return testUser;
+        return user;
     }
 }

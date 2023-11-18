@@ -3,11 +3,7 @@ package omg.wecan.auth.presentation;
 
 import jakarta.servlet.http.HttpServletRequest;
 import lombok.RequiredArgsConstructor;
-import omg.wecan.auth.Testuser.entity.ROLE;
-import omg.wecan.auth.Testuser.entity.TestUser;
-import omg.wecan.auth.Testuser.service.TestUserService;
 import omg.wecan.auth.dto.LoginUser;
-import omg.wecan.auth.exception.UserRoleException;
 import omg.wecan.jwt.exception.InvalidTokenException;
 import omg.wecan.jwt.service.JWTService;
 import omg.wecan.user.service.UserService;
@@ -24,7 +20,7 @@ import org.springframework.web.method.support.ModelAndViewContainer;
 public class AuthenticationPrincipalArgumentResolver implements HandlerMethodArgumentResolver {
 
     private final JWTService jwtService;
-    private final TestUserService userService;
+    private final UserService userService;
     @Override
     public boolean supportsParameter(final MethodParameter parameter) {
         return parameter.hasParameterAnnotation(AuthenticationPrincipal.class);
@@ -43,6 +39,6 @@ public class AuthenticationPrincipalArgumentResolver implements HandlerMethodArg
                 }
         );
 
-        return new LoginUser(id);
+        return userService.findById(id);
     }
 }
