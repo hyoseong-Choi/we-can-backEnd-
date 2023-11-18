@@ -19,6 +19,8 @@ public class User {
     private String nickname;
     private String imgEndpoint;
     private int candy;
+    private boolean social;
+    private String refresh_token;
     
     public void changePassword(String newPassword) {
         this.password = newPassword;

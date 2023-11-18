@@ -3,14 +3,20 @@ package omg.wecan.user.service;
 import lombok.RequiredArgsConstructor;
 import omg.wecan.exception.NoUserWithNameAndEmailException;
 import omg.wecan.user.dto.CertificationMailOutput;
+import omg.wecan.user.dto.EmailCertificationInput;
 import omg.wecan.user.dto.NewPasswordInput;
 import omg.wecan.user.dto.UserCertificationInput;
+import omg.wecan.user.entity.CertificationMail;
 import omg.wecan.user.entity.User;
+import omg.wecan.user.repository.CertificationMailRepository;
 import omg.wecan.user.repository.UserRepository;
 import org.springframework.mail.MailSender;
 import org.springframework.mail.SimpleMailMessage;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+
+import java.time.LocalDateTime;
+import java.util.NoSuchElementException;
 
 
 @Service
@@ -18,6 +24,7 @@ import org.springframework.transaction.annotation.Transactional;
 public class UserFindPasswordService {
     private final UserRepository userRepository;
     private final MailSender mailSender;
+    private final CertificationMailRepository certificationMailRepository;
     
     //이메일 주소랑 이름 받아서 검증
     public UserCertificationInput certifyUser(UserCertificationInput userCertificationInput) {
@@ -27,14 +34,11 @@ public class UserFindPasswordService {
     }
     
     // 메일 내용을 생성
-    public CertificationMailOutput createMail() {
-        //토큰으로 유저 인증하고 레포에서 유저 이메일 가져와야함
-        String userEmail = "gytjd0512@naver.com";
+    public CertificationMailOutput createMail(EmailCertificationInput emailCertificationInput) {
         String certificationNumber = getCertificationNumber();
-        return new CertificationMailOutput(userEmail, "WECAN! 비밀번호 변경 안내 이메일 입니다.",
-                "안녕하세요. WECAN! 비밀번호 변경 이메일 입니다.\n인증 번호는 " + certificationNumber + " 입니다."
+        return new CertificationMailOutput(emailCertificationInput.getEmail(), "WECAN! 사용자 인증 이메일 입니다.",
+                "안녕하세요. WECAN! 인증 이메일 입니다.\n인증 번호는 " + certificationNumber + " 입니다."
                         + "인증번호 입력란에 인증번호를 입력해주세요!");
-        
     }
     
     //랜덤함수로 인증번호 만들기
@@ -62,8 +66,19 @@ public class UserFindPasswordService {
         message.setFrom("wecan__!@naver.com");
         message.setReplyTo("wecan__!@naver.com");
         System.out.println("message" + message);
-        
+
+        certificationMailRepository.save(new CertificationMail(message.getText()));
         mailSender.send(message);
+    }
+
+    public String validateCertificationNum(String certificationNum) {
+        CertificationMail certificationMail = certificationMailRepository.findByCertificationNum(certificationNum)
+                .orElseThrow(() -> new NoSuchElementException("인증 번호가 틀렸습니다"));
+        if (certificationMail.getCreatedAt().isBefore(LocalDateTime.now().plusMinutes(5))) {
+            throw new NoSuchElementException("인증 번호가 만료되었습니다");
+        }
+
+        return certificationNum;
     }
     
     //비밀번호 변경

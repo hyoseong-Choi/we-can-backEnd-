@@ -9,20 +9,6 @@ public enum PaymentType {
     public static PaymentType from(String type){
         return PaymentType.valueOf(type.toUpperCase());
     }
-    
-//    @JsonCreator
-//    public static PaymentType from(String type) {
-//        for (PaymentType paymentType : PaymentType.values()) {
-//            if (paymentType.getType().equals(type)) {
-//                return paymentType;
-//            }
-//        }
-//        return null;
-//    }
-//
-//    @JsonValue
-//    public String getType() {
-//        return type;
-//    }
+
     
 }

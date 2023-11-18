@@ -8,11 +8,18 @@ import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
 
+import java.util.NoSuchElementException;
+
 @RestControllerAdvice(assignableTypes = UserController.class)
 public class UserControllerAdvice {
     
     @ExceptionHandler
     public ResponseEntity<ErrorResult> noUserWithNameAndeEmailExHandle(NoUserWithNameAndEmailException e) {
+        ErrorResult errorResult = new ErrorResult(e.getMessage());
+        return new ResponseEntity<>(errorResult, HttpStatus.NOT_FOUND);
+    }
+    @ExceptionHandler
+    public ResponseEntity<ErrorResult> noUserWithNameAndeEmailExHandle(NoSuchElementException e) {
         ErrorResult errorResult = new ErrorResult(e.getMessage());
         return new ResponseEntity<>(errorResult, HttpStatus.NOT_FOUND);
     }

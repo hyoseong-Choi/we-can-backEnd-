@@ -80,7 +80,8 @@ public class RecruitService {
         User user = userRepository.findById(5L).get();//토큰으로 찾은 유저로 수정
         //모집글 중에 찜한거 있으면 표시해주기 위해 heart 가져와서 그중에 유저가 찜한 recruit 있는지 확인.
         //유저가 찜한 모집글이 없으면 전부 false로 리턴
-        if (!heartRepository.existsByUser(user)) {
+        List<Heart> heartsByUser = heartRepository.findAllByUser(user);
+        if (!heartsByUser.isEmpty()) {
             return recruitRepository.findAllByCond(recruitFindCond, pageable)
                     .map(recruit -> new RecruitOutput(recruit, false));
         }

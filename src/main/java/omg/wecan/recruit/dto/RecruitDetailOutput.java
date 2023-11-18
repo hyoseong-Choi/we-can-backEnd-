@@ -5,6 +5,7 @@ import omg.wecan.charity.entity.Charity;
 import omg.wecan.recruit.Enum.ChallengeType;
 import omg.wecan.recruit.Enum.PaymentType;
 import omg.wecan.recruit.entity.Recruit;
+import omg.wecan.recruit.entity.RecruitComment;
 import omg.wecan.user.entity.User;
 
 import java.time.LocalDate;
@@ -29,9 +30,10 @@ public class RecruitDetailOutput {
     private boolean finished;
     private boolean isParticipate;
     private boolean isHeart;
-    private List<>
+    private List<RecruitComment> recruitComments;
     
-    public RecruitDetailOutput(Recruit recruit, Long participatePeople, boolean isParticipate, boolean isHeart,
+    public RecruitDetailOutput(Recruit recruit, Long participatePeople, boolean isParticipate,
+                               boolean isHeart,List<RecruitComment> recruitComments
                                ) {
         this.id = recruit.getId();
         this.writer = recruit.getWriter().getNickname();
