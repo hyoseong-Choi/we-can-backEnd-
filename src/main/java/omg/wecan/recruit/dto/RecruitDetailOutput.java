@@ -36,7 +36,7 @@ public class RecruitDetailOutput {
                                boolean isHeart,List<RecruitComment> recruitComments
                                ) {
         this.id = recruit.getId();
-        this.writer = recruit.getWriter().getNickname();
+        this.writer = recruit.getWriter().getNickName();
         this.charityName = recruit.getCharity().getName();
         this.title = recruit.getTitle();
         this.type = recruit.getType();
