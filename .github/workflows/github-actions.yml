@@ -57,7 +57,7 @@ jobs:
           password: ${{ secrets.PASSWORD }}
           port: 22
           script: |
-            sudo docker rm -f wetest
+            sudo docker rm -f wecan
             docker image rm ${{ secrets.DOCKER_REPO }} -f
             sudo docker pull ${{ secrets.DOCKER_REPO }}
-            docker run --name wetest --network host -d -p 8080:8080 ${{ secrets.DOCKER_REPO }}
+            docker run --name wecan --network host -d -p 8080:8080 ${{ secrets.DOCKER_REPO }}
