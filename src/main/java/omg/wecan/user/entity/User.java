@@ -2,25 +2,50 @@ package omg.wecan.user.entity;
 
 import jakarta.persistence.*;
 import lombok.Getter;
-import lombok.NoArgsConstructor;
+import omg.wecan.infrastructure.oauth.basic.domain.OauthServerType;
+
+import java.util.regex.Pattern;
 
 @Entity
-@NoArgsConstructor
 @Getter
 public class User {
+    private static final Pattern EMAIL_PATTERN = Pattern.compile("^[a-z0-9._-]+@[a-z]+[.]+[a-z]{2,3}$");
+
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "user_id")
-    private Long id;
-    
+    private Long userId;
     private String email;
     private String password;
     private String name;
-    private String nickname;
-    private String imgEndpoint;
-    private int candy;
-    private boolean social;
-    private String refresh_token;
+    private String nickName;
+    private String phone;
+    private String imgEndPoint;
+    private Long candy;
+    @Column(name = "oauth_server_id")
+    private String oauthServerId;
+    @Enumerated(EnumType.STRING)
+    private OauthServerType social;
+    @Enumerated(EnumType.STRING)
+    private ROLE role;
+    String refreshToken;
+    public User() {
+
+    }
+    public User(String email, String password, String name, String nickName, String phone, String imgEndPoint, String oauthServerId, OauthServerType social, ROLE role){
+        this.email = email;
+        this.password = password;
+        this.name = name;
+        this.nickName = nickName;
+        this.phone = phone;
+        this.imgEndPoint = imgEndPoint;
+        this.oauthServerId = oauthServerId;
+        this.social = social;
+        this.role = role;
+    }
+
+    public void setRefreshToken(String refreshToken) {
+        this.refreshToken = refreshToken;
+    }
     
     public void changePassword(String newPassword) {
         this.password = newPassword;
