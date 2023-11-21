@@ -1,13 +1,13 @@
-package omg.wecan.infrastructure.oauth.basic.dto.response;
+package omg.wecan.auth.dto.authResponse;
 
 import lombok.Getter;
 import omg.wecan.jwt.domain.AuthToken;
 
 @Getter
-public class OauthResponse {
+public class AuthResponse {
     private AuthToken authToken;
 
-    public OauthResponse(AuthToken authToken) {
+    public AuthResponse(AuthToken authToken) {
         this.authToken = authToken;
     }
 }

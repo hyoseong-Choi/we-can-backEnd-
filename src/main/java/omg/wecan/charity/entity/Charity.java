@@ -4,7 +4,6 @@ import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
-import lombok.Setter;
 import omg.wecan.global.entity.BaseEntity;
 
 @Table(name = "charitys")
@@ -19,22 +18,22 @@ public class Charity extends BaseEntity {
 
     @Column
     private String name;
-
+    
     @Column
     @Enumerated(EnumType.STRING)
     private CharityCategory category;
-
+    
     @Column
     private String explanation;
-
+    
     @Column(name = "img_endpoint")
     private String imgEndpoint;
-
+    
     @Column(name = "page_endpoint")
     private String pageEndpoint;
 
     public Charity() {
-
+    
     }
 
     public void change(String name, CharityCategory category, String explanation, String imgEndpoint, String pageEndpoint){
