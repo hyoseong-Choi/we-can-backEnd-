@@ -64,17 +64,17 @@ public class RecruitController {
     }
 
     @DeleteMapping("/recruit/participation")
-    public Long participateDelete(@RequestBody Long  participateId) {
+    public Long participateDelete(@AuthenticationPrincipal User loginUser, @RequestBody Long  participateId) {
         return recruitService.deleteParticipate(participateId);
     }
     
     @PostMapping("/recruit/heart")
-    public Heart heartAdd(@RequestBody AddHeartInput addHeartInput) {
+    public Heart heartAdd(@AuthenticationPrincipal User loginUser, @RequestBody AddHeartInput addHeartInput) {
         return recruitService.addHeart(addHeartInput);
     }
 
     @DeleteMapping("/recruit/heart")
-    public Long heartDelete(@RequestBody Long heartId) {
+    public Long heartDelete(@AuthenticationPrincipal User loginUser, @RequestBody Long heartId) {
         return recruitService.deleteHeart(heartId);
     }
 }
