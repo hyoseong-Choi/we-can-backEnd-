@@ -1,6 +1,5 @@
 package omg.wecan.recruit.repository;
 
-import com.querydsl.core.QueryResults;
 import com.querydsl.core.types.dsl.BooleanExpression;
 import com.querydsl.jpa.impl.JPAQueryFactory;
 import jakarta.persistence.EntityManager;
@@ -10,6 +9,7 @@ import omg.wecan.recruit.entity.Recruit;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.Pageable;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 
@@ -25,24 +25,17 @@ public class RecruitRepositoryImpl implements RecruitRepositoryCustom{
     }
     
     @Override
+    @Transactional(readOnly = true)
     public Page<Recruit> findAllByCond(RecruitFindCond recruitFindCond, Pageable pageable) {
         List<Recruit> results = queryFactory
                 .selectFrom(recruit)
                 .where(titleContains(recruitFindCond.getTitle()),
                         categoryEq(recruitFindCond.getCategory()),
                         recruit.finished.eq(false))
+                .offset(pageable.getOffset())
+                .limit(pageable.getPageSize())
                 .fetch();
         return new PageImpl<>(results, pageable, results.size());
-    }
-
-    @Override
-    public List<Recruit> findAllByCond(RecruitFindCond recruitFindCond) {
-        return queryFactory
-                .selectFrom(recruit)
-                .where(titleContains(recruitFindCond.getTitle()),
-                        categoryEq(recruitFindCond.getCategory()),
-                        recruit.finished.eq(false))
-                .fetch();
     }
 
     private BooleanExpression titleContains(String title) {

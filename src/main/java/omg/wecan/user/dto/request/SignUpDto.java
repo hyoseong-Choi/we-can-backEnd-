@@ -6,6 +6,7 @@ import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Pattern;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
+import lombok.NoArgsConstructor;
 import lombok.Setter;
 import omg.wecan.user.entity.ROLE;
 import omg.wecan.user.entity.User;
@@ -13,6 +14,7 @@ import omg.wecan.user.entity.User;
 @Getter
 @Setter
 @AllArgsConstructor
+@NoArgsConstructor(force = true)
 public class SignUpDto {
     @NotNull(message = "이메일은 null일 수 없습니다.!")
     @Email

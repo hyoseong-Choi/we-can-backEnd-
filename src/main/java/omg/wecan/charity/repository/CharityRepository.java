@@ -6,6 +6,7 @@ import omg.wecan.charity.entity.Charity;
 import org.springframework.data.jpa.repository.JpaRepository;
 
 import java.util.List;
+import java.util.Optional;
 
 public interface CharityRepository extends JpaRepository<Charity, Long> {
     default Charity getById(Long id){
@@ -18,5 +19,5 @@ public interface CharityRepository extends JpaRepository<Charity, Long> {
     
     List<Charity> findAllByExplanationLike(String explanation);
     
-    Charity findByName(String name);
+    Optional<Charity> findByName(String name);
 }
