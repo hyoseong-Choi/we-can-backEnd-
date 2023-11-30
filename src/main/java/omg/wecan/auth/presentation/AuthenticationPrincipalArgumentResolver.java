@@ -35,7 +35,7 @@ public class AuthenticationPrincipalArgumentResolver implements HandlerMethodArg
         jwtService.validateToken(accessToken);
         Long id = jwtService.extractId(accessToken).orElseThrow(
                 () -> {
-                    throw new InvalidTokenException("토큰에 이메일이 없습니다");
+                    throw new InvalidTokenException("토큰에 ID가 없습니다");
                 }
         );
 

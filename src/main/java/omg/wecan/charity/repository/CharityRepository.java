@@ -17,4 +17,6 @@ public interface CharityRepository extends JpaRepository<Charity, Long> {
     List<Charity> findAllByCategoryAndNameIsLike(CharityCategory category, String name);
 
     List<Charity> findAllByExplanationLike(String explanation);
+
+    Charity findByName(String name);
 }

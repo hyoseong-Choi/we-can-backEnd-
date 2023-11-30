@@ -66,7 +66,7 @@ public class CharityService {
         charity.change(charityUpdateRequest.getName(),
                 charityUpdateRequest.getCategory(),
                 charityUpdateRequest.getExplanation(),
-                charityUpdateRequest.getImgEndPoint(),
+                charityUpdateRequest.getImgEndpoint(),
                 charityUpdateRequest.getPageEndpoint());
     }
 

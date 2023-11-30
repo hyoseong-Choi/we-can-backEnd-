@@ -13,7 +13,7 @@ import org.springframework.web.bind.annotation.*;
 
 import java.net.URI;
 
-@RequestMapping("/api/charities")
+@RequestMapping("/charities")
 @RestController
 @RequiredArgsConstructor
 public class CharityController {
@@ -23,7 +23,7 @@ public class CharityController {
     @PostMapping
     ResponseEntity<CharityResponse> create(@Valid @RequestBody CharityCreateRequest request){
         CharityResponse response = charityService.save(request);
-        return ResponseEntity.created(URI.create("/api/charities/" + response.getId())).body(response);
+        return ResponseEntity.created(URI.create("/charities/" + response.getId())).body(response);
     }
 
     @GetMapping()

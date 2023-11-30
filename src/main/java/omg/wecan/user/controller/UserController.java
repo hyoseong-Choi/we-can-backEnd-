@@ -32,10 +32,9 @@ public class UserController {
     }
 
     @PostMapping("/user/sign-in")
-    public ResponseEntity<AuthResponse> signInUser(@Valid @RequestBody SignInDto signInDto) {
+    public ResponseEntity<AuthResponse> signInUser(@RequestBody SignInDto signInDto) {
         final String email = signInDto.getEmail();
         final String password = signInDto.getPassword();
-
 
         User user = userService.login(email, password);
 
