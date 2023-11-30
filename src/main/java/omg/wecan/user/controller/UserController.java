@@ -11,9 +11,11 @@ import omg.wecan.user.dto.NewPasswordInput;
 import omg.wecan.user.dto.UserCertificationInput;
 import omg.wecan.user.dto.request.SignInDto;
 import omg.wecan.user.dto.request.SignUpDto;
+import omg.wecan.user.dto.request.UserDto;
 import omg.wecan.user.entity.User;
 import omg.wecan.user.service.UserFindPasswordService;
 import omg.wecan.user.service.UserService;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -25,8 +27,8 @@ public class UserController {
     private final JWTService jwtService;
 
     @PostMapping("/user/sign-up")
-    public ResponseEntity<User> signUpUser(@Valid @RequestBody SignUpDto signUpDto) {
-        User user = signUpDto.toUser();
+    public ResponseEntity<User> signUpUser(@Valid @RequestBody User user) {
+        //User user = signUpDto.toUser();
         User savedUser = userService.save(user);
         return ResponseEntity.ok(savedUser);
     }
@@ -70,5 +72,13 @@ public class UserController {
         //토큰으로 유저 인증하고 레포에서 유저 이메일 가져와야함(서비스로 옮길것)
         userFindPasswordService.updatePassword(newPasswordInput);
         return newPasswordInput;
+    }
+
+    @DeleteMapping("/user/delete")
+    public ResponseEntity<String> deleteUser(@Valid @RequestBody UserDto userDto) {
+        // 아이디 비번 확인하고 탈퇴
+        User user = userService.login(userDto.getEmail(), userDto.getPassword());
+        userService.deleteUser(user);
+        return new ResponseEntity<>("User deleted successfully", HttpStatus.OK);
     }
 }
