@@ -8,8 +8,8 @@ import java.time.LocalDateTime;
 @Data
 public class ReviewDto {
     private Long reviewId;
-    private Long userId;
-    private Long challengeId;
+    private String nickName;
+    private String challengeName;
     private String title;
     private String content;
     private LocalDateTime createdAt;
@@ -20,8 +20,8 @@ public class ReviewDto {
 
     public ReviewDto(Review review) {
         this.reviewId = review.getReviewId();
-        this.userId = review.getUser().getUserId();
-        this.challengeId = review.getChallenge().getId();
+        this.nickName = review.getUser().getNickName();
+        this.challengeName = review.getChallenge().getTitle();
         this.title = review.getTitle();
         this.content = review.getContent();
         this.createdAt= review.getCreatedAt();

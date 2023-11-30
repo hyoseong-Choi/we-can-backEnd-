@@ -4,18 +4,17 @@ import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import omg.wecan.challenge.entity.Challenge;
 import omg.wecan.challenge.repository.ChallengeRepository;
+import omg.wecan.exception.customException.CustomException;
+import omg.wecan.exception.customException.ErrorCode;
 import omg.wecan.review.dto.ReviewCreateDto;
 import omg.wecan.review.dto.ReviewDto;
 import omg.wecan.review.entity.Review;
 import omg.wecan.review.repository.ReviewRepository;
 import omg.wecan.user.entity.User;
-import org.springframework.data.domain.Page;
-import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
-import java.util.stream.Collectors;
 
 import static java.util.stream.Collectors.toList;
 
@@ -29,7 +28,7 @@ public class ReviewService {
         Long challengeId = reviewDto.getChallengeId();
 
         Challenge challenge = challengeRepository.findById(challengeId)
-                .orElseThrow(() -> new IllegalArgumentException("Challenge not found with id: " + challengeId));
+                .orElseThrow(() -> new CustomException(ErrorCode.CHALLENGE_NOT_FOUND, "challengeId: "+challengeId));
 
         Review review = new Review(user, challenge, reviewDto.getTitle(), reviewDto.getContent());
 
@@ -40,14 +39,14 @@ public class ReviewService {
 
     public ReviewDto updateReview(Long reviewId, User user, ReviewCreateDto reviewDto) {
         Review review = reviewRepository.findById(reviewId)
-                .orElseThrow(() -> new IllegalArgumentException("Review not found with id: " + reviewId));
+                .orElseThrow(() -> new CustomException(ErrorCode.REVIEW_NOT_FOUND, "reviewId: "+reviewId));
 
         if (!review.getUser().equals(user)) {
-            throw new IllegalArgumentException("This user is not authorized to update this review");
+            throw new CustomException(ErrorCode.REVIEW_AUTHOR_MISMATCH);
         }
 
         if (!review.getChallenge().getId().equals(reviewDto.getChallengeId())) {
-            throw new IllegalArgumentException("Incorrect challengeId.");
+            throw new CustomException(ErrorCode.CHALLENGE_AUTHOR_MISMATCH);
         }
 
         review.setTitle(reviewDto.getTitle());
@@ -62,10 +61,10 @@ public class ReviewService {
     @Transactional
     public void deleteReview(Long reviewId, User user) {
         Review review = reviewRepository.findById(reviewId)
-                .orElseThrow(() -> new IllegalArgumentException("Review not found with id: " + reviewId));
+                .orElseThrow(() -> new CustomException(ErrorCode.REVIEW_NOT_FOUND, "reviewId: "+reviewId));
 
         if (!review.getUser().equals(user)) {
-            throw new IllegalArgumentException("This user is not authorized to delete this review");
+            throw new CustomException(ErrorCode.REVIEW_AUTHOR_MISMATCH);
         }
 
         reviewRepository.delete(review);
@@ -74,7 +73,7 @@ public class ReviewService {
     public List<ReviewDto> getLatestReviews(int count) {
         List<Review> allReviews = reviewRepository.findAllByOrderByCreatedAtDesc();
         if (allReviews.isEmpty()) {
-            throw new RuntimeException("No reviews found.");
+            throw new CustomException(ErrorCode.REVIEW_NOT_FOUND);
         }
         List<Review> latestReviews = allReviews.stream()
                 .limit(count)
@@ -88,7 +87,7 @@ public class ReviewService {
     public List<ReviewDto> getReviewsByUser(Long userId) {
         List<Review> userReview = reviewRepository.findByUserUserId(userId);
         if (userReview.isEmpty()) {
-            throw new RuntimeException("No reviews found.");
+            throw new CustomException(ErrorCode.REVIEW_NOT_FOUND);
         }
         return userReview.stream()
                 .map(ReviewDto::new)

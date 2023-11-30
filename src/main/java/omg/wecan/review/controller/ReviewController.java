@@ -8,6 +8,7 @@ import omg.wecan.review.dto.ReviewDto;
 import omg.wecan.review.entity.Review;
 import omg.wecan.review.service.ReviewService;
 import omg.wecan.user.entity.User;
+import omg.wecan.util.ApiResponse;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.http.HttpStatus;
@@ -25,44 +26,46 @@ public class ReviewController {
 
     //리뷰 작성
     @PostMapping("/create")
-    public ResponseEntity<ReviewDto> createReview(@AuthenticationPrincipal User user, @RequestBody @Valid ReviewCreateDto reviewDto) {
+    public ResponseEntity<ApiResponse<ReviewDto>> createReview(@AuthenticationPrincipal User user, @RequestBody @Valid ReviewCreateDto reviewDto) {
         ReviewDto createdReview = reviewService.createReview(user, reviewDto);
-        return new ResponseEntity<>(createdReview, HttpStatus.CREATED);
+        return ResponseEntity.ok(ApiResponse.success(createdReview));
     }
+
 
     //리뷰 수정
     @PatchMapping("/{reviewId}")
-    public ResponseEntity<ReviewDto> updateReview(@PathVariable Long reviewId, @AuthenticationPrincipal User user, @RequestBody @Valid ReviewCreateDto reviewDto) {
+    public ResponseEntity<ApiResponse<ReviewDto>> updateReview(@PathVariable Long reviewId, @AuthenticationPrincipal User user, @RequestBody @Valid ReviewCreateDto reviewDto) {
         ReviewDto updatedReview = reviewService.updateReview(reviewId, user, reviewDto);
-        return new ResponseEntity<>(updatedReview, HttpStatus.OK);
+        return ResponseEntity.ok(ApiResponse.success(updatedReview));
     }
 
     //리뷰 삭제
     @DeleteMapping("/{reviewId}")
-    public ResponseEntity<String> deleteReview(@PathVariable Long reviewId, @AuthenticationPrincipal User user) {
+    public ResponseEntity<ApiResponse<ReviewDto>> deleteReview(@PathVariable Long reviewId, @AuthenticationPrincipal User user) {
         reviewService.deleteReview(reviewId, user);
-        return new ResponseEntity<>("Review deleted successfully", HttpStatus.OK);
+        return ResponseEntity.ok(ApiResponse.success(null));
     }
 
+    //리뷰 전체 조회 페이징
     @GetMapping()
-    public List<ReviewDto> getAllReviews(@RequestParam(defaultValue = "0") int page,
-                                         @RequestParam(defaultValue = "10") int size) {
-        return reviewService.getAllReviews(PageRequest.of(page, size));
+    public ResponseEntity<ApiResponse<List<ReviewDto>>> getAllReviews(@RequestParam(defaultValue = "0") int page, @RequestParam(defaultValue = "10") int size) {
+        List<ReviewDto> reviewList  =  reviewService.getAllReviews(PageRequest.of(page, size));
+        return ResponseEntity.ok(ApiResponse.success(reviewList));
+
     }
 
 
-
-    // 챌린지 후기 조회
+    // 유저 후기 조회
     @GetMapping("/user/{userId}")
-    public ResponseEntity<List<ReviewDto>> getReviewsByUser(@PathVariable Long userId) {
+    public ResponseEntity<ApiResponse<List<ReviewDto>>> getReviewsByUser(@PathVariable Long userId) {
         List<ReviewDto> userReviews = reviewService.getReviewsByUser(userId);
-        return ResponseEntity.ok(userReviews);
+        return ResponseEntity.ok(ApiResponse.success(userReviews));
     }
 
     // 최신 리뷰 3개 조회
     @GetMapping("/latest")
-    public ResponseEntity<List<ReviewDto>> getLatestReviews() {
+    public ResponseEntity<ApiResponse<List<ReviewDto>>> getLatestReviews() {
         List<ReviewDto> latestReviews = reviewService.getLatestReviews(3);
-        return ResponseEntity.ok(latestReviews);
+        return ResponseEntity.ok(ApiResponse.success(latestReviews));
     }
 }
