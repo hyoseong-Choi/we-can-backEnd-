@@ -27,14 +27,14 @@ public class DonationCertificateController {
         return ResponseEntity.ok().body(response);
     }
 
-    @PatchMapping("/{id}")
+    @PatchMapping("/donationCertificates/{id}")
     public ResponseEntity<DonationCertificateResponse> create(@PathVariable Long id, @RequestBody DonationCertificateUpdateRequest request) {
         DonationCertificate updated = donationCertificateService.update(id, request);
         DonationCertificateResponse response = new DonationCertificateResponse(updated);
         return ResponseEntity.ok().body(response);
     }
 
-    @DeleteMapping("{id}")
+    @DeleteMapping("/donationCertificates/{id}")
     public ResponseEntity<Void> deleteById(@PathVariable Long id) {
         donationCertificateService.delete(id);
         return ResponseEntity.noContent().build();
