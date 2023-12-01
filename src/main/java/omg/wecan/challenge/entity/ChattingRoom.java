@@ -11,10 +11,10 @@ public class ChattingRoom {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
-
+    
     @OneToOne(mappedBy = "chattingRoom", fetch = FetchType.LAZY)
     private Challenge challenge;
-
+    
     public ChattingRoom(Challenge challenge) {
         this.challenge = challenge;
     }

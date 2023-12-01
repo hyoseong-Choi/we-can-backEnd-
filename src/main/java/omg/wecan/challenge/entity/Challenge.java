@@ -35,6 +35,28 @@ public class Challenge {
     private String coverImageEndpoint;
     private boolean finished;
     private int finePerOnce;
-
-
+  
+    public static Challenge createChallenge(Recruit recruit, int peopleNum) {
+        Challenge challenge = new Challenge();
+        challenge.title = recruit.getTitle();
+        challenge.chattingRoom = new ChattingRoom(challenge);
+        challenge.challengeType = recruit.getType();
+        challenge.startDate = recruit.getEndDate().plusDays(1);
+        challenge.endDate = recruit.getChallengeEndTime();
+        challenge.peopleNum = peopleNum;
+        challenge.checkDay = recruit.getCheckDay();
+        challenge.paymentType = recruit.getPaymentType();
+        challenge.charityName = initCharityName(recruit);
+        challenge.coverImageEndpoint = recruit.getCoverImageEndpoint();
+        challenge.finished = false;
+        challenge.finePerOnce = recruit.getFine();
+        return challenge;
+    }
+    
+    private static String initCharityName(Recruit recruit) {
+        if (recruit.getCharity() == null) {
+            return recruit.getCharityNotInDb();
+        }
+        return recruit.getCharity().getName();
+    }
 }

@@ -18,7 +18,7 @@ public class UserChallenge {
     @ManyToOne(fetch = FetchType.LAZY)
     private Challenge challenge;
     private boolean leader;
-
+  
     public static UserChallenge createUserChallenge(Participate participate, Challenge challenge) {
         UserChallenge userChallenge = new UserChallenge();
         userChallenge.user = participate.getUser();

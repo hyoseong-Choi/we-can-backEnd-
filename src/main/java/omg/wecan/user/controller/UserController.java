@@ -5,10 +5,7 @@ import lombok.RequiredArgsConstructor;
 import omg.wecan.auth.dto.authResponse.AuthResponse;
 import omg.wecan.jwt.domain.AuthToken;
 import omg.wecan.jwt.service.JWTService;
-import omg.wecan.user.dto.CertificationMailOutput;
-import omg.wecan.user.dto.EmailCertificationInput;
-import omg.wecan.user.dto.NewPasswordInput;
-import omg.wecan.user.dto.UserCertificationInput;
+import omg.wecan.user.dto.*;
 import omg.wecan.user.dto.request.SignInDto;
 import omg.wecan.user.dto.request.SignUpDto;
 import omg.wecan.user.dto.request.UserDto;
@@ -48,8 +45,7 @@ public class UserController {
 
         return ResponseEntity.ok(response);
     }
-
-
+    
     @PostMapping("/user/certification")
     public UserCertificationInput userCertification(@Valid @RequestBody UserCertificationInput userCertificationInput) {
         return userFindPasswordService.certifyUser(userCertificationInput);
@@ -63,13 +59,12 @@ public class UserController {
     }
 
     @PostMapping("/user/certification-num")
-    public String enterCertificationNum(@Valid @RequestBody String certificationNum) {
-        return userFindPasswordService.validateCertificationNum(certificationNum);
+    public String enterCertificationNum(@Valid @RequestBody ValidateCertificationNumInput validateCertificationNumInput) {
+        return userFindPasswordService.validateCertificationNum(validateCertificationNumInput);
     }
 
     @PatchMapping("/user/password")
     public NewPasswordInput changePassword(@Valid @RequestBody NewPasswordInput newPasswordInput) {
-        //토큰으로 유저 인증하고 레포에서 유저 이메일 가져와야함(서비스로 옮길것)
         userFindPasswordService.updatePassword(newPasswordInput);
         return newPasswordInput;
     }
