@@ -24,6 +24,14 @@ public enum ErrorCode {
 
     //user
     USER_NOT_FOUND(HttpStatus.NOT_FOUND, "6404", "해당 사용자가 존재하지 않습니다.");
+    USER_EMAIL_MISMATCH(HttpStatus.BAD_REQUEST,"6400", "해당 이메일을 가진 사용자가 없습니다."),
+    USER_NAME_EMAIL_MISMATCH(HttpStatus.BAD_REQUEST,"6400", "해당 이메일, 이름을 가진 사용자가 없습니다."),
+    
+    //recruit
+    OTP_MISMATCH(HttpStatus.BAD_REQUEST,"7400", "해당 이메일을 가진 사용자가 없습니다."),
+    OTP_NOT_FOUND(HttpStatus.NOT_FOUND,"7404", "해당 이메일을 가진 사용자가 없습니다.");
+    
+    
 
     private final HttpStatus status;
     private final String code;
