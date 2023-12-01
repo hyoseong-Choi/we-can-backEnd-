@@ -1,19 +1,16 @@
 package omg.wecan.user.service;
 
 import lombok.RequiredArgsConstructor;
-import omg.wecan.exception.NoUserWithEmailException;
-import omg.wecan.exception.NoUserWithNameAndEmailException;
+import omg.wecan.exception.customException.*;
 import omg.wecan.user.dto.*;
 import omg.wecan.user.entity.User;
 import omg.wecan.user.repository.UserRepository;
 import org.springframework.data.redis.core.StringRedisTemplate;
-import org.springframework.data.redis.core.ValueOperations;
 import org.springframework.mail.MailSender;
 import org.springframework.mail.SimpleMailMessage;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.util.NoSuchElementException;
 
 
 @Service
@@ -26,7 +23,7 @@ public class UserFindPasswordService {
     //이메일 주소랑 이름 받아서 검증
     public UserCertificationInput certifyUser(UserCertificationInput userCertificationInput) {
         userRepository.findByEmailAndName(userCertificationInput.getEmail(), userCertificationInput.getName())
-                .orElseThrow(() -> new NoUserWithNameAndEmailException("해당 이메일, 이름을 가진 유저가 없습니다"));
+                .orElseThrow(() -> new NoUserWithNameAndEmailException(ErrorCode.USER_NAME_EMAIL_MISMATCH));
         return userCertificationInput;
     }
     
@@ -71,10 +68,10 @@ public class UserFindPasswordService {
     public String validateCertificationNum(ValidateCertificationNumInput validateCertificationNumInput) {
         String certificationNum = redisTemplate.opsForValue().get(validateCertificationNumInput.getEmail());
         if (certificationNum == null) {
-            throw new NoSuchElementException("인증 번호가 만료되었습니다.");
+            throw new NoOtpException(ErrorCode.OTP_NOT_FOUND);
         }
         if (!certificationNum.equals(validateCertificationNumInput.getCertificationNum())) {
-            throw new NoSuchElementException("인증 번호가 틀렸습니다.");
+            throw new WrongOtpException(ErrorCode.OTP_MISMATCH);
         }
         redisTemplate.delete(validateCertificationNumInput.getEmail());
         
@@ -85,7 +82,7 @@ public class UserFindPasswordService {
     @Transactional
     public void updatePassword(NewPasswordInput newPasswordInput) {
         User user = userRepository.findByEmail(newPasswordInput.getEmail())
-                .orElseThrow(() -> new NoUserWithEmailException("해당 이메일을 가진 유저가 없습니다"));
+                .orElseThrow(() -> new NoUserWithEmailException(ErrorCode.USER_EMAIL_MISMATCH));
         user.changePassword(newPasswordInput.getNewPassword());
     }
 }
