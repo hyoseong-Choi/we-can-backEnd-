@@ -20,7 +20,10 @@ public enum ErrorCode {
     CHARITY_NOT_FOUND(HttpStatus.NOT_FOUND,"3404", "해당 기부 단체는 존재하지 않습니다."),
 
     //DonationCertificate
-    DONATIONCERTIFICATE_NOT_FOUND(HttpStatus.NOT_FOUND, "4404", "해당 기부 증서는 존재하지 않습니다.");
+    DONATIONCERTIFICATE_NOT_FOUND(HttpStatus.NOT_FOUND, "4404", "해당 기부 증서는 존재하지 않습니다."),
+
+    //user
+    USER_NOT_FOUND(HttpStatus.NOT_FOUND, "6404", "해당 사용자가 존재하지 않습니다.");
 
     private final HttpStatus status;
     private final String code;
