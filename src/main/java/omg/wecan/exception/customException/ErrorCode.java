@@ -17,8 +17,10 @@ public enum ErrorCode {
     CHALLENGE_AUTHOR_MISMATCH(HttpStatus.BAD_REQUEST,"2003", "기존 리뷰의 challengeId와 요청한 challengeId가 일치하지 않습니다."),
 
     //charity
-    CHARITY_NOT_FOUND(HttpStatus.NOT_FOUND,"3404", "해당 기부 단체는 존재하지 않습니다.");
+    CHARITY_NOT_FOUND(HttpStatus.NOT_FOUND,"3404", "해당 기부 단체는 존재하지 않습니다."),
 
+    //DonationCertificate
+    DONATIONCERTIFICATE_NOT_FOUND(HttpStatus.NOT_FOUND, "4404", "해당 기부 증서는 존재하지 않습니다.");
 
     private final HttpStatus status;
     private final String code;

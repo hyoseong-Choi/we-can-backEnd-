@@ -1,5 +1,6 @@
 package omg.wecan.donationCertificate.dto.request;
 
+import jakarta.validation.constraints.NotNull;
 import lombok.Getter;
 import lombok.Setter;
 import omg.wecan.donationCertificate.entity.DonationCertificate;
@@ -8,6 +9,7 @@ import omg.wecan.donationCertificate.entity.DonationCertificate;
 @Setter
 public class DonationCertificateCreateRequest {
 
+    @NotNull
     private String title;
     
     private String explanation;
