@@ -7,9 +7,9 @@ import java.util.List;
 
 @Getter
 public class CharityResponses {
-    private final List<Charity> charityList;
+    private final List<CharityResponse> responses;
 
-    public CharityResponses(final List<Charity> charityList) {
-        this.charityList = charityList;
+    public CharityResponses(final List<CharityResponse> responseList) {
+        this.responses = responseList;
     }
 }

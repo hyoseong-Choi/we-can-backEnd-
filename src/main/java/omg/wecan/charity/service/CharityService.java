@@ -6,6 +6,8 @@ import omg.wecan.charity.dto.response.CharityResponse;
 import omg.wecan.charity.dto.response.CharityResponses;
 import omg.wecan.charity.entity.Charity;
 import omg.wecan.charity.entity.CharityCategory;
+import omg.wecan.exception.customException.CustomException;
+import omg.wecan.exception.customException.ErrorCode;
 import org.springframework.transaction.annotation.Transactional;
 import lombok.RequiredArgsConstructor;
 import omg.wecan.charity.repository.CharityRepository;
@@ -37,7 +39,7 @@ public class CharityService {
         else
             charities = charityRepository.findAllByCategory(category);
 
-        return new CharityResponses(charities);
+        return new CharityResponses(charities.stream().map((c)->new CharityResponse(c)).toList());
     }
 
     //4. 기부 단체 카테고리별 + 검색 입력
@@ -49,18 +51,19 @@ public class CharityService {
         else
             charities = charityRepository.findAllByCategoryAndNameIsLike(category, "%" + name + "%");
 
-        return new CharityResponses(charities);
+        return new CharityResponses(charities.stream().map((c)->new CharityResponse(c)).toList());
     }
 
     //5. 기부 단체 상세 조회
 
     public CharityResponse findById(Long id){
         Charity charity = charityRepository.getById(id);
+
         return new CharityResponse(charity);
     }
 
     //6. 기부 단체 정보 수정
-    public void update(Long id, CharityUpdateRequest charityUpdateRequest) {
+    public CharityResponse update(Long id, CharityUpdateRequest charityUpdateRequest) {
         Charity charity = charityRepository.getById(id);
 
         charity.change(charityUpdateRequest.getName(),
@@ -68,10 +71,14 @@ public class CharityService {
                 charityUpdateRequest.getExplanation(),
                 charityUpdateRequest.getImgEndpoint(),
                 charityUpdateRequest.getPageEndpoint());
+
+        return new CharityResponse(charity);
     }
 
     //7. 기부 단체 정보 삭제
     public void deleteById(Long id){
+        charityRepository.getById(id);
+
         charityRepository.deleteById(id);
     }
 
