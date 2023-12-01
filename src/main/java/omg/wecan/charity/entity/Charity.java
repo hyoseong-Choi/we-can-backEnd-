@@ -46,7 +46,5 @@ public class Charity extends BaseEntity {
     
     public Charity(String charityName) {
         this.name = charityName;
-        this.setCreatedAt();
-        this.setUpdatedAt();
     }
 }

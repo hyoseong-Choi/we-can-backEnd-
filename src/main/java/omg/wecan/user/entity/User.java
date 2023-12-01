@@ -2,13 +2,14 @@ package omg.wecan.user.entity;
 
 import jakarta.persistence.*;
 import lombok.Getter;
+import omg.wecan.global.entity.BaseEntity;
 import omg.wecan.infrastructure.oauth.basic.domain.OauthServerType;
 
 import java.util.regex.Pattern;
 
 @Entity
 @Getter
-public class User {
+public class User extends BaseEntity {
     private static final Pattern EMAIL_PATTERN = Pattern.compile("^[a-z0-9._-]+@[a-z]+[.]+[a-z]{2,3}$");
 
     @Id
@@ -32,6 +33,7 @@ public class User {
 
     }
     public User(String email, String password, String name, String nickName, String phone, String imgEndPoint, String oauthServerId, OauthServerType social, ROLE role){
+        this.candy = 0L;
         this.email = email;
         this.password = password;
         this.name = name;
