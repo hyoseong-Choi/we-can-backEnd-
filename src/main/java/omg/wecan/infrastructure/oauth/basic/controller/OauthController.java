@@ -35,7 +35,6 @@ public class OauthController {
             @PathVariable OauthServerType oauthServerType,
             HttpServletResponse response
     ) {
-        System.out.println("oauthServerType = " + oauthServerType);
         String redirectUrl = oauthService.getAuthCodeRequestUrl(oauthServerType);
         response.sendRedirect(redirectUrl);
         return ResponseEntity.ok().build();

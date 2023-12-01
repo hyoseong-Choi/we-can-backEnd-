@@ -2,17 +2,16 @@ package omg.wecan.user.entity;
 
 import jakarta.persistence.*;
 import lombok.NoArgsConstructor;
-import omg.wecan.global.entity.BaseEntity;
-
-@Entity
+import org.springframework.data.redis.core.RedisHash;
+import org.springframework.data.redis.core.index.Indexed;
+@RedisHash(timeToLive = 300)
 @NoArgsConstructor
-public class CertificationMail extends BaseEntity {
+public class CertificationMail {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "certificationMail_id")
     private Long id;
-
-    String certificationNum;
+    @Indexed
+    private String certificationNum;
     public CertificationMail(String certificationNum) {
         this.certificationNum = certificationNum;
     }

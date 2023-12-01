@@ -27,6 +27,8 @@ public class Heart extends BaseEntity {
         Heart heart = new Heart();
         heart.user = user;
         heart.recruit = recruit;
+        heart.setCreatedAt();
+        heart.setUpdatedAt();
         return heart;
     }
 }

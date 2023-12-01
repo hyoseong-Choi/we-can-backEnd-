@@ -30,9 +30,9 @@ public class UserControllerAdvice {
         return new ResponseEntity<>(errorResult, HttpStatus.BAD_REQUEST);
     }
     
-    @ResponseStatus(HttpStatus.INTERNAL_SERVER_ERROR)
-    @ExceptionHandler
-    public ErrorResult exHandle(Exception e) {
-        return new ErrorResult("예상치 못한 서버 오류");
-    }
+//    @ResponseStatus(HttpStatus.INTERNAL_SERVER_ERROR)
+//    @ExceptionHandler
+//    public ErrorResult exHandle(Exception e) {
+//        return new ErrorResult("예상치 못한 서버 오류");
+//    }
 }
