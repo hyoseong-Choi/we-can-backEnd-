@@ -43,4 +43,10 @@ public class Charity extends BaseEntity {
         this.imgEndpoint = imgEndpoint;
         this.pageEndpoint = pageEndpoint;
     }
+    
+    public Charity(String charityName) {
+        this.name = charityName;
+        this.setCreatedAt();
+        this.setUpdatedAt();
+    }
 }
