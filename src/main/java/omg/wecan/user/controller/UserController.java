@@ -12,6 +12,7 @@ import omg.wecan.user.dto.request.UserDto;
 import omg.wecan.user.entity.User;
 import omg.wecan.user.service.UserFindPasswordService;
 import omg.wecan.user.service.UserService;
+import omg.wecan.util.ApiResponse;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -46,26 +47,26 @@ public class UserController {
     }
     
     @PostMapping("/user/certification")
-    public UserCertificationInput userCertification(@Valid @RequestBody UserCertificationInput userCertificationInput) {
-        return userFindPasswordService.certifyUser(userCertificationInput);
+    public ResponseEntity<ApiResponse<UserCertificationInput>> userCertification(@Valid @RequestBody UserCertificationInput userCertificationInput) {
+        return ResponseEntity.ok(ApiResponse.success(userFindPasswordService.certifyUser(userCertificationInput)));
     }
     
     @PostMapping("/user/certification-mail")
-    public CertificationMailOutput sendCertificationNum(@Valid @RequestBody EmailCertificationInput emailCertificationInput) {
+    public ResponseEntity<ApiResponse<CertificationMailOutput>> sendCertificationNum(@Valid @RequestBody EmailCertificationInput emailCertificationInput) {
         CertificationMailOutput certificationMailOutput = userFindPasswordService.createMail(emailCertificationInput);
         userFindPasswordService.mailSend(certificationMailOutput);
-        return certificationMailOutput;
+        return ResponseEntity.ok(ApiResponse.success(certificationMailOutput));
     }
 
     @PostMapping("/user/certification-num")
-    public String enterCertificationNum(@Valid @RequestBody ValidateCertificationNumInput validateCertificationNumInput) {
-        return userFindPasswordService.validateCertificationNum(validateCertificationNumInput);
+    public ResponseEntity<ApiResponse<String>> enterCertificationNum(@Valid @RequestBody ValidateCertificationNumInput validateCertificationNumInput) {
+        return ResponseEntity.ok(ApiResponse.success(userFindPasswordService.validateCertificationNum(validateCertificationNumInput)));
     }
 
     @PatchMapping("/user/password")
-    public NewPasswordInput changePassword(@Valid @RequestBody NewPasswordInput newPasswordInput) {
+    public ResponseEntity<ApiResponse<NewPasswordInput>> changePassword(@Valid @RequestBody NewPasswordInput newPasswordInput) {
         userFindPasswordService.updatePassword(newPasswordInput);
-        return newPasswordInput;
+        return ResponseEntity.ok(ApiResponse.success(newPasswordInput));
     }
 
     @DeleteMapping("/user/delete")

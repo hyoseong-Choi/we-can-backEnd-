@@ -7,9 +7,11 @@ import omg.wecan.recruit.entity.Recruit;
 import omg.wecan.recruit.entity.RecruitComment;
 import omg.wecan.recruit.service.RecruitService;
 import omg.wecan.user.entity.User;
+import omg.wecan.util.ApiResponse;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.web.PageableDefault;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -20,58 +22,57 @@ public class RecruitController {
     private final RecruitService recruitService;
     
     @PostMapping("/recruit")
-    public Recruit recruitAdd(@AuthenticationPrincipal User loginUser, @RequestBody RecruitInput recruitInput) {
-        //토큰으로 유저 인증하고 레포에서 유저 가져와야함
-        return recruitService.addRecruit(loginUser, recruitInput);
+    public ResponseEntity<ApiResponse<Recruit>> recruitAdd(@AuthenticationPrincipal User loginUser, @RequestBody RecruitInput recruitInput) {
+        return ResponseEntity.ok(ApiResponse.success(recruitService.addRecruit(loginUser, recruitInput)));
     }
     
     @PatchMapping("/recruit")
-    public Long recruitUpdate(@AuthenticationPrincipal User loginUser, @RequestBody RecruitInput recruitInput) {
-        return recruitService.updateRecruit(recruitInput);
+    public ResponseEntity<ApiResponse<Long>> recruitUpdate(@AuthenticationPrincipal User loginUser, @RequestBody RecruitInput recruitInput) {
+        return ResponseEntity.ok(ApiResponse.success(recruitService.updateRecruit(recruitInput)));
     }
     
     @DeleteMapping("/recruit/{id}")
-    public Long recruitDelete(@AuthenticationPrincipal User loginUser, @PathVariable Long id) {
-        return recruitService.deleteRecruit(id);
+    public ResponseEntity<ApiResponse<Long>> recruitDelete(@AuthenticationPrincipal User loginUser, @PathVariable Long id) {
+        return ResponseEntity.ok(ApiResponse.success(recruitService.deleteRecruit(id)));
     }
     
     @GetMapping("/recruit/{id}")
-    public RecruitDetailOutput recruitDetails(@AuthenticationPrincipal User loginUser, @PathVariable Long id) {
-        return recruitService.findRecruitDetail(loginUser, id);
+    public ResponseEntity<ApiResponse<RecruitDetailOutput>> recruitDetails(@AuthenticationPrincipal User loginUser, @PathVariable Long id) {
+        return ResponseEntity.ok(ApiResponse.success(recruitService.findRecruitDetail(loginUser, id)));
     }
     
     @GetMapping("/recruits/home")
-    public List<RecruitOutput> recruitFindThree(@AuthenticationPrincipal User loginUser) {
-        return recruitService.findThreeRecruit(loginUser);
+    public ResponseEntity<ApiResponse<List<RecruitOutput>>> recruitFindThree(@AuthenticationPrincipal User loginUser) {
+        return ResponseEntity.ok(ApiResponse.success(recruitService.findThreeRecruit(loginUser)));
     }
     
     @GetMapping("/recruits")
-    public Page<RecruitOutput> recruitFind(@AuthenticationPrincipal User loginUser, @ModelAttribute RecruitFindCond recruitFindCond, @PageableDefault(size = 4)Pageable pageable) {
-        return recruitService.findRecruit(loginUser, recruitFindCond, pageable);
+    public ResponseEntity<ApiResponse<Page<RecruitOutput>>> recruitFind(@AuthenticationPrincipal User loginUser, @ModelAttribute RecruitFindCond recruitFindCond, @PageableDefault(size = 4)Pageable pageable) {
+        return ResponseEntity.ok(ApiResponse.success(recruitService.findRecruit(loginUser, recruitFindCond, pageable)));
     }
 
     @PostMapping("/recruit/comment")
-    public RecruitComment recruitCommentAdd(@AuthenticationPrincipal User loginUser, @RequestBody CommentAddInput commentAddInput) {
-        return recruitService.addRecruitComment(loginUser, commentAddInput);
+    public ResponseEntity<ApiResponse<RecruitComment>> recruitCommentAdd(@AuthenticationPrincipal User loginUser, @RequestBody CommentAddInput commentAddInput) {
+        return ResponseEntity.ok(ApiResponse.success(recruitService.addRecruitComment(loginUser, commentAddInput)));
     }
     
     @PostMapping("/recruit/participation")
-    public Long participateAdd(@AuthenticationPrincipal User loginUser, @RequestBody AddParticipateInput addParticipateInput) {
-        return recruitService.addParticipate(loginUser, addParticipateInput);
+    public ResponseEntity<ApiResponse<Long>> participateAdd(@AuthenticationPrincipal User loginUser, @RequestBody AddParticipateInput addParticipateInput) {
+        return ResponseEntity.ok(ApiResponse.success(recruitService.addParticipate(loginUser, addParticipateInput)));
     }
 
     @DeleteMapping("/recruit/participation")
-    public Long participateDelete(@AuthenticationPrincipal User loginUser, @RequestBody DeleteParticipateAndHeartInput deleteParticipateAndHeartInput) {
-        return recruitService.deleteParticipate(loginUser, deleteParticipateAndHeartInput);
+    public ResponseEntity<ApiResponse<Long>> participateDelete(@AuthenticationPrincipal User loginUser, @RequestBody DeleteParticipateAndHeartInput deleteParticipateAndHeartInput) {
+        return ResponseEntity.ok(ApiResponse.success(recruitService.deleteParticipate(loginUser, deleteParticipateAndHeartInput)));
     }
     
     @PostMapping("/recruit/heart")
-    public Long heartAdd(@AuthenticationPrincipal User loginUser, @RequestBody AddHeartInput addHeartInput) {
-        return recruitService.addHeart(loginUser, addHeartInput);
+    public ResponseEntity<ApiResponse<Long>> heartAdd(@AuthenticationPrincipal User loginUser, @RequestBody AddHeartInput addHeartInput) {
+        return ResponseEntity.ok(ApiResponse.success(recruitService.addHeart(loginUser, addHeartInput)));
     }
 
     @DeleteMapping("/recruit/heart")
-    public Long heartDelete(@AuthenticationPrincipal User loginUser, @RequestBody DeleteParticipateAndHeartInput deleteParticipateAndHeartInput) {
-        return recruitService.deleteHeart(loginUser, deleteParticipateAndHeartInput);
+    public ResponseEntity<ApiResponse<Long>> heartDelete(@AuthenticationPrincipal User loginUser, @RequestBody DeleteParticipateAndHeartInput deleteParticipateAndHeartInput) {
+        return ResponseEntity.ok(ApiResponse.success(recruitService.deleteHeart(loginUser, deleteParticipateAndHeartInput)));
     }
 }
