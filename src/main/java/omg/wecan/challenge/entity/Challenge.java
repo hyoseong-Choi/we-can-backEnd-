@@ -35,7 +35,7 @@ public class Challenge {
     private String coverImageEndpoint;
     private boolean finished;
     private int finePerOnce;
-    
+  
     public static Challenge createChallenge(Recruit recruit, int peopleNum) {
         Challenge challenge = new Challenge();
         challenge.title = recruit.getTitle();
