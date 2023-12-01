@@ -10,5 +10,7 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 public class NewPasswordInput {
     @NotBlank
+    private String email;
+    @NotBlank
     private String newPassword;
 }

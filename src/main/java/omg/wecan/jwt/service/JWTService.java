@@ -52,6 +52,19 @@ public class JWTService {
         return new AuthToken(accessToken, refreshToken);
     };
 
+    private String createAccessToken(final Long userId){
+        Date now = new Date();
+        Map<String, Object> userClaim = new HashMap<>();
+        userClaim.put(ID_CLAIM, userId);
+
+        return Jwts.builder()
+                .setSubject(ACCESS_TOKEN_SUBJECT)
+                .setExpiration(new Date(now.getTime() + accessTokenExpirationPeriod))
+                .addClaims(userClaim)
+                .signWith(key, SignatureAlgorithm.HS256)
+                .compact();
+    }
+
     public String createRefreshToken(){
         Date now = new Date();
 
@@ -78,19 +91,6 @@ public class JWTService {
             throw new InvalidTokenException();
         }
     };
-
-    private String createAccessToken(final Long userId){
-        Date now = new Date();
-        Map<String, Object> userClaim = new HashMap<>();
-        userClaim.put(ID_CLAIM, userId);
-
-        return Jwts.builder()
-                .setSubject(ACCESS_TOKEN_SUBJECT)
-                .setExpiration(new Date(now.getTime() + accessTokenExpirationPeriod))
-                .addClaims(userClaim)
-                .signWith(key, SignatureAlgorithm.HS256)
-                .compact();
-    }
 
     public Optional<Long> extractId(String accessToken){
         validateToken(accessToken);

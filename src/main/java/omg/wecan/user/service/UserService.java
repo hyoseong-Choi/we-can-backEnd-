@@ -5,6 +5,7 @@ import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import omg.wecan.infrastructure.oauth.basic.domain.OauthServerType;
 import omg.wecan.user.entity.User;
+import omg.wecan.user.exception.MismatchedPasswordUser;
 import omg.wecan.user.exception.NoSuchEmailUser;
 import omg.wecan.user.repository.UserRepository;
 import org.springframework.stereotype.Service;
@@ -52,9 +53,15 @@ public class UserService {
         });
 
         if(!findUser.getPassword().equals(password)){
-            throw new NoSuchEmailUser();
+            throw new MismatchedPasswordUser();
         }
 
         return findUser;
+    }
+
+    public void deleteUser(User user) {
+        // 유저의 챌린지, 작성글, 후기 삭제 추가 필요
+
+        userRepository.delete(user);
     }
 }

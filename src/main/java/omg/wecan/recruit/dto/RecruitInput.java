@@ -1,6 +1,7 @@
 package omg.wecan.recruit.dto;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
+import jakarta.validation.constraints.Min;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Positive;
@@ -28,6 +29,7 @@ public class RecruitInput {
     @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd", timezone = "Asia/Seoul")
     private LocalDate challengeEndDate;
     @NotBlank
+    @Min(value = 5)
     private int minPeople;
     @NotBlank
     private String checkDay;
@@ -38,6 +40,6 @@ public class RecruitInput {
     @NotBlank
     private String coverImageEndpoint;
     @NotNull
-    @Positive
+    @Min(value = 1)
     private int fine;
 }

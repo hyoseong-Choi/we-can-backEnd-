@@ -15,7 +15,7 @@ public class Charity extends BaseEntity {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
-    
+
     @Column
     private String name;
     
@@ -31,16 +31,20 @@ public class Charity extends BaseEntity {
     
     @Column(name = "page_endpoint")
     private String pageEndpoint;
-    
+
     public Charity() {
     
     }
-    
+
     public void change(String name, CharityCategory category, String explanation, String imgEndpoint, String pageEndpoint){
         this.name = name;
         this.category = category;
         this.explanation = explanation;
         this.imgEndpoint = imgEndpoint;
         this.pageEndpoint = pageEndpoint;
+    }
+    
+    public Charity(String charityName) {
+        this.name = charityName;
     }
 }

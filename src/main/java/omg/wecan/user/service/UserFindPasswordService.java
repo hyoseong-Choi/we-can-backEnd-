@@ -1,21 +1,18 @@
 package omg.wecan.user.service;
 
 import lombok.RequiredArgsConstructor;
+import omg.wecan.exception.NoUserWithEmailException;
 import omg.wecan.exception.NoUserWithNameAndEmailException;
-import omg.wecan.user.dto.CertificationMailOutput;
-import omg.wecan.user.dto.EmailCertificationInput;
-import omg.wecan.user.dto.NewPasswordInput;
-import omg.wecan.user.dto.UserCertificationInput;
-import omg.wecan.user.entity.CertificationMail;
+import omg.wecan.user.dto.*;
 import omg.wecan.user.entity.User;
-import omg.wecan.user.repository.CertificationMailRepository;
 import omg.wecan.user.repository.UserRepository;
+import org.springframework.data.redis.core.StringRedisTemplate;
+import org.springframework.data.redis.core.ValueOperations;
 import org.springframework.mail.MailSender;
 import org.springframework.mail.SimpleMailMessage;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.time.LocalDateTime;
 import java.util.NoSuchElementException;
 
 
@@ -24,21 +21,23 @@ import java.util.NoSuchElementException;
 public class UserFindPasswordService {
     private final UserRepository userRepository;
     private final MailSender mailSender;
-    private final CertificationMailRepository certificationMailRepository;
+    private final StringRedisTemplate redisTemplate;;
     
     //이메일 주소랑 이름 받아서 검증
     public UserCertificationInput certifyUser(UserCertificationInput userCertificationInput) {
         userRepository.findByEmailAndName(userCertificationInput.getEmail(), userCertificationInput.getName())
-                .orElseThrow(() -> new NoUserWithNameAndEmailException("해당 이메일, 이름을 가진 유저가 없음"));
+                .orElseThrow(() -> new NoUserWithNameAndEmailException("해당 이메일, 이름을 가진 유저가 없습니다"));
         return userCertificationInput;
     }
     
     // 메일 내용을 생성
     public CertificationMailOutput createMail(EmailCertificationInput emailCertificationInput) {
         String certificationNumber = getCertificationNumber();
+        redisTemplate.opsForValue().set(emailCertificationInput.getEmail(), certificationNumber);
+        
         return new CertificationMailOutput(emailCertificationInput.getEmail(), "WECAN! 사용자 인증 이메일 입니다.",
                 "안녕하세요. WECAN! 인증 이메일 입니다.\n인증 번호는 " + certificationNumber + " 입니다."
-                        + "인증번호 입력란에 인증번호를 입력해주세요!");
+                        + " 인증번호 입력 란에 인증번호를 입력해 주세요.");
     }
     
     //랜덤함수로 인증번호 만들기
@@ -63,28 +62,30 @@ public class UserFindPasswordService {
         message.setTo(certificationMailOutput.getEmail());
         message.setSubject(certificationMailOutput.getTitle());
         message.setText(certificationMailOutput.getMessage());
-        message.setFrom("wecan__!@naver.com");
-        message.setReplyTo("wecan__!@naver.com");
-        System.out.println("message" + message);
-
-        certificationMailRepository.save(new CertificationMail(message.getText()));
+        message.setFrom("gytjd9516@naver.com");
+        message.setReplyTo("gytjd9516@naver.com");
+        
         mailSender.send(message);
     }
-
-    public String validateCertificationNum(String certificationNum) {
-        CertificationMail certificationMail = certificationMailRepository.findByCertificationNum(certificationNum)
-                .orElseThrow(() -> new NoSuchElementException("인증 번호가 틀렸습니다"));
-        if (certificationMail.getCreatedAt().isBefore(LocalDateTime.now().plusMinutes(5))) {
-            throw new NoSuchElementException("인증 번호가 만료되었습니다");
+    
+    public String validateCertificationNum(ValidateCertificationNumInput validateCertificationNumInput) {
+        String certificationNum = redisTemplate.opsForValue().get(validateCertificationNumInput.getEmail());
+        if (certificationNum == null) {
+            throw new NoSuchElementException("인증 번호가 만료되었습니다.");
         }
-
+        if (!certificationNum.equals(validateCertificationNumInput.getCertificationNum())) {
+            throw new NoSuchElementException("인증 번호가 틀렸습니다.");
+        }
+        redisTemplate.delete(validateCertificationNumInput.getEmail());
+        
         return certificationNum;
     }
     
     //비밀번호 변경
     @Transactional
     public void updatePassword(NewPasswordInput newPasswordInput) {
-        User user = userRepository.findById(1L).get();
+        User user = userRepository.findByEmail(newPasswordInput.getEmail())
+                .orElseThrow(() -> new NoUserWithEmailException("해당 이메일을 가진 유저가 없습니다"));
         user.changePassword(newPasswordInput.getNewPassword());
     }
 }
