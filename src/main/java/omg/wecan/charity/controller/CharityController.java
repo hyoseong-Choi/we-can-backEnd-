@@ -8,6 +8,7 @@ import omg.wecan.charity.dto.response.CharityResponse;
 import omg.wecan.charity.dto.response.CharityResponses;
 import omg.wecan.charity.entity.CharityCategory;
 import omg.wecan.charity.service.CharityService;
+import omg.wecan.util.ApiResponse;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -21,44 +22,46 @@ public class CharityController {
 
     //권한 추가 필요
     @PostMapping
-    ResponseEntity<CharityResponse> create(@Valid @RequestBody CharityCreateRequest request){
-        CharityResponse response = charityService.save(request);
-        return ResponseEntity.created(URI.create("/charities/" + response.getId())).body(response);
+    ResponseEntity<ApiResponse<CharityResponse>> create(@Valid @RequestBody CharityCreateRequest request){
+        CharityResponse innerResponse = charityService.save(request);
+        return ResponseEntity.ok().body(ApiResponse.success(innerResponse));
     }
 
     @GetMapping()
-    ResponseEntity<CharityResponses> findAll(@RequestParam(name = "category", defaultValue = "ALL") String category,
+    ResponseEntity<ApiResponse<CharityResponses>> findAll(@RequestParam(name = "category", defaultValue = "ALL") String category,
                                              @RequestParam(name = "explanation", required = false) String explanation){
 
         CharityCategory charityCategory = CharityCategory.valueOf(category.toUpperCase());
-        CharityResponses response;
+        CharityResponses innerResponse;
 
         if(explanation == null)
-            response = charityService.findAllByCategory(charityCategory);
+            innerResponse = charityService.findAllByCategory(charityCategory);
         else
-            response = charityService.findAllByCategoryAndName(charityCategory, explanation);
+            innerResponse = charityService.findAllByCategoryAndName(charityCategory, explanation);
 
-        return ResponseEntity.ok().body(response);
+        return ResponseEntity.ok().body(ApiResponse.success(innerResponse));
     }
 
     @GetMapping("/{id}")
-    ResponseEntity<CharityResponse> findById(@PathVariable Long id){
-        CharityResponse response = charityService.findById(id);
-        return ResponseEntity.ok().body(response);
+    ResponseEntity<ApiResponse<CharityResponse>> findById(@PathVariable Long id){
+        CharityResponse innerResponse = charityService.findById(id);
+
+        return ResponseEntity.ok().body(ApiResponse.success(innerResponse));
     }
 
     //admin 권한 추가 필요
-    @PutMapping("/{id}")
-    ResponseEntity<Void> update(@PathVariable Long id, @RequestBody CharityUpdateRequest request){
-        charityService.update(id, request);
-        return ResponseEntity.noContent().build();
+    @PatchMapping("/{id}")
+    ResponseEntity<ApiResponse<CharityResponse>> update(@PathVariable Long id, @RequestBody CharityUpdateRequest request){
+        CharityResponse innerResponse = charityService.update(id, request);
+
+        return ResponseEntity.ok().body(ApiResponse.success(innerResponse));
     }
 
     //admin 권한 추가 필요
     @DeleteMapping("/{id}")
-    ResponseEntity<Void> delete(@PathVariable Long id) {
+    ResponseEntity<ApiResponse<Void>> delete(@PathVariable Long id) {
         charityService.deleteById(id);
-        return ResponseEntity.noContent().build();
+        return ResponseEntity.ok().body(ApiResponse.success(null));
     }
 }
 

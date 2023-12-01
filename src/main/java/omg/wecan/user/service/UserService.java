@@ -3,6 +3,8 @@ package omg.wecan.user.service;
 import jakarta.persistence.EntityManager;
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
+import omg.wecan.exception.customException.CustomException;
+import omg.wecan.exception.customException.ErrorCode;
 import omg.wecan.infrastructure.oauth.basic.domain.OauthServerType;
 import omg.wecan.user.entity.User;
 import omg.wecan.user.exception.MismatchedPasswordUser;
@@ -19,40 +21,39 @@ public class UserService {
     private final UserRepository userRepository;
     private final EntityManager em;
 
-    public User findByEmail(String email){
+    public User findByEmail(String email) {
         return userRepository.findByEmail(email).orElseThrow(
-                ()-> {
+                () -> {
                     throw new IllegalArgumentException();
                 }
         );
     }
 
-    public User findById(Long id){
-        return userRepository.findById(id).orElseThrow(()->{
-            throw new IllegalArgumentException();
-        });
+    public User findById(Long id) {
+        return userRepository.findById(id).orElseThrow(
+                () -> new CustomException(ErrorCode.USER_NOT_FOUND, "user Id: " + id));
     }
 
-    public Optional<User> findByOauthServerIdAndSocial(final String oauthServerId, final String social){
+    public Optional<User> findByOauthServerIdAndSocial(final String oauthServerId, final String social) {
         return userRepository.findByOauthServerIdAndSocial(oauthServerId, OauthServerType.fromName(social));
     }
 
-    public User save(User user){
+    public User save(User user) {
         return userRepository.saveAndFlush(user);
     }
 
-    public User updateRefreshToken(Long userId, String refreshToken){
+    public User updateRefreshToken(Long userId, String refreshToken) {
         User findUser = em.find(User.class, userId);
         findUser.setRefreshToken(refreshToken);
         return findUser;
     }
 
     public User login(String email, String password) {
-        User findUser = userRepository.findByEmail(email).orElseGet(()->{
+        User findUser = userRepository.findByEmail(email).orElseGet(() -> {
             throw new NoSuchEmailUser();
         });
 
-        if(!findUser.getPassword().equals(password)){
+        if (!findUser.getPassword().equals(password)) {
             throw new MismatchedPasswordUser();
         }
 
