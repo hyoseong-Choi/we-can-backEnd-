@@ -13,7 +13,6 @@ import omg.wecan.user.entity.User;
 
 import java.time.LocalDate;
 import java.time.temporal.ChronoUnit;
-import java.util.ArrayList;
 import java.util.List;
 
 @Entity
@@ -51,11 +50,19 @@ public class Recruit extends BaseEntity {
     private int fine;
     private boolean finished;
     private int heartNum;
+    private String charityNotInDb;
+    @OneToMany(mappedBy = "recruit", cascade = CascadeType.REMOVE)
+    private List<Participate> participate;
+    @OneToMany(mappedBy = "recruit", cascade = CascadeType.REMOVE)
+    private List<Heart> heart;
+    @OneToMany(mappedBy = "recruit", cascade = CascadeType.REMOVE)
+    private List<RecruitComment> recruitComment;
     
     public static Recruit createRecruit(User user, Charity charity, RecruitInput recruitInput) {
         Recruit recruit = new Recruit();
         recruit.writer = user;
         recruit.charity = charity;
+        recruit.title = recruitInput.getTitle();
         recruit.type = recruitInput.getChallengetype();
         recruit.startDate = LocalDate.now();
         recruit.endDate = LocalDate.now().plusDays(ChronoUnit.DAYS.between(LocalDate.now(), recruitInput.getChallengeStartDate())-1);
@@ -71,6 +78,33 @@ public class Recruit extends BaseEntity {
         recruit.fine = recruitInput.getFine();
         recruit.finished = false;
         recruit.heartNum = 0;
+        recruit.setCreatedAt();
+        recruit.setUpdatedAt();
+        return recruit;
+    }
+    
+    public static Recruit createRecruitByCharityNotInDb(User user, RecruitInput recruitInput) {
+        Recruit recruit = new Recruit();
+        recruit.writer = user;
+        recruit.charityNotInDb = recruitInput.getCharityName();
+        recruit.title = recruitInput.getTitle();
+        recruit.type = recruitInput.getChallengetype();
+        recruit.startDate = LocalDate.now();
+        recruit.endDate = LocalDate.now().plusDays(ChronoUnit.DAYS.between(LocalDate.now(), recruitInput.getChallengeStartDate())-1);
+        recruit.challengeEndTime = recruitInput.getChallengeEndDate();
+        recruit.minPeople = recruitInput.getMinPeople();
+        recruit.checkDay = recruitInput.getCheckDay();
+        recruit.paymentType = recruitInput.getPaymentType();
+        if (recruitInput.getContent() != null) {
+            recruit.content = recruitInput.getContent();
+        }
+        
+        recruit.coverImageEndpoint = recruitInput.getCoverImageEndpoint();
+        recruit.fine = recruitInput.getFine();
+        recruit.finished = false;
+        recruit.heartNum = 0;
+        recruit.setCreatedAt();
+        recruit.setUpdatedAt();
         return recruit;
     }
     
@@ -91,6 +125,11 @@ public class Recruit extends BaseEntity {
         this.coverImageEndpoint = recruitInput.getCoverImageEndpoint();
         this.fine = recruitInput.getFine();
         this.finished = false;
+        this.setUpdatedAt();
+    }
+    
+    public void changeFinished() {
+        this.finished = true;
     }
     
     public void addHeart() {

@@ -58,4 +58,10 @@ public class UserService {
 
         return findUser;
     }
+
+    public void deleteUser(User user) {
+        // 유저의 챌린지, 작성글, 후기 삭제 추가 필요
+
+        userRepository.delete(user);
+    }
 }

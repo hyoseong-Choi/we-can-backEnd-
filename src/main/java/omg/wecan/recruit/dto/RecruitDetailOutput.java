@@ -1,12 +1,10 @@
 package omg.wecan.recruit.dto;
 
 import lombok.Data;
-import omg.wecan.charity.entity.Charity;
 import omg.wecan.recruit.Enum.ChallengeType;
 import omg.wecan.recruit.Enum.PaymentType;
 import omg.wecan.recruit.entity.Recruit;
 import omg.wecan.recruit.entity.RecruitComment;
-import omg.wecan.user.entity.User;
 
 import java.time.LocalDate;
 import java.util.List;
@@ -33,11 +31,14 @@ public class RecruitDetailOutput {
     private List<RecruitComment> recruitComments;
     
     public RecruitDetailOutput(Recruit recruit, Long participatePeople, boolean isParticipate,
-                               boolean isHeart,List<RecruitComment> recruitComments
-                               ) {
+                               boolean isHeart,List<RecruitComment> recruitComments) {
         this.id = recruit.getId();
         this.writer = recruit.getWriter().getNickName();
-        this.charityName = recruit.getCharity().getName();
+        if (recruit.getCharity() == null) {
+            this.charityName = recruit.getCharityNotInDb();
+        } else {
+            this.charityName = recruit.getCharity().getName();
+        }
         this.title = recruit.getTitle();
         this.type = recruit.getType();
         this.challengeStartTime = recruit.getEndDate().plusDays(1);
@@ -52,5 +53,6 @@ public class RecruitDetailOutput {
         this.finished = recruit.isFinished();
         this.isHeart = isHeart;
         this.isParticipate = isParticipate;
+        this.recruitComments = recruitComments;
     }
 }

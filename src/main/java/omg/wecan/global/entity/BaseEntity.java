@@ -19,12 +19,20 @@ public abstract class BaseEntity {
     @LastModifiedDate
     @Column(name = "updated_at", nullable = false)
     private LocalDateTime updatedAt;
-
-    public LocalDateTime getCreatedAt(){
+   
+    public LocalDateTime getCreatedAt() {
         return createdAt;
     }
-
-    public LocalDateTime getUpdatedAt(){
+    
+    public void setCreatedAt() {
+        this.createdAt = LocalDateTime.now().withNano(0);
+    }
+    
+    public LocalDateTime getUpdatedAt() {
         return updatedAt;
+    }
+    
+    public void setUpdatedAt() {
+        this.updatedAt = LocalDateTime.now().withNano(0);
     }
 }
