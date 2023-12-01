@@ -12,11 +12,11 @@ public interface CharityRepository extends JpaRepository<Charity, Long> {
     default Charity getById(Long id){
         return this.findById(id).orElseThrow(NoSuchCharityException::new);
     }
-    
+
     List<Charity> findAllByCategory(CharityCategory category);
-    
-    List<Charity> findAllByCategoryAndExplanationIsLike(CharityCategory category, String explanation);
-    
+
+    List<Charity> findAllByCategoryAndNameIsLike(CharityCategory category, String name);
+
     List<Charity> findAllByExplanationLike(String explanation);
     
     Optional<Charity> findByName(String name);
