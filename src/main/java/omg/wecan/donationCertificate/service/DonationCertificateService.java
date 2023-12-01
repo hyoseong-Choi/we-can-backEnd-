@@ -20,12 +20,13 @@ public class DonationCertificateService {
 
     public DonationCertificateResponse save(DonationCertificateCreateRequest donationCertificateCreateRequest) {
         DonationCertificate donationCertificate = donationCertificateCreateRequest.toEntity();
+        donationCertificateRepository.save(donationCertificate);
         return new DonationCertificateResponse(donationCertificate);
     }
 
     public DonationCertificateResponses findAll() {
         List<DonationCertificateResponse> certificates = donationCertificateRepository
-                .findAll(Sort.by(Sort.Direction.ASC, "created_at"))
+                .findAll(Sort.by(Sort.Direction.ASC, "createdAt"))
                 .stream().map(DonationCertificateResponse::new).toList();
 
         return new DonationCertificateResponses(certificates);
