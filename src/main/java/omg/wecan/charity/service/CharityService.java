@@ -39,7 +39,7 @@ public class CharityService {
         else
             charities = charityRepository.findAllByCategory(category);
 
-        return new CharityResponses(charities);
+        return new CharityResponses(charities.stream().map((c)->new CharityResponse(c)).toList());
     }
 
     //4. 기부 단체 카테고리별 + 검색 입력
@@ -51,7 +51,7 @@ public class CharityService {
         else
             charities = charityRepository.findAllByCategoryAndNameIsLike(category, "%" + name + "%");
 
-        return new CharityResponses(charities);
+        return new CharityResponses(charities.stream().map((c)->new CharityResponse(c)).toList());
     }
 
     //5. 기부 단체 상세 조회
