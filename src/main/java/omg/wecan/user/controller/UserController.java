@@ -24,8 +24,8 @@ public class UserController {
     private final JWTService jwtService;
 
     @PostMapping("/user/sign-up")
-    public ResponseEntity<User> signUpUser(@Valid @RequestBody User user) {
-        //User user = signUpDto.toUser();
+    public ResponseEntity<User> signUpUser(@Valid @RequestBody SignUpDto signUpDto) {
+        User user = signUpDto.toUser();
         User savedUser = userService.save(user);
         return ResponseEntity.ok(savedUser);
     }
