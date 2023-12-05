@@ -22,7 +22,7 @@ public class RecruitController {
     private final RecruitService recruitService;
     
     @PostMapping("/recruit")
-    public ResponseEntity<ApiResponse<Recruit>> recruitAdd(@AuthenticationPrincipal User loginUser, @RequestBody RecruitInput recruitInput) {
+    public ResponseEntity<ApiResponse<RecruitDetailOutput>> recruitAdd(@AuthenticationPrincipal User loginUser, @ModelAttribute RecruitInput recruitInput) {
         return ResponseEntity.ok(ApiResponse.success(recruitService.addRecruit(loginUser, recruitInput)));
     }
     
@@ -47,7 +47,7 @@ public class RecruitController {
     }
     
     @GetMapping("/recruits")
-    public ResponseEntity<ApiResponse<Page<RecruitOutput>>> recruitFind(@AuthenticationPrincipal User loginUser, @ModelAttribute RecruitFindCond recruitFindCond, @PageableDefault(size = 4)Pageable pageable) {
+    public ResponseEntity<ApiResponse<Page<RecruitOutput>>> recruitFind(@AuthenticationPrincipal User loginUser, @ModelAttribute RecruitFindCond recruitFindCond, @PageableDefault(size = 12)Pageable pageable) {
         return ResponseEntity.ok(ApiResponse.success(recruitService.findRecruit(loginUser, recruitFindCond, pageable)));
     }
 

@@ -8,6 +8,7 @@ import jakarta.validation.constraints.Positive;
 import lombok.Data;
 import omg.wecan.recruit.Enum.ChallengeType;
 import omg.wecan.recruit.Enum.PaymentType;
+import org.springframework.web.multipart.MultipartFile;
 
 import java.time.LocalDate;
 
@@ -38,7 +39,7 @@ public class RecruitInput {
     
     private String content;
     @NotBlank
-    private String coverImageEndpoint;
+    private MultipartFile coverImage;
     @NotNull
     @Min(value = 1)
     private int fine;

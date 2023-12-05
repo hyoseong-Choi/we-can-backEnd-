@@ -58,7 +58,7 @@ public class Recruit extends BaseEntity {
     @OneToMany(mappedBy = "recruit", cascade = CascadeType.REMOVE)
     private List<RecruitComment> recruitComment;
     
-    public static Recruit createRecruit(User user, Charity charity, RecruitInput recruitInput) {
+    public static Recruit createRecruit(User user, Charity charity, RecruitInput recruitInput, String coverImageEndpoint) {
         Recruit recruit = new Recruit();
         recruit.writer = user;
         recruit.charity = charity;
@@ -74,16 +74,14 @@ public class Recruit extends BaseEntity {
             recruit.content = recruitInput.getContent();
         }
         
-        recruit.coverImageEndpoint = recruitInput.getCoverImageEndpoint();
+        recruit.coverImageEndpoint = coverImageEndpoint;
         recruit.fine = recruitInput.getFine();
         recruit.finished = false;
         recruit.heartNum = 0;
-        recruit.setCreatedAt();
-        recruit.setUpdatedAt();
         return recruit;
     }
     
-    public static Recruit createRecruitByCharityNotInDb(User user, RecruitInput recruitInput) {
+    public static Recruit createRecruitByCharityNotInDb(User user, RecruitInput recruitInput, String coverImageEndpoint) {
         Recruit recruit = new Recruit();
         recruit.writer = user;
         recruit.charityNotInDb = recruitInput.getCharityName();
@@ -99,16 +97,14 @@ public class Recruit extends BaseEntity {
             recruit.content = recruitInput.getContent();
         }
         
-        recruit.coverImageEndpoint = recruitInput.getCoverImageEndpoint();
+        recruit.coverImageEndpoint = coverImageEndpoint;
         recruit.fine = recruitInput.getFine();
         recruit.finished = false;
         recruit.heartNum = 0;
-        recruit.setCreatedAt();
-        recruit.setUpdatedAt();
         return recruit;
     }
     
-    public void changeRecruit(Charity charity, RecruitInput recruitInput) {
+    public void changeRecruit(Charity charity, RecruitInput recruitInput, String coverImageEndpoint) {
         
         this.charity = charity;
         this.type = recruitInput.getChallengetype();
@@ -121,11 +117,9 @@ public class Recruit extends BaseEntity {
         if (recruitInput.getContent() != null) {
             this.content = recruitInput.getContent();
         }
-        
-        this.coverImageEndpoint = recruitInput.getCoverImageEndpoint();
+        this.coverImageEndpoint = coverImageEndpoint;
         this.fine = recruitInput.getFine();
         this.finished = false;
-        this.setUpdatedAt();
     }
     
     public void changeFinished() {

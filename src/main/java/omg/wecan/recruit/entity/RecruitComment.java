@@ -33,12 +33,9 @@ public class RecruitComment extends BaseEntity {
         recruitComment.user = user;
         recruitComment.recruit = recruit;
         recruitComment.content = commentAddInput.getContent();
-        recruitComment.setCreatedAt();
-        recruitComment.setUpdatedAt();
         if (commentAddInput.getParentCommentId() != null) {
             recruitComment.parentCommentId = commentAddInput.getParentCommentId();
         }
-
         if (commentAddInput.getDepth() != null) {
             recruitComment.depth = commentAddInput.getDepth();
         }

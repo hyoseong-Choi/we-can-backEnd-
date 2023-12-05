@@ -3,6 +3,7 @@ package omg.wecan.recruit.service;
 import lombok.RequiredArgsConstructor;
 import omg.wecan.charity.entity.Charity;
 import omg.wecan.charity.repository.CharityRepository;
+import omg.wecan.global.FileStore;
 import omg.wecan.recruit.dto.*;
 import omg.wecan.recruit.entity.Heart;
 import omg.wecan.recruit.entity.Participate;
@@ -19,10 +20,7 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.util.ArrayList;
-import java.util.LinkedList;
-import java.util.List;
-import java.util.Optional;
+import java.util.*;
 
 @Service
 @RequiredArgsConstructor
@@ -32,26 +30,29 @@ public class RecruitService {
     private final ParticipateRepository participateRepository;
     private final HeartRepository heartRepository;
     private final RecruitCommentRepository recruitCommentRepository;
+    private final FileStore fileStore;
     
-    public Recruit addRecruit(User loginUser, RecruitInput recruitInput) {
+    public RecruitDetailOutput addRecruit(User loginUser, RecruitInput recruitInput) {
         Optional<Charity> optionalCharityByName = charityRepository.findByName(recruitInput.getCharityName());
+        String imgEndPoint = fileStore.storeFile(recruitInput.getCoverImage());
         if (optionalCharityByName.isEmpty()) {
-            Recruit recruit = Recruit.createRecruitByCharityNotInDb(loginUser, recruitInput);
+            Recruit recruit = Recruit.createRecruitByCharityNotInDb(loginUser, recruitInput, imgEndPoint);
             recruit = recruitRepository.save(recruit);
             participateRepository.save(Participate.createLeaderParticipate(loginUser, recruit));
-            return recruit;
+            return new RecruitDetailOutput(recruit, 1L, true, false, Collections.emptyList());
         }
-        Recruit recruit = Recruit.createRecruit(loginUser, optionalCharityByName.get(), recruitInput);
+        Recruit recruit = Recruit.createRecruit(loginUser, optionalCharityByName.get(), recruitInput, imgEndPoint);
         recruit = recruitRepository.save(recruit);
         participateRepository.save(Participate.createLeaderParticipate(loginUser, recruit));
-        return recruit;
+        return new RecruitDetailOutput(recruit, 1L, true, false, Collections.emptyList());
     }
     
     @Transactional
     public Long updateRecruit(RecruitInput recruitInput) {
+        String imgEndPoint = fileStore.storeFile(recruitInput.getCoverImage());
         Recruit recruit = recruitRepository.findById(recruitInput.getId()).get();
         Charity charity = charityRepository.findByName(recruitInput.getCharityName()).get();
-        recruit.changeRecruit(charity, recruitInput);
+        recruit.changeRecruit(charity, recruitInput, imgEndPoint);
         return recruit.getId();
     }
     
@@ -67,7 +68,6 @@ public class RecruitService {
                 heartRepository.existsByUserAndRecruit(loginUser, recruit),
                 recruitCommentRepository.findByRecruit(recruit));
     }
-    //디테일 참여, 댓글 해야함
     
     public List<RecruitOutput> findThreeRecruit(User loginUser) {
         List<Recruit> recruits = recruitRepository.findTop3ByFinishedOrderByHeartNumDescStartDateDesc(false);
