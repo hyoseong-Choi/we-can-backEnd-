@@ -6,8 +6,6 @@ import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Positive;
 import lombok.Data;
-import omg.wecan.recruit.Enum.ChallengeType;
-import omg.wecan.recruit.Enum.PaymentType;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.time.LocalDate;
@@ -22,7 +20,7 @@ public class RecruitInput {
     @NotBlank
     private String title;
     @NotBlank
-    private ChallengeType challengetype;
+    private String challengeType;
     @NotBlank
     @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd", timezone = "Asia/Seoul")
     private LocalDate challengeStartDate;
@@ -35,7 +33,7 @@ public class RecruitInput {
     @NotBlank
     private String checkDay;
     @NotBlank
-    private PaymentType paymentType;
+    private String paymentType;
     
     private String content;
     @NotBlank

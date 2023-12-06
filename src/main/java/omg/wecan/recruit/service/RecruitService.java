@@ -39,12 +39,12 @@ public class RecruitService {
             Recruit recruit = Recruit.createRecruitByCharityNotInDb(loginUser, recruitInput, imgEndPoint);
             recruit = recruitRepository.save(recruit);
             participateRepository.save(Participate.createLeaderParticipate(loginUser, recruit));
-            return new RecruitDetailOutput(recruit, 1L, true, false, Collections.emptyList());
+            return new RecruitDetailOutput(recruit, 1, true, false, Collections.emptyList());
         }
         Recruit recruit = Recruit.createRecruit(loginUser, optionalCharityByName.get(), recruitInput, imgEndPoint);
         recruit = recruitRepository.save(recruit);
         participateRepository.save(Participate.createLeaderParticipate(loginUser, recruit));
-        return new RecruitDetailOutput(recruit, 1L, true, false, Collections.emptyList());
+        return new RecruitDetailOutput(recruit, 1, true, false, Collections.emptyList());
     }
     
     @Transactional
@@ -115,31 +115,41 @@ public class RecruitService {
         return recruitCommentRepository.save(RecruitComment.createRecruitComment(loginUser, recruit, commentAddInput));
     }
     
-    public Long addParticipate(User loginUser, AddParticipateInput addParticipateInput) {
+    public Integer addParticipate(User loginUser, AddParticipateInput addParticipateInput) {
         Recruit recruit = recruitRepository.findById(addParticipateInput.getRecruitId()).get();
         Participate participate = Participate.createParticipate(loginUser, recruit);
-        return participateRepository.save(participate).getId();
+        participateRepository.save(participate);
+        return recruit.getParticipate().size();
     }
     
-    public Long deleteParticipate(User loginUser, DeleteParticipateAndHeartInput deleteParticipateAndHeartInput) {
-        participateRepository.deleteByUserAndRecruit(loginUser, recruitRepository.findById(deleteParticipateAndHeartInput.getRecruitId()).get());
-        return deleteParticipateAndHeartInput.getRecruitId();
+    public Integer deleteParticipate(User loginUser, DeleteParticipateAndHeartInput deleteParticipateAndHeartInput) {
+        Recruit recruit = recruitRepository.findById(deleteParticipateAndHeartInput.getRecruitId()).get();
+        participateRepository.deleteByUserAndRecruit(loginUser, recruit);
+        return recruit.getParticipate().size();
     }
     
     @Transactional
-    public Long addHeart(User loginUser, AddHeartInput addHeartInput) {
+    public Integer addHeart(User loginUser, AddHeartInput addHeartInput) {
         Recruit recruit = recruitRepository.findById(addHeartInput.getRecruitId()).get();
-        Heart heart = Heart.createHeart(loginUser, recruit);
+        heartRepository.save(Heart.createHeart(loginUser, recruit));
         recruit.addHeart();
-        return heartRepository.save(heart).getId();
+        return recruit.getHeartNum();
     }
     
     @Transactional
-    public Long deleteHeart(User loginUser, DeleteParticipateAndHeartInput deleteParticipateAndHeartInput) {
+    public Integer deleteHeart(User loginUser, DeleteParticipateAndHeartInput deleteParticipateAndHeartInput) {
         Recruit recruit = recruitRepository.findById(deleteParticipateAndHeartInput.getRecruitId()).get();
         Heart heart = heartRepository.findByUserAndRecruit(loginUser, recruit).get();
-        recruit.subHeart();
         heartRepository.delete(heart);
-        return heart.getId();
+        recruit.subHeart();
+        return recruit.getHeartNum();
+    }
+    
+    public Page<ParticipateRecruitOutput> findParticipateRecruit(User loginUser, Pageable pageable) {
+        return participateRepository.findByUser(loginUser, pageable).map(ParticipateRecruitOutput::new);
+    }
+    
+    public Page<HeartRecruitOutput> findHeartRecruit(User loginUser, Pageable pageable) {
+        return heartRepository.findByUser(loginUser, pageable).map(HeartRecruitOutput::new);
     }
 }

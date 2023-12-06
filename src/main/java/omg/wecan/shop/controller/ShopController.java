@@ -14,9 +14,9 @@ import org.springframework.data.web.PageableDefault;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import java.io.IOException;
 import java.util.List;
 
 @RestController
@@ -50,7 +50,14 @@ public class ShopController {
     }
     
     @GetMapping("/shop/{id}")
-    public ResponseEntity<ApiResponse<ItemDetailOutput>> ItemDetail(@AuthenticationPrincipal User loginUser, @PathVariable Long id) throws IOException {
+    public ResponseEntity<ApiResponse<ItemDetailOutput>> ItemDetail(@AuthenticationPrincipal User loginUser, @PathVariable Long id) {
         return ResponseEntity.ok(ApiResponse.success(itemService.findItemDetail(id)));
     }
+    
+    @PostMapping("/shop/{id}/buy")
+    public ResponseEntity<ApiResponse<Long>> itemBuy(@AuthenticationPrincipal User loginUser, @PathVariable Long id) {
+        return ResponseEntity.ok(ApiResponse.success(itemService.buyItem(loginUser, id)));
+    }
+    
+    
 }

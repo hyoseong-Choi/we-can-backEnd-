@@ -3,7 +3,6 @@ package omg.wecan.recruit.controller;
 import lombok.RequiredArgsConstructor;
 import omg.wecan.auth.presentation.AuthenticationPrincipal;
 import omg.wecan.recruit.dto.*;
-import omg.wecan.recruit.entity.Recruit;
 import omg.wecan.recruit.entity.RecruitComment;
 import omg.wecan.recruit.service.RecruitService;
 import omg.wecan.user.entity.User;
@@ -57,22 +56,32 @@ public class RecruitController {
     }
     
     @PostMapping("/recruit/participation")
-    public ResponseEntity<ApiResponse<Long>> participateAdd(@AuthenticationPrincipal User loginUser, @RequestBody AddParticipateInput addParticipateInput) {
+    public ResponseEntity<ApiResponse<Integer>> participateAdd(@AuthenticationPrincipal User loginUser, @RequestBody AddParticipateInput addParticipateInput) {
         return ResponseEntity.ok(ApiResponse.success(recruitService.addParticipate(loginUser, addParticipateInput)));
     }
 
     @DeleteMapping("/recruit/participation")
-    public ResponseEntity<ApiResponse<Long>> participateDelete(@AuthenticationPrincipal User loginUser, @RequestBody DeleteParticipateAndHeartInput deleteParticipateAndHeartInput) {
+    public ResponseEntity<ApiResponse<Integer>> participateDelete(@AuthenticationPrincipal User loginUser, @RequestBody DeleteParticipateAndHeartInput deleteParticipateAndHeartInput) {
         return ResponseEntity.ok(ApiResponse.success(recruitService.deleteParticipate(loginUser, deleteParticipateAndHeartInput)));
     }
     
     @PostMapping("/recruit/heart")
-    public ResponseEntity<ApiResponse<Long>> heartAdd(@AuthenticationPrincipal User loginUser, @RequestBody AddHeartInput addHeartInput) {
+    public ResponseEntity<ApiResponse<Integer>> heartAdd(@AuthenticationPrincipal User loginUser, @RequestBody AddHeartInput addHeartInput) {
         return ResponseEntity.ok(ApiResponse.success(recruitService.addHeart(loginUser, addHeartInput)));
     }
 
     @DeleteMapping("/recruit/heart")
-    public ResponseEntity<ApiResponse<Long>> heartDelete(@AuthenticationPrincipal User loginUser, @RequestBody DeleteParticipateAndHeartInput deleteParticipateAndHeartInput) {
+    public ResponseEntity<ApiResponse<Integer>> heartDelete(@AuthenticationPrincipal User loginUser, @RequestBody DeleteParticipateAndHeartInput deleteParticipateAndHeartInput) {
         return ResponseEntity.ok(ApiResponse.success(recruitService.deleteHeart(loginUser, deleteParticipateAndHeartInput)));
+    }
+    
+    @GetMapping("/recruit/participation")
+    public ResponseEntity<ApiResponse<Page<ParticipateRecruitOutput>>> participateRecruitFind(@AuthenticationPrincipal User loginUser, @PageableDefault(size = 3)Pageable pageable) {
+        return ResponseEntity.ok(ApiResponse.success(recruitService.findParticipateRecruit(loginUser, pageable)));
+    }
+    
+    @GetMapping("/recruit/heart")
+    public ResponseEntity<ApiResponse<Page<HeartRecruitOutput>>> heartRecruitFind(@AuthenticationPrincipal User loginUser, @PageableDefault(size = 3)Pageable pageable) {
+        return ResponseEntity.ok(ApiResponse.success(recruitService.findHeartRecruit(loginUser, pageable)));
     }
 }

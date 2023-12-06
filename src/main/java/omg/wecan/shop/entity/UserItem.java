@@ -3,12 +3,13 @@ package omg.wecan.shop.entity;
 import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
+import omg.wecan.global.entity.BaseEntity;
 import omg.wecan.user.entity.User;
 
 @Entity
 @NoArgsConstructor
 @Getter
-public class UserItem {
+public class UserItem extends BaseEntity {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
@@ -16,4 +17,13 @@ public class UserItem {
     private User user;
     @ManyToOne(fetch = FetchType.LAZY)
     private Item item;
+    private int totalPrice;
+    
+    public static UserItem createUserItem(User user, Item item) {
+        UserItem userItem = new UserItem();
+        userItem.user = user;
+        userItem.item = item;
+        userItem.totalPrice = item.getPrice();
+        return userItem;
+    }
 }

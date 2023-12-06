@@ -1,6 +1,7 @@
 package omg.wecan.shop.service;
 
 import lombok.RequiredArgsConstructor;
+import omg.wecan.exception.shopException.LackOfCandyException;
 import omg.wecan.shop.dto.ItemDetailOutput;
 import omg.wecan.shop.dto.ItemsOutput;
 import omg.wecan.shop.dto.MyItemsOutput;
@@ -9,16 +10,16 @@ import omg.wecan.shop.entity.ItemType;
 import omg.wecan.shop.repository.ItemRepository;
 import omg.wecan.shop.repository.UserItemRepository;
 import omg.wecan.user.entity.User;
-import org.springframework.core.io.UrlResource;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
-import java.io.IOException;
-import java.net.MalformedURLException;
-import java.util.Base64;
 import java.util.List;
 import java.util.stream.Collectors;
+
+import static omg.wecan.exception.customException.ErrorCode.REJECT_PAYMENT;
+import static omg.wecan.shop.entity.UserItem.createUserItem;
 
 @Service
 @RequiredArgsConstructor
@@ -46,8 +47,18 @@ public class ItemService {
         return itemRepository.findByItemType(ItemType.ITEM, pageable).map(ItemsOutput::new);
     }
     
-    public ItemDetailOutput findItemDetail(Long id) throws IOException {
+    public ItemDetailOutput findItemDetail(Long id) {
         Item item = itemRepository.findById(id).get();
-        return new ItemDetailOutput(item, Base64.getEncoder().encodeToString(new UrlResource("file:" + item.getImgEndpoint()).getContentAsByteArray()));
+        return new ItemDetailOutput(item);
+    }
+    
+    @Transactional
+    public Long buyItem(User loginUser, Long id) {
+        Item item = itemRepository.findById(id).get();
+        if (loginUser.getCandy() >= item.getPrice()) {
+            loginUser.minusCandy(item.getPrice());
+            return userItemRepository.save(createUserItem(loginUser, item)).getId();
+        }
+        throw new LackOfCandyException(REJECT_PAYMENT);
     }
 }

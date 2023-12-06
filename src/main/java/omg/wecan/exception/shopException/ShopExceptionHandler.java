@@ -18,4 +18,14 @@ public class ShopExceptionHandler {
         return ResponseEntity.status(e.getCode().getStatus())
                 .body(errorResponse);
     }
+    
+    @ExceptionHandler
+    public ResponseEntity<ErrorResponse> LackOfCandyException(LackOfCandyException e) {
+        ErrorResponse errorResponse = ErrorResponse.builder()
+                .code(e.getCode().getCode())
+                .message(e.getMessage())
+                .build();
+        return ResponseEntity.status(e.getCode().getStatus())
+                .body(errorResponse);
+    }
 }

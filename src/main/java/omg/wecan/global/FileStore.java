@@ -11,8 +11,8 @@ import java.util.UUID;
 public class FileStore {
     
     public String getFullPath(String filename) {
-        return "/image/" + filename;
-//        return "C:\\Users\\gytjd\\" + filename;
+//        return "/image/" + filename;
+        return "C:\\Users\\gytjd\\" + filename;
     }
     
     public String storeFile(MultipartFile multipartFile) {

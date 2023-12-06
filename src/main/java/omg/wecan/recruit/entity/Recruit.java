@@ -5,6 +5,7 @@ import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import omg.wecan.charity.entity.Charity;
+import omg.wecan.exception.recruitException.InvalidChallengeDateException;
 import omg.wecan.global.entity.BaseEntity;
 import omg.wecan.recruit.Enum.ChallengeType;
 import omg.wecan.recruit.Enum.PaymentType;
@@ -12,8 +13,9 @@ import omg.wecan.recruit.dto.RecruitInput;
 import omg.wecan.user.entity.User;
 
 import java.time.LocalDate;
-import java.time.temporal.ChronoUnit;
 import java.util.List;
+
+import static omg.wecan.exception.customException.ErrorCode.RECRUIT_DATE_INVALID;
 
 @Entity
 @Getter
@@ -63,13 +65,19 @@ public class Recruit extends BaseEntity {
         recruit.writer = user;
         recruit.charity = charity;
         recruit.title = recruitInput.getTitle();
-        recruit.type = recruitInput.getChallengetype();
+        recruit.type = ChallengeType.from(recruitInput.getChallengeType());
         recruit.startDate = LocalDate.now();
-        recruit.endDate = LocalDate.now().plusDays(ChronoUnit.DAYS.between(LocalDate.now(), recruitInput.getChallengeStartDate())-1);
+        recruit.endDate = recruitInput.getChallengeStartDate().minusDays(1);
+        if (recruit.endDate.isBefore(LocalDate.now())) {
+            throw new InvalidChallengeDateException(RECRUIT_DATE_INVALID);
+        }
         recruit.challengeEndTime = recruitInput.getChallengeEndDate();
+        if (recruit.challengeEndTime.isBefore(LocalDate.now().plusDays(7))) {
+            throw new InvalidChallengeDateException(RECRUIT_DATE_INVALID);
+        }
         recruit.minPeople = recruitInput.getMinPeople();
         recruit.checkDay = recruitInput.getCheckDay();
-        recruit.paymentType = recruitInput.getPaymentType();
+        recruit.paymentType = PaymentType.from(recruitInput.getPaymentType());
         if (recruitInput.getContent() != null) {
             recruit.content = recruitInput.getContent();
         }
@@ -86,13 +94,19 @@ public class Recruit extends BaseEntity {
         recruit.writer = user;
         recruit.charityNotInDb = recruitInput.getCharityName();
         recruit.title = recruitInput.getTitle();
-        recruit.type = recruitInput.getChallengetype();
+        recruit.type = ChallengeType.from(recruitInput.getChallengeType());
         recruit.startDate = LocalDate.now();
-        recruit.endDate = LocalDate.now().plusDays(ChronoUnit.DAYS.between(LocalDate.now(), recruitInput.getChallengeStartDate())-1);
+        recruit.endDate = recruitInput.getChallengeStartDate().minusDays(1);
+        if (recruit.endDate.isBefore(LocalDate.now())) {
+            throw new InvalidChallengeDateException(RECRUIT_DATE_INVALID);
+        }
         recruit.challengeEndTime = recruitInput.getChallengeEndDate();
+        if (recruit.challengeEndTime.isBefore(LocalDate.now().plusDays(7))) {
+            throw new InvalidChallengeDateException(RECRUIT_DATE_INVALID);
+        }
         recruit.minPeople = recruitInput.getMinPeople();
         recruit.checkDay = recruitInput.getCheckDay();
-        recruit.paymentType = recruitInput.getPaymentType();
+        recruit.paymentType = PaymentType.from(recruitInput.getPaymentType());
         if (recruitInput.getContent() != null) {
             recruit.content = recruitInput.getContent();
         }
@@ -105,15 +119,20 @@ public class Recruit extends BaseEntity {
     }
     
     public void changeRecruit(Charity charity, RecruitInput recruitInput, String coverImageEndpoint) {
-        
         this.charity = charity;
-        this.type = recruitInput.getChallengetype();
+        this.type = ChallengeType.from(recruitInput.getChallengeType());
         this.startDate = LocalDate.now();
-        this.endDate = LocalDate.now().plusDays(ChronoUnit.DAYS.between(LocalDate.now(), recruitInput.getChallengeStartDate())-1);
+        this.endDate = recruitInput.getChallengeStartDate().minusDays(1);
+        if (this.endDate.isBefore(LocalDate.now())) {
+            throw new InvalidChallengeDateException(RECRUIT_DATE_INVALID);
+        }
         this.challengeEndTime = recruitInput.getChallengeEndDate();
+        if (this.challengeEndTime.isBefore(LocalDate.now().plusDays(7))) {
+            throw new InvalidChallengeDateException(RECRUIT_DATE_INVALID);
+        }
         this.minPeople = recruitInput.getMinPeople();
         this.checkDay = recruitInput.getCheckDay();
-        this.paymentType = recruitInput.getPaymentType();
+        this.paymentType = PaymentType.from(recruitInput.getPaymentType());
         if (recruitInput.getContent() != null) {
             this.content = recruitInput.getContent();
         }
@@ -127,9 +146,9 @@ public class Recruit extends BaseEntity {
     }
     
     public void addHeart() {
-        this.heartNum =+ 1;
+        this.heartNum++;
     }
     public void subHeart() {
-        this.heartNum =- 1;
+        this.heartNum--;
     }
 }
