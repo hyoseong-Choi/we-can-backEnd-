@@ -16,6 +16,7 @@ import omg.wecan.recruit.repository.RecruitCommentRepository;
 import omg.wecan.recruit.repository.RecruitRepository;
 import omg.wecan.user.entity.User;
 import omg.wecan.user.repository.UserRepository;
+import omg.wecan.util.event.MinimumParticipateEvent;
 import omg.wecan.util.event.RecruitCommentEvent;
 import org.springframework.context.ApplicationEventPublisher;
 import org.springframework.data.domain.Page;
@@ -133,8 +134,12 @@ public class RecruitService {
     
     public Integer addParticipate(User loginUser, AddParticipateInput addParticipateInput) {
         Recruit recruit = recruitRepository.findById(addParticipateInput.getRecruitId()).get();
-        Participate participate = Participate.createParticipate(loginUser, recruit);
-        participateRepository.save(participate);
+        participateRepository.save(Participate.createParticipate(loginUser, recruit));
+        int participateNum = recruit.getParticipate().size();
+        if (participateNum == recruit.getMinPeople()) {
+            log.info("퍼블전 Thread Id : {}", Thread.currentThread().getId());
+            eventPublisher.publishEvent(new MinimumParticipateEvent(participateRepository.findUserByRecruit(recruit), recruit.getTitle()));
+        }
         return recruit.getParticipate().size();
     }
     

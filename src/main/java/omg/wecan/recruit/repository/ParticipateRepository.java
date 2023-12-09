@@ -26,6 +26,10 @@ public interface ParticipateRepository extends JpaRepository<Participate, Long> 
     List<Participate> findByRecruit(Recruit recruit);
     
     @Transactional(readOnly = true)
+    @Query("select p from Participate p join fetch p.user where p.recruit=:recruit")
+    List<Participate> findUserByRecruit(@Param("recruit")Recruit recruit);
+    
+    @Transactional(readOnly = true)
     @Query(value = "select p from Participate p join fetch p.user join fetch p.recruit where p.user=:user and p.recruit.finished=false",
             countQuery ="select count(p.id) from Participate p where p.user=:user and p.recruit.finished=false")
     Page<Participate> findByUser(@Param("user")User user, Pageable pageable);
