@@ -1,4 +1,4 @@
-package omg.wecan.global;
+package omg.wecan.util;
 
 import org.springframework.stereotype.Component;
 import org.springframework.web.multipart.MultipartFile;

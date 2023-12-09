@@ -3,7 +3,6 @@ package omg.wecan.recruit.controller;
 import lombok.RequiredArgsConstructor;
 import omg.wecan.auth.presentation.AuthenticationPrincipal;
 import omg.wecan.recruit.dto.*;
-import omg.wecan.recruit.entity.RecruitComment;
 import omg.wecan.recruit.service.RecruitService;
 import omg.wecan.user.entity.User;
 import omg.wecan.util.ApiResponse;
@@ -51,7 +50,7 @@ public class RecruitController {
     }
 
     @PostMapping("/recruit/comment")
-    public ResponseEntity<ApiResponse<RecruitComment>> recruitCommentAdd(@AuthenticationPrincipal User loginUser, @RequestBody CommentAddInput commentAddInput) {
+    public ResponseEntity<ApiResponse<CommentOutput>> recruitCommentAdd(@AuthenticationPrincipal User loginUser, @RequestBody CommentAddInput commentAddInput) {
         return ResponseEntity.ok(ApiResponse.success(recruitService.addRecruitComment(loginUser, commentAddInput)));
     }
     

@@ -5,10 +5,12 @@ import omg.wecan.recruit.entity.RecruitComment;
 
 @Data
 public class CommentOutput {
+    private Long id;
     private String userName;
     private String content;
     
     public CommentOutput(RecruitComment recruitComment) {
+        this.id = recruitComment.getId();
         this.userName = recruitComment.getUser().getName();
         this.content = recruitComment.getContent();
     }

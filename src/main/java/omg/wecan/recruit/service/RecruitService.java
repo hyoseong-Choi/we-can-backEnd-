@@ -1,9 +1,10 @@
 package omg.wecan.recruit.service;
 
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import omg.wecan.charity.entity.Charity;
 import omg.wecan.charity.repository.CharityRepository;
-import omg.wecan.global.FileStore;
+import omg.wecan.util.FileStore;
 import omg.wecan.recruit.dto.*;
 import omg.wecan.recruit.entity.Heart;
 import omg.wecan.recruit.entity.Participate;
@@ -14,6 +15,9 @@ import omg.wecan.recruit.repository.ParticipateRepository;
 import omg.wecan.recruit.repository.RecruitCommentRepository;
 import omg.wecan.recruit.repository.RecruitRepository;
 import omg.wecan.user.entity.User;
+import omg.wecan.user.repository.UserRepository;
+import omg.wecan.util.event.RecruitCommentEvent;
+import org.springframework.context.ApplicationEventPublisher;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.Pageable;
@@ -24,13 +28,16 @@ import java.util.*;
 
 @Service
 @RequiredArgsConstructor
+@Slf4j
 public class RecruitService {
+    private final UserRepository userRepository;
     private final RecruitRepository recruitRepository;
     private final CharityRepository charityRepository;
     private final ParticipateRepository participateRepository;
     private final HeartRepository heartRepository;
     private final RecruitCommentRepository recruitCommentRepository;
     private final FileStore fileStore;
+    private final ApplicationEventPublisher eventPublisher;
     
     public RecruitDetailOutput addRecruit(User loginUser, RecruitInput recruitInput) {
         Optional<Charity> optionalCharityByName = charityRepository.findByName(recruitInput.getCharityName());
@@ -110,9 +117,18 @@ public class RecruitService {
         return new RecruitOutput(recruit, false);
     }
     
-    public RecruitComment addRecruitComment(User loginUser, CommentAddInput commentAddInput) {
+    public CommentOutput addRecruitComment(User loginUser, CommentAddInput commentAddInput) {
         Recruit recruit = recruitRepository.findById(commentAddInput.getRecruitId()).get();
-        return recruitCommentRepository.save(RecruitComment.createRecruitComment(loginUser, recruit, commentAddInput));
+        if (commentAddInput.getContent().startsWith("@")) {
+            String content = commentAddInput.getContent();
+            Optional<User> mentionedUser = userRepository.findByNickName(content.substring(1, content.indexOf(" ")));
+            if (mentionedUser.isPresent()) {
+                log.info("퍼블전 Thread Id : {}", Thread.currentThread().getId());
+                eventPublisher.publishEvent(new RecruitCommentEvent(mentionedUser.get(), content.substring(content.indexOf(" ")+1)));
+            }
+            return new CommentOutput(recruitCommentRepository.save(RecruitComment.createRecruitComment(loginUser, recruit, commentAddInput)));
+        }
+        return new CommentOutput(recruitCommentRepository.save(RecruitComment.createRecruitComment(loginUser, recruit, commentAddInput)));
     }
     
     public Integer addParticipate(User loginUser, AddParticipateInput addParticipateInput) {
