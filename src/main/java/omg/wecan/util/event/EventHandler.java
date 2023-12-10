@@ -55,7 +55,7 @@ public class EventHandler {
 //
 //        Notification notification = Notification.builder()
 //                .setTitle("챌린지 최소 모집 인원이 다 모였어요.")
-//                .setBody("모집이 끝나면 챌린지를 시작할 수 있어요.")
+//                .setBody("모집이 끝나면 " + minimumParticipateEvent.getRecruitTitle() + " 챌린지를 시작할 수 있어요.")
 //                .build();
 //
 //        MulticastMessage multicastMessage = MulticastMessage.builder()
@@ -74,5 +74,14 @@ public class EventHandler {
 //        } catch (FirebaseMessagingException e) {
 //            log.error("cannot send to user push message. error info : {}", e.getMessage());
 //        }
+    }
+    
+    @EventListener
+    @Async
+    public void handleChallengeStartEvent(ChallengeStartEvent challengeStartEvent) {
+        log.info("이벤트 Thread Id : {}", Thread.currentThread().getId());
+        for (Participate participate : challengeStartEvent.getParticipateList()) {
+            notificationRepository.save(new Notifications(challengeStartEvent.getRecruitTitle(), participate));
+        }
     }
 }

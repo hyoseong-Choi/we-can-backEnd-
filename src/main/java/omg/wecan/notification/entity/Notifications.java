@@ -31,6 +31,12 @@ public class Notifications extends BaseEntity {
     public Notifications(Participate participate, String recruitTitle) {
         this.targetUser = participate.getUser();
         this.title = "챌린지 최소 모집 인원이 다 모였어요.";
-        this.content ="모집이 끝나면 챌린지를 시작할 수 있어요.";
+        this.content ="모집이 끝나면 " + recruitTitle + " 챌린지를 시작할 수 있어요.";
+    }
+    
+    public Notifications(String recruitTitle, Participate participate) {
+        this.targetUser = participate.getUser();
+        this.title = "내일 " + recruitTitle + " 챌린지가 시작돼요.";
+        this.content = participate.getUser().getNickName() + " 님이 챌린지에 성공하기를 응원할게요.";
     }
 }
