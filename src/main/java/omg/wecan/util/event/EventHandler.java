@@ -55,7 +55,7 @@ public class EventHandler {
 //
 //        Notification notification = Notification.builder()
 //                .setTitle("챌린지 최소 모집 인원이 다 모였어요.")
-//                .setBody(minimumParticipateEvent.getRecruitTitle() + " 챌린지를 시작할 수 있어요.")
+//                .setBody("모집이 끝나면 챌린지를 시작할 수 있어요.")
 //                .build();
 //
 //        MulticastMessage multicastMessage = MulticastMessage.builder()
