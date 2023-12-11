@@ -24,7 +24,7 @@ public class ChallengeStartEventService {
     private final ApplicationEventPublisher eventPublisher;
     
     @Transactional
-    @Scheduled(cron = "0 23 14 * * *")
+    @Scheduled(cron = "0 0 20 * * *")
     public void recruitToChallenge() {
         List<Recruit> recruitList = recruitRepository.findByEndDateIs(LocalDate.now());
         for (Recruit recruit : recruitList) {
