@@ -25,7 +25,7 @@ public class ChallengeStartEventService {
     
     @Transactional
     @Scheduled(cron = "0 0 20 * * *")
-    public void recruitToChallenge() {
+    public void ChallengeStartNotify() {
         List<Recruit> recruitList = recruitRepository.findByEndDateIs(LocalDate.now());
         for (Recruit recruit : recruitList) {
             List<Participate> participatesByRecruit = participateRepository.findUserByRecruit(recruit);
