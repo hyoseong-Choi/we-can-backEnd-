@@ -10,8 +10,8 @@ import org.springframework.context.event.EventListener;
 import org.springframework.scheduling.annotation.Async;
 import org.springframework.stereotype.Component;
 
+import java.util.LinkedList;
 import java.util.List;
-import java.util.stream.Collectors;
 
 @Slf4j
 @Component
@@ -83,5 +83,27 @@ public class EventHandler {
         for (Participate participate : challengeStartEvent.getParticipateList()) {
             notificationRepository.save(new Notifications(challengeStartEvent.getRecruitTitle(), participate));
         }
+        
+//        List<Message> messageList = new LinkedList<>();
+//        for (Participate participate : challengeStartEvent.getParticipateList()) {
+//            messageList.add(Message.builder()
+//                    .setToken(participate.getUser().getNickName())
+//                    .setNotification(Notification.builder()
+//                            .setTitle("내일 " + challengeStartEvent.getRecruitTitle() + " 챌린지가 시작돼요.")
+//                            .setBody(participate.getUser().getNickName() + " 님이 챌린지에 성공하기를 응원할게요.")
+//                            .build())
+//                    .build());
+//        }
+//
+//        try {
+//            BatchResponse batchResponse = FirebaseMessaging.getInstance().sendEach(messageList);
+//            log.info(batchResponse.getSuccessCount() + " Successfully sent message");
+//            for (Participate participate : challengeStartEvent.getParticipateList()) {
+//                Notifications notifications = notificationRepository.save(new Notifications(challengeStartEvent.getRecruitTitle(), participate));
+//                log.info("이벤트 Thread Id : {}, 알림 : {}", Thread.currentThread().getId(), notifications);
+//            }
+//        } catch (FirebaseMessagingException e) {
+//            log.error("cannot send to user push message. error info : {}", e.getMessage());
+//        }
     }
 }
