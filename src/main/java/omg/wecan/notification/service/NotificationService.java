@@ -15,7 +15,7 @@ public class NotificationService {
     private final NotificationRepository notificationRepository;
     
     public List<NotificationOutput> findNotification(User loginUser) {
-        return notificationRepository.findByTargetUser(loginUser).stream().map(NotificationOutput::new).collect(Collectors.toList());
+        return notificationRepository.findByTargetUserOrderByIdDesc(loginUser).stream().map(NotificationOutput::new).collect(Collectors.toList());
     }
     
     public Long deleteNotification(Long id) {

@@ -9,6 +9,9 @@ import omg.wecan.recruit.entity.Participate;
 import org.springframework.context.event.EventListener;
 import org.springframework.scheduling.annotation.Async;
 import org.springframework.stereotype.Component;
+import org.springframework.transaction.annotation.Propagation;
+import org.springframework.transaction.annotation.Transactional;
+import org.springframework.transaction.event.TransactionalEventListener;
 
 import java.util.LinkedList;
 import java.util.List;
@@ -24,7 +27,7 @@ public class EventHandler {
     public void handleRecruitCommentEvent(RecruitCommentEvent recruitCommentEvent) {
         //로그인하면 레디스에 유저아이디, 토큰 저장?
         log.info("이벤트 Thread Id : {}", Thread.currentThread().getId());
-        Notifications notifications = notificationRepository.save(new Notifications(recruitCommentEvent));
+        notificationRepository.save(new Notifications(recruitCommentEvent));
 //        Notification notification = Notification.builder()
 //                .setTitle("누군가 " + recruitCommentEvent.getUser().getNickName() + " 님을 멘션했어요.")
 //                .setBody(recruitCommentEvent.getContent())
@@ -102,6 +105,33 @@ public class EventHandler {
 //                Notifications notifications = notificationRepository.save(new Notifications(challengeStartEvent.getRecruitTitle(), participate));
 //                log.info("이벤트 Thread Id : {}, 알림 : {}", Thread.currentThread().getId(), notifications);
 //            }
+//        } catch (FirebaseMessagingException e) {
+//            log.error("cannot send to user push message. error info : {}", e.getMessage());
+//        }
+    }
+    
+    @TransactionalEventListener
+    @Async
+    @Transactional(propagation = Propagation.REQUIRES_NEW)
+    public void handleBuyItemEvent(BuyItemEvent buyItemEvent) {
+        log.info("이벤트 Thread Id : {}", Thread.currentThread().getId());
+        notificationRepository.save(new Notifications(buyItemEvent));
+        
+//                Notification notification = Notification.builder()
+//                .setTitle("결제 완료 알림")
+//                .setBody(buyItemEvent.getItem().getName() + " 구매가 완료되었습니다")
+//                .build();
+//
+//        Message message = Message.builder()
+//                .setToken(buyItemEvent.getUser().getNickName())
+//                .setNotification(notification)
+//                .build();
+//
+//        try {
+//            String response = FirebaseMessaging.getInstance().send(message);
+//            log.info("Successfully sent message: {}", response);
+//            Notifications notifications = notificationRepository.save(new Notifications(buyItemEvent));
+//            log.info("이벤트 Thread Id : {}, 알림 : {}", Thread.currentThread().getId(), notifications);
 //        } catch (FirebaseMessagingException e) {
 //            log.error("cannot send to user push message. error info : {}", e.getMessage());
 //        }

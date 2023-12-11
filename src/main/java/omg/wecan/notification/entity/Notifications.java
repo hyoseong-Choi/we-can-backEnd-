@@ -6,6 +6,7 @@ import lombok.NoArgsConstructor;
 import omg.wecan.global.entity.BaseEntity;
 import omg.wecan.recruit.entity.Participate;
 import omg.wecan.user.entity.User;
+import omg.wecan.util.event.BuyItemEvent;
 import omg.wecan.util.event.RecruitCommentEvent;
 
 
@@ -38,5 +39,11 @@ public class Notifications extends BaseEntity {
         this.targetUser = participate.getUser();
         this.title = "내일 " + recruitTitle + " 챌린지가 시작돼요.";
         this.content = participate.getUser().getNickName() + " 님이 챌린지에 성공하기를 응원할게요.";
+    }
+    
+    public Notifications(BuyItemEvent buyItemEvent) {
+        this.targetUser = buyItemEvent.getUser();
+        this.title = "결제 완료 알림";
+        this.content = buyItemEvent.getItem().getName() + " 구매가 완료되었습니다";
     }
 }

@@ -9,5 +9,5 @@ import java.util.List;
 
 @Repository
 public interface NotificationRepository extends JpaRepository<Notifications, Long> {
-    List<Notifications> findByTargetUser(User targetUser);
+    List<Notifications> findByTargetUserOrderByIdDesc(User targetUser);
 }
