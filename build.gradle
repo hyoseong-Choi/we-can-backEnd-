@@ -52,6 +52,12 @@ dependencies {
 	implementation 'org.springdoc:springdoc-openapi-starter-webmvc-ui:2.2.0'
 	//FCM 추가
 	implementation 'com.google.firebase:firebase-admin:9.2.0'
+	//엘라스틱 서치 추가
+//	implementation 'org.springframework.boot:spring-boot-starter-data-elasticsearch'
+
+	//모니터링 추가
+	implementation 'org.springframework.boot:spring-boot-starter-actuator'
+	implementation 'io.micrometer:micrometer-registry-prometheus'
 }
 
 tasks.named('test') {
