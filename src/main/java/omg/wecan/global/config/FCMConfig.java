@@ -16,13 +16,10 @@ import java.util.List;
 
 @Configuration
 public class FCMConfig {
-    @Value("${GOOGLE_APPLICATION_CREDENTIALS}")
-    private String apiKey;
     
     @Bean
     FirebaseMessaging firebaseMessaging() throws IOException {
-//        ClassPathResource resource = new ClassPathResource(apiKey);
-        FileUrlResource resource = new FileUrlResource(apiKey);
+        ClassPathResource resource = new ClassPathResource("resources/firebase/wecan-6752c-firebase-adminsdk-s70dg-f1542ba1ac.json");
         InputStream refreshToken = resource.getInputStream();
         
         FirebaseApp firebaseApp = null;
