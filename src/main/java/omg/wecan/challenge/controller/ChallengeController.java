@@ -4,6 +4,7 @@ import lombok.RequiredArgsConstructor;
 import omg.wecan.auth.presentation.AuthenticationPrincipal;
 import omg.wecan.challenge.dto.ChallengeCheckInputDto;
 import omg.wecan.challenge.dto.ChallengeCheckResultDto;
+import omg.wecan.challenge.dto.ChallengeCheckRoomDto;
 import omg.wecan.challenge.service.ChallengeService;
 import omg.wecan.challenge.dto.ChallengeDto;
 import omg.wecan.user.entity.User;
@@ -40,6 +41,11 @@ public class ChallengeController {
         return ResponseEntity.ok(ApiResponse.success(completedChallenges));
     }
 
+    @GetMapping("checkroom/{challengeId}")
+    public ResponseEntity<ApiResponse<ChallengeCheckRoomDto>> getChallengeCheckRoomInfo(@PathVariable Long challengeId) {
+        ChallengeCheckRoomDto challengeCheckRoomInfo = challengeService.getChallengeCheckRoomInfo(challengeId);
+        return ResponseEntity.ok(ApiResponse.success(challengeCheckRoomInfo));
+    }
 
     @PostMapping("checkroom/upload")
     public ResponseEntity<ApiResponse<ChallengeCheckResultDto>> saveChallengeCheck(

@@ -15,6 +15,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.io.IOException;
+import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
@@ -84,7 +85,7 @@ public class ChallengeService {
         ChallengeCheckImageDto challengeCheckImageDto = new ChallengeCheckImageDto(newChallengeCheck, imageUrlList, 0);
 
 
-        return new ChallengeCheckResultDto(newChallengeCheck, challengeCheckImageDto);
+        return new ChallengeCheckResultDto(newChallengeCheck.getId(), challengeCheckImageDto);
 
     }
 
@@ -124,11 +125,7 @@ public class ChallengeService {
         DislikeCheck dislikeCheck = new DislikeCheck(user, dislikedChallengeCheck);
         dislikeCheckRepository.save(dislikeCheck);
 
-        List<ChallengeCheckImage> images = challengeCheckImageRepository.findByChallengeCheck_IdAndUserUserId(challengeCheckId, dislikedChallengeCheck.getUser().getUserId());
-
-        List<String> imageUrlList = images.stream()
-                .map(ChallengeCheckImage::getImageUrl)
-                .collect(Collectors.toList());
+        List<String> imageUrlList = getChallengeCheckImages(challengeCheckId, dislikedChallengeCheck.getUser().getUserId());
 
         ChallengeCheckImageDto challengeCheckImages = new ChallengeCheckImageDto(dislikedChallengeCheck, imageUrlList, dislikedChallengeCheck.getDislike());
 
@@ -144,9 +141,39 @@ public class ChallengeService {
             }
         }
 
-        return new ChallengeCheckResultDto(dislikedChallengeCheck, challengeCheckImages);
+        return new ChallengeCheckResultDto(challengeCheckId, challengeCheckImages);
 
 
     }
 
+    public ChallengeCheckRoomDto getChallengeCheckRoomInfo(Long challengeId) {
+        LocalDate currentDate = LocalDate.now();
+
+        List<ChallengeCheck> todayChallengeChecks = challengeCheckRepository.findByChallengeId(challengeId)
+                .stream()
+                .filter(challengeCheck -> challengeCheck.getCheckDate().toLocalDate().isEqual(currentDate))
+                .collect(Collectors.toList());
+
+        if (todayChallengeChecks.isEmpty()) {
+            return new ChallengeCheckRoomDto(challengeId, null);
+        }
+
+        List<ChallengeCheckImageDto> challengeCheckInfoByUser = todayChallengeChecks.stream()
+                .map(challengeCheck -> {
+                    List<String > challengeCheckImages = getChallengeCheckImages(challengeCheck.getId(), challengeCheck.getUser().getUserId());
+                    return new ChallengeCheckImageDto(challengeCheck, challengeCheckImages,challengeCheck.getDislike());
+                })
+                .collect(Collectors.toList());
+
+        return new ChallengeCheckRoomDto(challengeId, challengeCheckInfoByUser);
+    }
+
+    private List<String> getChallengeCheckImages(Long challengeCheckId, Long userId) {
+        List<ChallengeCheckImage> imageUrlList = challengeCheckImageRepository.findByChallengeCheck_IdAndUserUserId(challengeCheckId, userId);
+
+        return imageUrlList.stream()
+                .map(ChallengeCheckImage::getImageUrl)
+                .collect(Collectors.toList());
+
+    }
 }

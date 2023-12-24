@@ -15,6 +15,7 @@ import java.util.List;
 @Getter
 @Setter
 public class ChallengeCheckImageDto {
+    private Long challengeCheckId;
     private Long userId;
     private String nickName;
     private LocalDateTime checkDate;
@@ -22,6 +23,7 @@ public class ChallengeCheckImageDto {
     private int dislike;
 
     public ChallengeCheckImageDto(ChallengeCheck challengeCheck, List<String> checkImages, int dislike) {
+        this.challengeCheckId = challengeCheck.getId();
         this.userId = challengeCheck.getUser().getUserId();
         this.nickName = challengeCheck.getUser().getNickName();
         this.checkDate = challengeCheck.getCheckDate();

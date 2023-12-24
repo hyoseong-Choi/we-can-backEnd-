@@ -14,13 +14,7 @@ import java.util.List;
 @Getter
 @Setter
 public class ChallengeCheckRoomDto {
-    private Long challengeCheckId;
     private Long challengeId;
-    private List<ChallengeCheckImageDto> challengeCheckImages;
+    private List<ChallengeCheckImageDto> challengeChecks;
 
-    public ChallengeCheckRoomDto(ChallengeCheck challengeCheck, List<ChallengeCheckImageDto> challengeCheckImages) {
-        this.challengeCheckId = challengeCheck.getId();
-        this.challengeId = challengeCheck.getChallenge().getId();
-        this.challengeCheckImages = challengeCheckImages;
-    }
 }
