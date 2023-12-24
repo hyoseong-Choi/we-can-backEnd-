@@ -9,6 +9,7 @@ import omg.wecan.user.dto.*;
 import omg.wecan.user.dto.request.SignInDto;
 import omg.wecan.user.dto.request.SignUpDto;
 import omg.wecan.user.dto.request.UserDto;
+import omg.wecan.user.dto.response.UserResponse;
 import omg.wecan.user.entity.User;
 import omg.wecan.user.service.UserFindPasswordService;
 import omg.wecan.user.service.UserService;
@@ -25,14 +26,14 @@ public class UserController {
     private final JWTService jwtService;
 
     @PostMapping("/user/sign-up")
-    public ResponseEntity<User> signUpUser(@Valid @RequestBody SignUpDto signUpDto) {
+    public ResponseEntity<ApiResponse<UserResponse>> signUpUser(@Valid @RequestBody SignUpDto signUpDto) {
         User user = signUpDto.toUser();
         User savedUser = userService.save(user);
-        return ResponseEntity.ok(savedUser);
+        return ResponseEntity.ok().body(ApiResponse.success(new UserResponse(savedUser)));
     }
 
     @PostMapping("/user/sign-in")
-    public ResponseEntity<AuthResponse> signInUser(@RequestBody SignInDto signInDto) {
+    public ResponseEntity<ApiResponse<AuthResponse>> signInUser(@RequestBody SignInDto signInDto) {
         final String email = signInDto.getEmail();
         final String password = signInDto.getPassword();
 
@@ -41,9 +42,9 @@ public class UserController {
         AuthToken authToken = jwtService.createAuthToken(user.getUserId());
         userService.updateRefreshToken(user.getUserId(), authToken.getRefreshToken());
 
-        AuthResponse response = new AuthResponse(authToken);
+        AuthResponse innerResponse = new AuthResponse(authToken);
 
-        return ResponseEntity.ok(response);
+        return ResponseEntity.ok().body(ApiResponse.success(innerResponse));
     }
     
     @PostMapping("/user/certification")

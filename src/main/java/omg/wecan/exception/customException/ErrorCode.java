@@ -18,8 +18,15 @@ public enum ErrorCode {
     
     //Recruit
     RECRUIT_DATE_INVALID(HttpStatus.BAD_REQUEST,"5003", "챌린지 날짜가 유효하지 않습니다."),
-    
-    //User
+
+    //charity
+    CHARITY_NOT_FOUND(HttpStatus.NOT_FOUND,"3404", "해당 기부 단체는 존재하지 않습니다."),
+
+    //DonationCertificate
+    DONATIONCERTIFICATE_NOT_FOUND(HttpStatus.NOT_FOUND, "4404", "해당 기부 증서는 존재하지 않습니다."),
+
+    //user
+    USER_NOT_FOUND(HttpStatus.NOT_FOUND, "6404", "해당 사용자가 존재하지 않습니다."),
     USER_EMAIL_MISMATCH(HttpStatus.BAD_REQUEST,"6400", "해당 이메일을 가진 사용자가 없습니다."),
     USER_NAME_EMAIL_MISMATCH(HttpStatus.BAD_REQUEST,"6400", "해당 이메일, 이름을 가진 사용자가 없습니다."),
     OTP_MISMATCH(HttpStatus.BAD_REQUEST,"6400", "인증 번호가 틀렸습니다."),

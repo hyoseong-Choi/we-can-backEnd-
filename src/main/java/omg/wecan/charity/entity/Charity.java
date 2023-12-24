@@ -37,11 +37,16 @@ public class Charity extends BaseEntity {
     }
 
     public void change(String name, CharityCategory category, String explanation, String imgEndpoint, String pageEndpoint){
-        this.name = name;
-        this.category = category;
-        this.explanation = explanation;
-        this.imgEndpoint = imgEndpoint;
-        this.pageEndpoint = pageEndpoint;
+        if(name != null)
+            this.name = name;
+        if(category != null)
+            this.category = category;
+        if(explanation != null)
+            this.explanation = explanation;
+        if(imgEndpoint != null)
+            this.imgEndpoint = imgEndpoint;
+        if(pageEndpoint != null)
+            this.pageEndpoint = pageEndpoint;
     }
     
     public Charity(String charityName) {
