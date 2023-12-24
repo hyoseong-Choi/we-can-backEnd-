@@ -33,6 +33,9 @@ public class ChallengeCheck {
     @OneToMany(mappedBy = "challengeCheck", cascade = CascadeType.ALL)
     private List<ChallengeCheckImage> challengeCheckImages;
 
+    @OneToMany(mappedBy = "challengeCheck", cascade = CascadeType.ALL)
+    private List<DislikeCheck> dislikeChecks;
+
     @PrePersist
     protected void onCreate() {
         checkDate = LocalDateTime.now();
@@ -42,6 +45,10 @@ public class ChallengeCheck {
         this.user = user;
         this.challenge = challenge;
         this.dislike = 0;
+    }
+
+    public void increaseDislike() {
+        this.dislike++;
     }
 
 

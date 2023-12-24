@@ -3,6 +3,8 @@ package omg.wecan.user.entity;
 import jakarta.persistence.*;
 import lombok.Getter;
 import omg.wecan.challenge.entity.ChallengeCheck;
+import omg.wecan.challenge.entity.ChallengeCheckImage;
+import omg.wecan.challenge.entity.DislikeCheck;
 import omg.wecan.challenge.entity.UserChallenge;
 import omg.wecan.global.entity.BaseEntity;
 import omg.wecan.infrastructure.oauth.basic.domain.OauthServerType;
@@ -39,6 +41,10 @@ public class User extends BaseEntity {
     private List<UserChallenge> userChallenges;
     @OneToMany(mappedBy = "user", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<Review> reviews;
+    @OneToMany(mappedBy = "user", cascade = CascadeType.ALL)
+    private List<DislikeCheck> dislikeChecks;
+    @OneToMany(mappedBy = "user", cascade = CascadeType.ALL)
+    private List<ChallengeCheckImage> challengeCheckImages;
 
     public User() {
 

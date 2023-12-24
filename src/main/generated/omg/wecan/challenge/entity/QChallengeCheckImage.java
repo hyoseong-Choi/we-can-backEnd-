@@ -32,6 +32,8 @@ public class QChallengeCheckImage extends EntityPathBase<ChallengeCheckImage> {
 
     public final StringPath storedName = createString("storedName");
 
+    public final omg.wecan.user.entity.QUser user;
+
     public QChallengeCheckImage(String variable) {
         this(ChallengeCheckImage.class, forVariable(variable), INITS);
     }
@@ -51,6 +53,7 @@ public class QChallengeCheckImage extends EntityPathBase<ChallengeCheckImage> {
     public QChallengeCheckImage(Class<? extends ChallengeCheckImage> type, PathMetadata metadata, PathInits inits) {
         super(type, metadata, inits);
         this.challengeCheck = inits.isInitialized("challengeCheck") ? new QChallengeCheck(forProperty("challengeCheck"), inits.get("challengeCheck")) : null;
+        this.user = inits.isInitialized("user") ? new omg.wecan.user.entity.QUser(forProperty("user")) : null;
     }
 
 }

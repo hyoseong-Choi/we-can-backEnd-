@@ -30,6 +30,8 @@ public class QChallengeCheck extends EntityPathBase<ChallengeCheck> {
 
     public final NumberPath<Integer> dislike = createNumber("dislike", Integer.class);
 
+    public final ListPath<DislikeCheck, QDislikeCheck> dislikeChecks = this.<DislikeCheck, QDislikeCheck>createList("dislikeChecks", DislikeCheck.class, QDislikeCheck.class, PathInits.DIRECT2);
+
     public final NumberPath<Long> id = createNumber("id", Long.class);
 
     public final omg.wecan.user.entity.QUser user;

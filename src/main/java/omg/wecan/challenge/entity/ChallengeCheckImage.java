@@ -4,6 +4,7 @@ import lombok.AccessLevel;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
+import omg.wecan.user.entity.User;
 
 import java.util.UUID;
 
@@ -22,6 +23,10 @@ public class ChallengeCheckImage {
     @JoinColumn(name = "check_id")
     private ChallengeCheck challengeCheck;
 
+    @ManyToOne
+    @JoinColumn(name = "user_id")
+    private User user;
+
     private String originName;
 
     private String storedName;
@@ -29,6 +34,7 @@ public class ChallengeCheckImage {
     private String imageUrl;
 
     public ChallengeCheckImage(ChallengeCheck challengeCheck, String originName) {
+        this.user = challengeCheck.getUser();
         this.challengeCheck = challengeCheck;
         this.originName = originName;
         this.storedName = getFileName(originName);

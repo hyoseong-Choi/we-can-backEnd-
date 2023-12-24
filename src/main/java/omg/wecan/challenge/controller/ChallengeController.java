@@ -40,12 +40,6 @@ public class ChallengeController {
         return ResponseEntity.ok(ApiResponse.success(completedChallenges));
     }
 
-    // 챌린지 페이지 조회
-//    @GetMapping("info/{challengeId}")
-//    public ResponseEntity<ApiResponse<List<ChallengeDetailsDto>>> getChallengeInfo(@PathVariable Long challengeId) {
-//        List<ChallengeDetailsDto> challengeInfo = challengeService.getChallengeInfo(challengeId);
-//        return ResponseEntity.ok(ApiResponse.success(challengeInfo));
-//    }
 
     @PostMapping("checkroom/upload")
     public ResponseEntity<ApiResponse<ChallengeCheckResultDto>> saveChallengeCheck(
@@ -57,4 +51,12 @@ public class ChallengeController {
     }
 
 
+    @PostMapping("checkroom/dislike/{challengeCheckId}")
+    public ResponseEntity<ApiResponse<ChallengeCheckResultDto>> dislikeChallengeCheck(
+            @AuthenticationPrincipal User user,
+            @PathVariable Long challengeCheckId
+    ) {
+        ChallengeCheckResultDto challengeCheckResult = challengeService.dislikeChallengeCheck(user, challengeCheckId);
+        return ResponseEntity.ok(ApiResponse.success(challengeCheckResult));
+    }
 }

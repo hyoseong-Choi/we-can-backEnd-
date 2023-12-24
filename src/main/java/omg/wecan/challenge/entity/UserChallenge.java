@@ -28,4 +28,8 @@ public class UserChallenge {
         userChallenge.failNum = 0;
         return userChallenge;
     }
+
+    public void increaseFailNum() {
+        this.failNum++;
+    }
 }

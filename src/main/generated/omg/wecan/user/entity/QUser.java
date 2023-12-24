@@ -24,10 +24,14 @@ public class QUser extends EntityPathBase<User> {
 
     public final NumberPath<Long> candy = createNumber("candy", Long.class);
 
+    public final ListPath<omg.wecan.challenge.entity.ChallengeCheckImage, omg.wecan.challenge.entity.QChallengeCheckImage> challengeCheckImages = this.<omg.wecan.challenge.entity.ChallengeCheckImage, omg.wecan.challenge.entity.QChallengeCheckImage>createList("challengeCheckImages", omg.wecan.challenge.entity.ChallengeCheckImage.class, omg.wecan.challenge.entity.QChallengeCheckImage.class, PathInits.DIRECT2);
+
     public final ListPath<omg.wecan.challenge.entity.ChallengeCheck, omg.wecan.challenge.entity.QChallengeCheck> challengeChecks = this.<omg.wecan.challenge.entity.ChallengeCheck, omg.wecan.challenge.entity.QChallengeCheck>createList("challengeChecks", omg.wecan.challenge.entity.ChallengeCheck.class, omg.wecan.challenge.entity.QChallengeCheck.class, PathInits.DIRECT2);
 
     //inherited
     public final DateTimePath<java.time.LocalDateTime> createdAt = _super.createdAt;
+
+    public final ListPath<omg.wecan.challenge.entity.DislikeCheck, omg.wecan.challenge.entity.QDislikeCheck> dislikeChecks = this.<omg.wecan.challenge.entity.DislikeCheck, omg.wecan.challenge.entity.QDislikeCheck>createList("dislikeChecks", omg.wecan.challenge.entity.DislikeCheck.class, omg.wecan.challenge.entity.QDislikeCheck.class, PathInits.DIRECT2);
 
     public final StringPath email = createString("email");
 
