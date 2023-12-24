@@ -26,7 +26,6 @@ public class EventHandler {
     @Async
     public void handleRecruitCommentEvent(RecruitCommentEvent recruitCommentEvent) {
         //로그인하면 레디스에 유저아이디, 토큰 저장?
-        log.info("이벤트 Thread Id : {}", Thread.currentThread().getId());
         notificationRepository.save(new Notifications(recruitCommentEvent));
 //        Notification notification = Notification.builder()
 //                .setTitle("누군가 " + recruitCommentEvent.getUser().getNickName() + " 님을 멘션했어요.")
@@ -51,7 +50,6 @@ public class EventHandler {
     @EventListener
     @Async
     public void handleMinimumParticipateEvent(MinimumParticipateEvent minimumParticipateEvent) {
-        log.info("이벤트 Thread Id : {}", Thread.currentThread().getId());
         for (Participate participate : minimumParticipateEvent.getParticipateList()) {
             notificationRepository.save(new Notifications(participate, minimumParticipateEvent.getRecruitTitle()));
         }
@@ -82,7 +80,6 @@ public class EventHandler {
     @EventListener
     @Async
     public void handleChallengeStartEvent(ChallengeStartEvent challengeStartEvent) {
-        log.info("이벤트 Thread Id : {}", Thread.currentThread().getId());
         for (Participate participate : challengeStartEvent.getParticipateList()) {
             notificationRepository.save(new Notifications(challengeStartEvent.getRecruitTitle(), participate));
         }
@@ -114,7 +111,6 @@ public class EventHandler {
     @Async
     @Transactional(propagation = Propagation.REQUIRES_NEW)
     public void handleBuyItemEvent(BuyItemEvent buyItemEvent) {
-        log.info("이벤트 Thread Id : {}", Thread.currentThread().getId());
         notificationRepository.save(new Notifications(buyItemEvent));
         
 //                Notification notification = Notification.builder()
