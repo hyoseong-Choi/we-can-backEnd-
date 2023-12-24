@@ -28,6 +28,8 @@ public class QRecruit extends EntityPathBase<Recruit> {
 
     public final omg.wecan.charity.entity.QCharity charity;
 
+    public final StringPath charityNotInDb = createString("charityNotInDb");
+
     public final StringPath checkDay = createString("checkDay");
 
     public final StringPath content = createString("content");
@@ -45,13 +47,19 @@ public class QRecruit extends EntityPathBase<Recruit> {
 
     public final BooleanPath finished = createBoolean("finished");
 
+    public final ListPath<Heart, QHeart> heart = this.<Heart, QHeart>createList("heart", Heart.class, QHeart.class, PathInits.DIRECT2);
+
     public final NumberPath<Integer> heartNum = createNumber("heartNum", Integer.class);
 
     public final NumberPath<Long> id = createNumber("id", Long.class);
 
     public final NumberPath<Integer> minPeople = createNumber("minPeople", Integer.class);
 
+    public final ListPath<Participate, QParticipate> participate = this.<Participate, QParticipate>createList("participate", Participate.class, QParticipate.class, PathInits.DIRECT2);
+
     public final EnumPath<omg.wecan.recruit.Enum.PaymentType> paymentType = createEnum("paymentType", omg.wecan.recruit.Enum.PaymentType.class);
+
+    public final ListPath<RecruitComment, QRecruitComment> recruitComment = this.<RecruitComment, QRecruitComment>createList("recruitComment", RecruitComment.class, QRecruitComment.class, PathInits.DIRECT2);
 
     public final DatePath<java.time.LocalDate> startDate = createDate("startDate", java.time.LocalDate.class);
 

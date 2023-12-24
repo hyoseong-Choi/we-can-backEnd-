@@ -2,9 +2,13 @@ package omg.wecan.user.entity;
 
 import jakarta.persistence.*;
 import lombok.Getter;
+import omg.wecan.challenge.entity.ChallengeCheck;
+import omg.wecan.challenge.entity.UserChallenge;
 import omg.wecan.global.entity.BaseEntity;
 import omg.wecan.infrastructure.oauth.basic.domain.OauthServerType;
+import omg.wecan.review.entity.Review;
 
+import java.util.List;
 import java.util.regex.Pattern;
 
 @Entity
@@ -29,6 +33,13 @@ public class User extends BaseEntity {
     @Enumerated(EnumType.STRING)
     private ROLE role;
     String refreshToken;
+    @OneToMany(mappedBy = "user", cascade = CascadeType.ALL, orphanRemoval = true)
+    private List<ChallengeCheck> challengeChecks;
+    @OneToMany(mappedBy = "user", cascade = CascadeType.ALL, orphanRemoval = true)
+    private List<UserChallenge> userChallenges;
+    @OneToMany(mappedBy = "user", cascade = CascadeType.ALL, orphanRemoval = true)
+    private List<Review> reviews;
+
     public User() {
 
     }

@@ -22,6 +22,8 @@ public class QChallenge extends EntityPathBase<Challenge> {
 
     public static final QChallenge challenge = new QChallenge("challenge");
 
+    public final ListPath<ChallengeCheck, QChallengeCheck> challengeChecks = this.<ChallengeCheck, QChallengeCheck>createList("challengeChecks", ChallengeCheck.class, QChallengeCheck.class, PathInits.DIRECT2);
+
     public final EnumPath<omg.wecan.recruit.Enum.ChallengeType> challengeType = createEnum("challengeType", omg.wecan.recruit.Enum.ChallengeType.class);
 
     public final StringPath charityName = createString("charityName");
@@ -32,11 +34,11 @@ public class QChallenge extends EntityPathBase<Challenge> {
 
     public final StringPath coverImageEndpoint = createString("coverImageEndpoint");
 
+    public final NumberPath<Integer> donationAmount = createNumber("donationAmount", Integer.class);
+
     public final DatePath<java.time.LocalDate> endDate = createDate("endDate", java.time.LocalDate.class);
 
     public final NumberPath<Integer> finePerOnce = createNumber("finePerOnce", Integer.class);
-
-    public final BooleanPath finished = createBoolean("finished");
 
     public final NumberPath<Long> id = createNumber("id", Long.class);
 
@@ -44,9 +46,15 @@ public class QChallenge extends EntityPathBase<Challenge> {
 
     public final NumberPath<Integer> peopleNum = createNumber("peopleNum", Integer.class);
 
+    public final ListPath<omg.wecan.review.entity.Review, omg.wecan.review.entity.QReview> reviews = this.<omg.wecan.review.entity.Review, omg.wecan.review.entity.QReview>createList("reviews", omg.wecan.review.entity.Review.class, omg.wecan.review.entity.QReview.class, PathInits.DIRECT2);
+
     public final DatePath<java.time.LocalDate> startDate = createDate("startDate", java.time.LocalDate.class);
 
+    public final EnumPath<omg.wecan.challenge.Enum.ChallengeStateType> state = createEnum("state", omg.wecan.challenge.Enum.ChallengeStateType.class);
+
     public final StringPath title = createString("title");
+
+    public final NumberPath<Integer> totalCheckNum = createNumber("totalCheckNum", Integer.class);
 
     public final ListPath<UserChallenge, QUserChallenge> userChallenge = this.<UserChallenge, QUserChallenge>createList("userChallenge", UserChallenge.class, QUserChallenge.class, PathInits.DIRECT2);
 
