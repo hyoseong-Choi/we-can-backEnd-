@@ -2,11 +2,8 @@ package omg.wecan.challenge.controller;
 
 import lombok.RequiredArgsConstructor;
 import omg.wecan.auth.presentation.AuthenticationPrincipal;
-import omg.wecan.challenge.dto.ChallengeCheckInputDto;
-import omg.wecan.challenge.dto.ChallengeCheckResultDto;
-import omg.wecan.challenge.dto.ChallengeCheckRoomDto;
+import omg.wecan.challenge.dto.*;
 import omg.wecan.challenge.service.ChallengeService;
-import omg.wecan.challenge.dto.ChallengeDto;
 import omg.wecan.user.entity.User;
 import omg.wecan.util.ApiResponse;
 import org.springframework.http.ResponseEntity;
@@ -39,6 +36,15 @@ public class ChallengeController {
     public ResponseEntity<ApiResponse<List<ChallengeDto>>> getCompletedChallengeByUser(@PathVariable Long userId) {
         List<ChallengeDto> completedChallenges = challengeService.getCompletedChallengesByUser(userId);
         return ResponseEntity.ok(ApiResponse.success(completedChallenges));
+    }
+
+    @GetMapping("info/{challengeId}")
+    public ResponseEntity<ApiResponse<ChallengeInfoDto>> getChallengeInfo(
+            @AuthenticationPrincipal User user,
+            @PathVariable Long challengeId
+    ) {
+        ChallengeInfoDto challengeInfoDto = challengeService.getChallengeInfo(user, challengeId);
+        return ResponseEntity.ok(ApiResponse.success(challengeInfoDto));
     }
 
     @GetMapping("checkroom/{challengeId}")

@@ -10,6 +10,7 @@ import omg.wecan.challenge.entity.*;
 import omg.wecan.challenge.repository.*;
 import omg.wecan.exception.customException.CustomException;
 import omg.wecan.exception.customException.ErrorCode;
+import omg.wecan.recruit.Enum.PaymentType;
 import omg.wecan.user.entity.User;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
@@ -175,5 +176,21 @@ public class ChallengeService {
                 .map(ChallengeCheckImage::getImageUrl)
                 .collect(Collectors.toList());
 
+    }
+
+    public ChallengeInfoDto getChallengeInfo(User user,Long challengeId) {
+        Challenge challenge = challengeRepository.findById(challengeId)
+                .orElseThrow(() -> new CustomException(ErrorCode.CHALLENGE_NOT_FOUND, "challengeId: "+challengeId));
+
+        int donationCandy = challenge.getDonationCandy();
+
+        if (PaymentType.PERSONAL.equals(challenge.getPaymentType())) {
+            UserChallenge userChallenge = userChallengeRepository.findByChallengeIdAndUser(challengeId, user)
+                    .orElseThrow(() -> new CustomException(ErrorCode.USER_NOT_FOUND));
+
+            donationCandy = challenge.decreaseDonationCandy(userChallenge.getFailNum());
+        }
+
+        return new ChallengeInfoDto(challenge.getTitle(), challenge.getStartDate(), challenge.getEndDate(), donationCandy);
     }
 }

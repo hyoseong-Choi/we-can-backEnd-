@@ -8,6 +8,7 @@ import omg.wecan.recruit.Enum.ChallengeType;
 import omg.wecan.recruit.Enum.PaymentType;
 import omg.wecan.recruit.entity.Recruit;
 import omg.wecan.review.entity.Review;
+import omg.wecan.user.entity.User;
 
 import java.time.DayOfWeek;
 import java.time.LocalDate;
@@ -42,14 +43,14 @@ public class Challenge {
     @Enumerated(value = EnumType.STRING)
     private ChallengeStateType state;
     private int finePerOnce;
-    private int donationAmount;
+    private int donationCandy;
     private int totalCheckNum;
     @OneToMany(mappedBy = "challenge", cascade = CascadeType.ALL)
     private List<ChallengeCheck> challengeChecks;
     @OneToMany(mappedBy = "challenge", cascade = CascadeType.ALL)
     private List<Review> reviews;
 
-    public static Challenge createChallenge(Recruit recruit, int peopleNum, int donationAmount, LocalDate startDate) {
+    public static Challenge createChallenge(Recruit recruit, int peopleNum, int donationCandy, LocalDate startDate) {
         Challenge challenge = new Challenge();
         challenge.title = recruit.getTitle();
         challenge.chattingRoom = new ChattingRoom(challenge);
@@ -63,7 +64,7 @@ public class Challenge {
         challenge.coverImageEndpoint = recruit.getCoverImageEndpoint();
         challenge.state = Upcoming;
         challenge.finePerOnce = recruit.getFine();
-        challenge.donationAmount = donationAmount;
+        challenge.donationCandy = donationCandy;
         challenge.totalCheckNum = countCheckDays(challenge.checkDay, challenge.startDate, challenge.endDate);
 
         return challenge;
@@ -113,5 +114,9 @@ public class Challenge {
             return recruit.getCharityNotInDb();
         }
         return recruit.getCharity().getName();
+    }
+
+    public int decreaseDonationCandy(int failNum) {
+       return donationCandy - finePerOnce * failNum;
     }
 }

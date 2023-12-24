@@ -34,7 +34,7 @@ public class QChallenge extends EntityPathBase<Challenge> {
 
     public final StringPath coverImageEndpoint = createString("coverImageEndpoint");
 
-    public final NumberPath<Integer> donationAmount = createNumber("donationAmount", Integer.class);
+    public final NumberPath<Integer> donationCandy = createNumber("donationCandy", Integer.class);
 
     public final DatePath<java.time.LocalDate> endDate = createDate("endDate", java.time.LocalDate.class);
 
