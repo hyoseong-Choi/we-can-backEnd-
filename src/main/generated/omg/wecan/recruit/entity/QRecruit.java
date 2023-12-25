@@ -26,6 +26,8 @@ public class QRecruit extends EntityPathBase<Recruit> {
 
     public final DatePath<java.time.LocalDate> challengeEndTime = createDate("challengeEndTime", java.time.LocalDate.class);
 
+    public final DatePath<java.time.LocalDate> challengeStartTime = createDate("challengeStartTime", java.time.LocalDate.class);
+
     public final omg.wecan.charity.entity.QCharity charity;
 
     public final StringPath charityNotInDb = createString("charityNotInDb");
@@ -40,6 +42,8 @@ public class QRecruit extends EntityPathBase<Recruit> {
 
     //inherited
     public final DateTimePath<java.time.LocalDateTime> createdAt = _super.createdAt;
+
+    public final NumberPath<Integer> donationCandy = createNumber("donationCandy", Integer.class);
 
     public final DatePath<java.time.LocalDate> endDate = createDate("endDate", java.time.LocalDate.class);
 

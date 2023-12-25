@@ -50,12 +50,12 @@ public class Challenge {
     @OneToMany(mappedBy = "challenge", cascade = CascadeType.ALL)
     private List<Review> reviews;
 
-    public static Challenge createChallenge(Recruit recruit, int peopleNum, int donationCandy, LocalDate startDate) {
+    public static Challenge createChallenge(Recruit recruit, int peopleNum) {
         Challenge challenge = new Challenge();
         challenge.title = recruit.getTitle();
         challenge.chattingRoom = new ChattingRoom(challenge);
         challenge.challengeType = recruit.getType();
-        challenge.startDate = startDate;
+        challenge.startDate = recruit.getChallengeStartTime();
         challenge.endDate = recruit.getChallengeEndTime();
         challenge.peopleNum = peopleNum;
         challenge.checkDay = recruit.getCheckDay();
@@ -64,7 +64,7 @@ public class Challenge {
         challenge.coverImageEndpoint = recruit.getCoverImageEndpoint();
         challenge.state = Upcoming;
         challenge.finePerOnce = recruit.getFine();
-        challenge.donationCandy = donationCandy;
+        challenge.donationCandy = recruit.getDonationCandy();
         challenge.totalCheckNum = countCheckDays(challenge.checkDay, challenge.startDate, challenge.endDate);
 
         return challenge;

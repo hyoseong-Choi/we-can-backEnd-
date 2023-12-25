@@ -27,24 +27,17 @@ public class RecruitToChallengeService {
     
     //끝난 모집글 가져와서 피시니 해주고 참여한 애들 챌린지 만들어주고 userchallenge로 보내주고
     @Transactional
-    @Scheduled(cron = "00 13 08 * * *")
+    @Scheduled(cron = "00 30 02 * * *")
     public void recruitToChallenge() {
         List<Recruit> finishedRecruits = recruitRepository.findByEndDateIs(LocalDate.now().minusDays(1));
         System.out.println(LocalDate.now().minusDays(1));
         for (Recruit recruit : finishedRecruits) {
             recruit.changeFinished();
             List<Participate> participatesByRecruit = participateRepository.findByRecruit(recruit);
-            Challenge newChallenge = challengeRepository.save(Challenge.createChallenge(recruit, participatesByRecruit.size(), 100000, LocalDate.of(2023, 12, 23)));
+            Challenge newChallenge = challengeRepository.save(Challenge.createChallenge(recruit, participatesByRecruit.size()));
             for (Participate participate : participatesByRecruit) {
                 userChallengeRepository.save(UserChallenge.createUserChallenge(participate, newChallenge));
             }
         }
-
-        //시작 일에 도달한 챌린지 상태 병경
-        List<Challenge> activeChallenges = challengeRepository.findByStartDateIs(LocalDate.now());
-        for (Challenge challenge : activeChallenges) {
-            challenge.setState(ChallengeStateType.Active);
-        }
-
     }
 }

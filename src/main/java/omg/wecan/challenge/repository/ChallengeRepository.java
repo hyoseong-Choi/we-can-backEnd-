@@ -13,5 +13,6 @@ public interface ChallengeRepository extends JpaRepository<Challenge, Long> {
 
     List<Challenge> findByStartDateIs(LocalDate now);
 
+    List<Challenge> findByEndDateIs(LocalDate now);
 }
 
