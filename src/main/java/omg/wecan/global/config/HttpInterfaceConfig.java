@@ -1,4 +1,4 @@
-package omg.wecan.infrastructure.oauth.basic.config;
+package omg.wecan.global.config;
 
 import omg.wecan.infrastructure.oauth.kakao.client.KakaoApiClient;
 import org.springframework.context.annotation.Bean;

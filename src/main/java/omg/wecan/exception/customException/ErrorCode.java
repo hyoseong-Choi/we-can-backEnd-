@@ -35,9 +35,14 @@ public enum ErrorCode {
     //Shop
     USERITEM_NOT_FOUND(HttpStatus.NOT_FOUND,"7404", "구매한 아이템이 없습니다."),
     REJECT_PAYMENT(HttpStatus.FORBIDDEN,"7403", "캔디가 부족합니다."),
-    ;
     
-    
+    //payment
+    ORDER_NOT_FOUND(HttpStatus.BAD_REQUEST,"8404", "해당 주문내역이 없습니다."),
+    ORDER_AMOUNT_MISMATCH(HttpStatus.BAD_REQUEST,"8400", "주문 금액이 다릅니다."),
+
+    //toss
+    TOSS_FAIL(HttpStatus.BAD_REQUEST, "9400", "토스 요청에 실패했습니다");
+
 
     private final HttpStatus status;
     private final String code;

@@ -1,0 +1,7 @@
+payments:
+  toss:
+    client_key: test_ck_d46qopOB897w9vbdey27VZmM75y0
+    secret_key: test_sk_yL0qZ4G1VOdvl9ZQKJznroWb2MQY
+
+    success_url: http://localhost:8080/payment/toss/success
+    fail_url: http://localhost:8080/payment/toss/fail

@@ -36,3 +36,6 @@ out/
 ### VS Code ###
 .vscode/
 /src/main/resources/application.properties
+
+##toss 정보
+src/main/resources/application-toss.yml
