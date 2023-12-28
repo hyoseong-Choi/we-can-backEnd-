@@ -13,7 +13,7 @@ public class CommentAddInput {
     @NotBlank
     String content;
 
-    Long parentCommentId;//대댓글
+//    Long parentCommentId;//대댓글
 
-    Integer depth; //대댓글.
+//    Integer depth; //대댓글.
 }
