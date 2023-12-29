@@ -125,7 +125,7 @@ public class RecruitService {
             Optional<User> mentionedUser = userRepository.findByNickName(content.substring(1, content.indexOf(" ")));
             if (mentionedUser.isPresent()) {
                 log.info("퍼블전 Thread Id : {}", Thread.currentThread().getId());
-                eventPublisher.publishEvent(new RecruitCommentEvent(mentionedUser.get(), content.substring(content.indexOf(" ")+1)));
+                eventPublisher.publishEvent(new RecruitCommentEvent(loginUser, mentionedUser.get(), content.substring(content.indexOf(" ")+1)));
             }
             return new CommentOutput(recruitCommentRepository.save(RecruitComment.createRecruitComment(loginUser, recruit, commentAddInput)));
         }
@@ -140,7 +140,7 @@ public class RecruitService {
             log.info("퍼블전 Thread Id : {}", Thread.currentThread().getId());
             eventPublisher.publishEvent(new MinimumParticipateEvent(participateRepository.findUserByRecruit(recruit), recruit.getTitle()));
         }
-        return recruit.getParticipate().size();
+        return participateNum;
     }
     
     public Integer deleteParticipate(User loginUser, DeleteParticipateAndHeartInput deleteParticipateAndHeartInput) {
