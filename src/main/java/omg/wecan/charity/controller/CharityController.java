@@ -29,15 +29,15 @@ public class CharityController {
 
     @GetMapping()
     ResponseEntity<ApiResponse<CharityResponses>> findAll(@RequestParam(name = "category", defaultValue = "ALL") String category,
-                                             @RequestParam(name = "explanation", required = false) String explanation){
+                                             @RequestParam(name = "name", required = false) String name){
 
         CharityCategory charityCategory = CharityCategory.valueOf(category.toUpperCase());
         CharityResponses innerResponse;
 
-        if(explanation == null)
+        if(name == null)
             innerResponse = charityService.findAllByCategory(charityCategory);
         else
-            innerResponse = charityService.findAllByCategoryAndName(charityCategory, explanation);
+            innerResponse = charityService.findAllByCategoryAndName(charityCategory, name);
 
         return ResponseEntity.ok().body(ApiResponse.success(innerResponse));
     }
