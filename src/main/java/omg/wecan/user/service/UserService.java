@@ -65,4 +65,10 @@ public class UserService {
 
         userRepository.delete(user);
     }
+
+    public void addCandy(Long userId, long candyCnt){
+        User user = findById(userId);
+        long currentCandy = user.getCandy();
+        user.setCandy(currentCandy + candyCnt);
+    }
 }

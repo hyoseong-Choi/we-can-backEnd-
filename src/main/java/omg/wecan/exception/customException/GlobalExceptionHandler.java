@@ -3,19 +3,17 @@ package omg.wecan.exception.customException;
 import omg.wecan.auth.exception.EmptyAuthorizationHeaderException;
 import omg.wecan.jwt.exception.InvalidTokenException;
 import org.springframework.http.HttpStatus;
-import org.springframework.http.HttpStatusCode;
 import org.springframework.http.ResponseEntity;
 import org.springframework.http.converter.HttpMessageNotReadableException;
 import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
 
-import java.util.NoSuchElementException;
 
 @RestControllerAdvice
 public class GlobalExceptionHandler {
     @ExceptionHandler(value = CustomException.class)
-    public ResponseEntity<ErrorResponse> handleMayoException( CustomException e){
+    public ResponseEntity<ErrorResponse> handleCustomException( CustomException e){
         ErrorResponse errorResponse = ErrorResponse.builder()
                 .code(e.getCode().getCode())
                 .message(e.getMessage())
