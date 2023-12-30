@@ -3,8 +3,6 @@ package omg.wecan.recruit.controller;
 import lombok.RequiredArgsConstructor;
 import omg.wecan.auth.presentation.AuthenticationPrincipal;
 import omg.wecan.recruit.dto.*;
-import omg.wecan.recruit.entity.Recruit;
-import omg.wecan.recruit.entity.RecruitComment;
 import omg.wecan.recruit.service.RecruitService;
 import omg.wecan.user.entity.User;
 import omg.wecan.util.ApiResponse;
@@ -22,7 +20,7 @@ public class RecruitController {
     private final RecruitService recruitService;
     
     @PostMapping("/recruit")
-    public ResponseEntity<ApiResponse<Recruit>> recruitAdd(@AuthenticationPrincipal User loginUser, @RequestBody RecruitInput recruitInput) {
+    public ResponseEntity<ApiResponse<RecruitDetailOutput>> recruitAdd(@AuthenticationPrincipal User loginUser, @ModelAttribute RecruitInput recruitInput) {
         return ResponseEntity.ok(ApiResponse.success(recruitService.addRecruit(loginUser, recruitInput)));
     }
     
@@ -47,32 +45,42 @@ public class RecruitController {
     }
     
     @GetMapping("/recruits")
-    public ResponseEntity<ApiResponse<Page<RecruitOutput>>> recruitFind(@AuthenticationPrincipal User loginUser, @ModelAttribute RecruitFindCond recruitFindCond, @PageableDefault(size = 4)Pageable pageable) {
+    public ResponseEntity<ApiResponse<Page<RecruitOutput>>> recruitFind(@AuthenticationPrincipal User loginUser, @ModelAttribute RecruitFindCond recruitFindCond, @PageableDefault(size = 12)Pageable pageable) {
         return ResponseEntity.ok(ApiResponse.success(recruitService.findRecruit(loginUser, recruitFindCond, pageable)));
     }
 
     @PostMapping("/recruit/comment")
-    public ResponseEntity<ApiResponse<RecruitComment>> recruitCommentAdd(@AuthenticationPrincipal User loginUser, @RequestBody CommentAddInput commentAddInput) {
+    public ResponseEntity<ApiResponse<CommentOutput>> recruitCommentAdd(@AuthenticationPrincipal User loginUser, @RequestBody CommentAddInput commentAddInput) {
         return ResponseEntity.ok(ApiResponse.success(recruitService.addRecruitComment(loginUser, commentAddInput)));
     }
     
     @PostMapping("/recruit/participation")
-    public ResponseEntity<ApiResponse<Long>> participateAdd(@AuthenticationPrincipal User loginUser, @RequestBody AddParticipateInput addParticipateInput) {
+    public ResponseEntity<ApiResponse<Integer>> participateAdd(@AuthenticationPrincipal User loginUser, @RequestBody AddParticipateInput addParticipateInput) {
         return ResponseEntity.ok(ApiResponse.success(recruitService.addParticipate(loginUser, addParticipateInput)));
     }
 
     @DeleteMapping("/recruit/participation")
-    public ResponseEntity<ApiResponse<Long>> participateDelete(@AuthenticationPrincipal User loginUser, @RequestBody DeleteParticipateAndHeartInput deleteParticipateAndHeartInput) {
+    public ResponseEntity<ApiResponse<Integer>> participateDelete(@AuthenticationPrincipal User loginUser, @RequestBody DeleteParticipateAndHeartInput deleteParticipateAndHeartInput) {
         return ResponseEntity.ok(ApiResponse.success(recruitService.deleteParticipate(loginUser, deleteParticipateAndHeartInput)));
     }
     
     @PostMapping("/recruit/heart")
-    public ResponseEntity<ApiResponse<Long>> heartAdd(@AuthenticationPrincipal User loginUser, @RequestBody AddHeartInput addHeartInput) {
+    public ResponseEntity<ApiResponse<Integer>> heartAdd(@AuthenticationPrincipal User loginUser, @RequestBody AddHeartInput addHeartInput) {
         return ResponseEntity.ok(ApiResponse.success(recruitService.addHeart(loginUser, addHeartInput)));
     }
 
     @DeleteMapping("/recruit/heart")
-    public ResponseEntity<ApiResponse<Long>> heartDelete(@AuthenticationPrincipal User loginUser, @RequestBody DeleteParticipateAndHeartInput deleteParticipateAndHeartInput) {
+    public ResponseEntity<ApiResponse<Integer>> heartDelete(@AuthenticationPrincipal User loginUser, @RequestBody DeleteParticipateAndHeartInput deleteParticipateAndHeartInput) {
         return ResponseEntity.ok(ApiResponse.success(recruitService.deleteHeart(loginUser, deleteParticipateAndHeartInput)));
+    }
+    
+    @GetMapping("/recruit/participation")
+    public ResponseEntity<ApiResponse<Page<ParticipateRecruitOutput>>> participateRecruitFind(@AuthenticationPrincipal User loginUser, @PageableDefault(size = 3)Pageable pageable) {
+        return ResponseEntity.ok(ApiResponse.success(recruitService.findParticipateRecruit(loginUser, pageable)));
+    }
+    
+    @GetMapping("/recruit/heart")
+    public ResponseEntity<ApiResponse<Page<HeartRecruitOutput>>> heartRecruitFind(@AuthenticationPrincipal User loginUser, @PageableDefault(size = 3)Pageable pageable) {
+        return ResponseEntity.ok(ApiResponse.success(recruitService.findHeartRecruit(loginUser, pageable)));
     }
 }

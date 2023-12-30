@@ -35,6 +35,14 @@ public class RecruitRepositoryImpl implements RecruitRepositoryCustom{
                 .offset(pageable.getOffset())
                 .limit(pageable.getPageSize())
                 .fetch();
+        
+        queryFactory
+                .select(recruit.count())
+                .from(recruit)
+                .where(titleContains(recruitFindCond.getTitle()),
+                        categoryEq(recruitFindCond.getCategory()),
+                        recruit.finished.eq(false))
+                .fetchOne();
         return new PageImpl<>(results, pageable, results.size());
     }
 
