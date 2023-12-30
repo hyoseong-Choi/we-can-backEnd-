@@ -9,13 +9,14 @@ import org.springframework.http.HttpStatus;
 public enum ErrorCode {
 
     //Challenge
-    CHALLENGE_NOT_FOUND(HttpStatus.NOT_FOUND,"1001", "해당 챌린지를 찾을 수 없습니다."),
+    CHALLENGE_NOT_FOUND(HttpStatus.NOT_FOUND,"1404", "해당 챌린지를 찾을 수 없습니다."),
+    CHALLENGE_CHECK_NOT_FOUND(HttpStatus.NOT_FOUND,"1404", "해당 챌린지 인증을 찾을 수 없습니다."),
 
     //Review
-    REVIEW_NOT_FOUND(HttpStatus.NOT_FOUND,"2001", "해당 리뷰 존재하지 않습니다."),
-    REVIEW_AUTHOR_MISMATCH(HttpStatus.FORBIDDEN,"2002", "리뷰 작성자와 로그인한 사용자가 일치하지 않습니다."),
-    CHALLENGE_AUTHOR_MISMATCH(HttpStatus.BAD_REQUEST,"2003", "기존 리뷰의 challengeId와 요청한 challengeId가 일치하지 않습니다."),
-    
+    REVIEW_NOT_FOUND(HttpStatus.NOT_FOUND,"2404", "해당 리뷰 존재하지 않습니다."),
+    REVIEW_AUTHOR_MISMATCH(HttpStatus.FORBIDDEN,"2400", "리뷰 작성자와 로그인한 사용자가 일치하지 않습니다."),
+    CHALLENGE_AUTHOR_MISMATCH(HttpStatus.BAD_REQUEST,"2400", "기존 리뷰의 challengeId와 요청한 challengeId가 일치하지 않습니다."),
+
     //Recruit
     RECRUIT_DATE_INVALID(HttpStatus.BAD_REQUEST,"5003", "챌린지 날짜가 유효하지 않습니다."),
 
@@ -35,9 +36,14 @@ public enum ErrorCode {
     //Shop
     USERITEM_NOT_FOUND(HttpStatus.NOT_FOUND,"7404", "구매한 아이템이 없습니다."),
     REJECT_PAYMENT(HttpStatus.FORBIDDEN,"7403", "캔디가 부족합니다."),
-    ;
     
-    
+    //payment
+    ORDER_NOT_FOUND(HttpStatus.BAD_REQUEST,"8404", "해당 주문내역이 없습니다."),
+    ORDER_AMOUNT_MISMATCH(HttpStatus.BAD_REQUEST,"8400", "주문 금액이 다릅니다."),
+
+    //toss
+    TOSS_FAIL(HttpStatus.BAD_REQUEST, "9400", "토스 요청에 실패했습니다");
+
 
     private final HttpStatus status;
     private final String code;

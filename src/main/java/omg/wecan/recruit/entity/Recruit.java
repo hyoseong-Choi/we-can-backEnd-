@@ -38,6 +38,7 @@ public class Recruit extends BaseEntity {
     private ChallengeType type;
     private LocalDate startDate;
     private LocalDate endDate;
+    private LocalDate challengeStartTime;
     private LocalDate challengeEndTime;
     private int minPeople;
     private String checkDay;
@@ -53,6 +54,7 @@ public class Recruit extends BaseEntity {
     private boolean finished;
     private int heartNum;
     private String charityNotInDb;
+    private int donationCandy;
     @OneToMany(mappedBy = "recruit", cascade = CascadeType.REMOVE)
     private List<Participate> participate;
     @OneToMany(mappedBy = "recruit", cascade = CascadeType.REMOVE)
