@@ -5,9 +5,13 @@ import omg.wecan.recruit.Enum.ChallengeType;
 import omg.wecan.recruit.Enum.PaymentType;
 import omg.wecan.recruit.entity.Recruit;
 import omg.wecan.recruit.entity.RecruitComment;
+import org.springframework.core.io.UrlResource;
 
+import java.io.IOException;
 import java.time.LocalDate;
+import java.util.Base64;
 import java.util.List;
+import java.util.stream.Collectors;
 
 @Data
 public class RecruitDetailOutput {
@@ -19,19 +23,21 @@ public class RecruitDetailOutput {
     private LocalDate challengeStartTime;
     private LocalDate challengeEndTime;
     private int minPeople;
-    private Long participatePeople;
+    private int participatePeople;
     private String checkDay;
     private PaymentType paymentType;
     private String content;
-    private String coverImageEndpoint;
+    private String coverImage;
     private int fine;
     private boolean finished;
     private boolean isParticipate;
     private boolean isHeart;
-    private List<RecruitComment> recruitComments;
+    private int heartNum;
+    private int commentsNum;
+    private List<CommentOutput> comments;
     
-    public RecruitDetailOutput(Recruit recruit, Long participatePeople, boolean isParticipate,
-                               boolean isHeart,List<RecruitComment> recruitComments) {
+    public RecruitDetailOutput(Recruit recruit, int participatePeople, boolean isParticipate,
+                               boolean isHeart, List<RecruitComment> recruitComments) {
         this.id = recruit.getId();
         this.writer = recruit.getWriter().getNickName();
         if (recruit.getCharity() == null) {
@@ -48,11 +54,17 @@ public class RecruitDetailOutput {
         this.checkDay = recruit.getCheckDay();
         this.paymentType = recruit.getPaymentType();
         this.content = recruit.getContent();
-        this.coverImageEndpoint = recruit.getCoverImageEndpoint();
+        try {
+            this.coverImage = Base64.getEncoder().encodeToString(new UrlResource("file:" + recruit.getCoverImageEndpoint()).getContentAsByteArray());
+        } catch (IOException e) {
+            throw new RuntimeException(e);
+        }
         this.fine = recruit.getFine();
         this.finished = recruit.isFinished();
         this.isHeart = isHeart;
+        this.heartNum = recruit.getHeartNum();
         this.isParticipate = isParticipate;
-        this.recruitComments = recruitComments;
+        this.comments = recruitComments.stream().map(CommentOutput::new).collect(Collectors.toList());
+        this.commentsNum = comments.size();
     }
 }

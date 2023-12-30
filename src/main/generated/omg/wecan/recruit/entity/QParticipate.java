@@ -22,13 +22,19 @@ public class QParticipate extends EntityPathBase<Participate> {
 
     public static final QParticipate participate = new QParticipate("participate");
 
+    public final omg.wecan.global.entity.QBaseEntity _super = new omg.wecan.global.entity.QBaseEntity(this);
+
+    //inherited
+    public final DateTimePath<java.time.LocalDateTime> createdAt = _super.createdAt;
+
     public final NumberPath<Long> id = createNumber("id", Long.class);
 
     public final BooleanPath leader = createBoolean("leader");
 
-    public final BooleanPath payment = createBoolean("payment");
-
     public final QRecruit recruit;
+
+    //inherited
+    public final DateTimePath<java.time.LocalDateTime> updatedAt = _super.updatedAt;
 
     public final omg.wecan.user.entity.QUser user;
 

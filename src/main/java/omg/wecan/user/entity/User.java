@@ -2,9 +2,15 @@ package omg.wecan.user.entity;
 
 import jakarta.persistence.*;
 import lombok.Getter;
+import omg.wecan.challenge.entity.ChallengeCheck;
+import omg.wecan.challenge.entity.ChallengeCheckImage;
+import omg.wecan.challenge.entity.DislikeCheck;
+import omg.wecan.challenge.entity.UserChallenge;
 import omg.wecan.global.entity.BaseEntity;
 import omg.wecan.infrastructure.oauth.basic.domain.OauthServerType;
+import omg.wecan.review.entity.Review;
 
+import java.util.List;
 import java.util.regex.Pattern;
 
 @Entity
@@ -29,6 +35,17 @@ public class User extends BaseEntity {
     @Enumerated(EnumType.STRING)
     private ROLE role;
     String refreshToken;
+    @OneToMany(mappedBy = "user", cascade = CascadeType.ALL, orphanRemoval = true)
+    private List<ChallengeCheck> challengeChecks;
+    @OneToMany(mappedBy = "user", cascade = CascadeType.ALL, orphanRemoval = true)
+    private List<UserChallenge> userChallenges;
+    @OneToMany(mappedBy = "user", cascade = CascadeType.ALL, orphanRemoval = true)
+    private List<Review> reviews;
+    @OneToMany(mappedBy = "user", cascade = CascadeType.ALL)
+    private List<DislikeCheck> dislikeChecks;
+    @OneToMany(mappedBy = "user", cascade = CascadeType.ALL)
+    private List<ChallengeCheckImage> challengeCheckImages;
+
     public User() {
 
     }
@@ -48,8 +65,16 @@ public class User extends BaseEntity {
     public void setRefreshToken(String refreshToken) {
         this.refreshToken = refreshToken;
     }
+
+    public void setCandy(long candy){
+        this.candy = candy;
+    }
     
     public void changePassword(String newPassword) {
         this.password = newPassword;
+    }
+    
+    public void minusCandy(int price) {
+        this.candy -= price;
     }
 }

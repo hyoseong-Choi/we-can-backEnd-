@@ -40,6 +40,7 @@ public class DonationCertificateService {
     }
 
     public void delete(Long id) {
+        donationCertificateRepository.getById(id);
         donationCertificateRepository.deleteById(id);
     }
 

@@ -30,8 +30,6 @@ public class Participate extends BaseEntity {
         participate.user = user;
         participate.recruit = recruit;
         participate.leader = true;
-        participate.setCreatedAt();
-        participate.setUpdatedAt();
         return participate;
     }
     
@@ -40,8 +38,6 @@ public class Participate extends BaseEntity {
         participate.user = user;
         participate.recruit = recruit;
         participate.leader = false;
-        participate.setCreatedAt();
-        participate.setUpdatedAt();
         return participate;
     }
 }
