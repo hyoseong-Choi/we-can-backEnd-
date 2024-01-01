@@ -1,6 +1,7 @@
 package omg.wecan.recruit.service;
 
 import lombok.RequiredArgsConstructor;
+import omg.wecan.challenge.Enum.ChallengeStateType;
 import omg.wecan.challenge.entity.Challenge;
 import omg.wecan.challenge.entity.UserChallenge;
 import omg.wecan.challenge.repository.ChallengeRepository;
@@ -26,15 +27,16 @@ public class RecruitToChallengeService {
     
     //끝난 모집글 가져와서 피시니 해주고 참여한 애들 챌린지 만들어주고 userchallenge로 보내주고
     @Transactional
-    @Scheduled(cron = "1 0 0 * * *")
+    @Scheduled(cron = "00 30 02 * * *")
     public void recruitToChallenge() {
         List<Recruit> finishedRecruits = recruitRepository.findByEndDateIs(LocalDate.now().minusDays(1));
+        System.out.println(LocalDate.now().minusDays(1));
         for (Recruit recruit : finishedRecruits) {
             recruit.changeFinished();
             List<Participate> participatesByRecruit = participateRepository.findByRecruit(recruit);
+            Challenge newChallenge = challengeRepository.save(Challenge.createChallenge(recruit, participatesByRecruit.size()));
             for (Participate participate : participatesByRecruit) {
-                userChallengeRepository.save(UserChallenge.createUserChallenge(participate,
-                        challengeRepository.save(Challenge.createChallenge(recruit, participatesByRecruit.size()))));
+                userChallengeRepository.save(UserChallenge.createUserChallenge(participate, newChallenge));
             }
         }
     }

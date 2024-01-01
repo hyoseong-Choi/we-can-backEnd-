@@ -23,7 +23,7 @@ public class Review {
     private User user;
 
     @ManyToOne
-    @JoinColumn(name = "id")
+    @JoinColumn(name = "challenge_id")
     private Challenge challenge;
 
     private String title;
