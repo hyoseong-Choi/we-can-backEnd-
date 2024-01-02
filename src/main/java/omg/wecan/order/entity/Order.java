@@ -11,6 +11,7 @@ import omg.wecan.payment.cashpayment.dto.response.CashPaymentResponse;
 @Builder
 @AllArgsConstructor
 @NoArgsConstructor
+@Table(name = "orders")
 public class Order extends BaseEntity {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
