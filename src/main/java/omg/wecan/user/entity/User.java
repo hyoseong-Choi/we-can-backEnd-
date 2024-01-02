@@ -21,10 +21,13 @@ public class User extends BaseEntity {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long userId;
+    @Column(nullable = false, unique = true)
     private String email;
+    @Column(nullable = false)
     private String password;
     private String name;
     private String nickName;
+    @Column(nullable = false)
     private String phone;
     private String imgEndPoint;
     private Long candy;
