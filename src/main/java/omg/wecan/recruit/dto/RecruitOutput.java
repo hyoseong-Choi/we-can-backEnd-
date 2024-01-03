@@ -1,6 +1,7 @@
 package omg.wecan.recruit.dto;
 
 import lombok.Data;
+import omg.wecan.recruit.entity.ElasticRecruit;
 import omg.wecan.recruit.entity.Recruit;
 import org.springframework.core.io.UrlResource;
 
@@ -24,6 +25,19 @@ public class RecruitOutput {
         this.category = recruit.getType().toString().toLowerCase();
         try {
             this.coverImage = Base64.getEncoder().encodeToString(new UrlResource("file:" + recruit.getCoverImageEndpoint()).getContentAsByteArray());
+        } catch (IOException e) {
+            throw new RuntimeException(e);
+        }
+        this.isHeart = isHeart;
+    }
+    
+    public RecruitOutput(ElasticRecruit recruit, boolean isHeart) {
+        this.id = recruit.getRecruit_id();
+        this.title = recruit.getTitle();
+        this.challengePeriod = recruit.getEndDate().plusDays(1) + " ~ " + recruit.getChallengeEndTime().toString();
+        this.category = recruit.getType().toLowerCase();
+        try {
+            this.coverImage = Base64.getEncoder().encodeToString(new UrlResource("file:" + recruit.getCoverImageEndpoit()).getContentAsByteArray());
         } catch (IOException e) {
             throw new RuntimeException(e);
         }

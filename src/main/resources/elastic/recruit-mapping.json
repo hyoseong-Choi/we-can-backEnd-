@@ -1,0 +1,25 @@
+{
+  "properties": {
+    "recruit_id": {
+      "type": "long"
+    },
+    "title": {
+      "type": "text",
+      "analyzer": "korean"
+    },
+    "endDate": {
+      "type": "date",
+      "format": "uuuu-MM-dd"
+    },
+    "challengeEndTime": {
+      "type": "date",
+      "format": "uuuu-MM-dd"
+    },
+    "type": {
+      "type": "keyword"
+    },
+    "coverImageEndpoit": {
+      "type": "text"
+    }
+  }
+}
