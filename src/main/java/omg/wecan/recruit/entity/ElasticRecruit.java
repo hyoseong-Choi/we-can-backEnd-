@@ -17,17 +17,11 @@ import java.time.LocalDateTime;
 @Mapping(mappingPath = "elastic/recruit-mapping.json")
 @Setting(settingPath = "elastic/recruit-setting.json")
 public class ElasticRecruit {
-    
     @Id
-    private Long recruit_id;
-    
+    private Long id;
     private String title;
-    
     private LocalDateTime endDate;
-    
     private LocalDateTime challengeEndTime;
-    
     private String type;
-    
     private String coverImageEndpoit;
 }
