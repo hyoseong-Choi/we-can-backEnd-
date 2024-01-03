@@ -32,7 +32,7 @@ public class RecruitOutput {
     }
     
     public RecruitOutput(ElasticRecruit recruit, boolean isHeart) {
-        this.id = recruit.getRecruit_id();
+        this.id = recruit.getId();
         this.title = recruit.getTitle();
         this.challengePeriod = recruit.getEndDate().plusDays(1) + " ~ " + recruit.getChallengeEndTime().toString();
         this.category = recruit.getType().toLowerCase();
