@@ -7,7 +7,9 @@ import omg.wecan.global.entity.BaseEntity;
 import omg.wecan.recruit.entity.Participate;
 import omg.wecan.user.entity.User;
 import omg.wecan.util.event.BuyItemEvent;
+import omg.wecan.util.event.PayChallengeEvent;
 import omg.wecan.util.event.RecruitCommentEvent;
+import omg.wecan.util.event.SettleChallengeEvent;
 
 
 @Entity
@@ -46,4 +48,24 @@ public class Notifications extends BaseEntity {
         this.title = "결제 완료 알림";
         this.content = buyItemEvent.getItem().getName() + " 구매가 완료되었습니다";
     }
+
+    public Notifications(PayChallengeEvent payChallengeEvent) {
+        this.targetUser = payChallengeEvent.getUser();
+        this.title = "챌린지 입장 비용 결제 알림";
+        this.content = payChallengeEvent.getChallenge().getTitle() + "에 대한 결제가 완료되었습니다.";
+    }
+
+    public Notifications(SettleChallengeEvent settleChallengeEvent) {
+        Long refundCandy = settleChallengeEvent.getRefundCandy();
+
+        this.targetUser = settleChallengeEvent.getUser();
+        this.title = "챌린지 정산 알림";
+
+        if(refundCandy != 0L)
+            this.content = settleChallengeEvent.getChallenge().getTitle() + "챌린지에 대한 캔디 " + refundCandy + "개가 환급되었습니다.";
+        else
+            this.content = settleChallengeEvent.getChallenge().getTitle() + "챌린지에 대한 환급 캔디가 없습니다";
+    }
+
+
 }

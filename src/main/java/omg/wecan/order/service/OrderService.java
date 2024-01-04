@@ -2,6 +2,7 @@ package omg.wecan.order.service;
 
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
+import omg.wecan.challenge.entity.Challenge;
 import omg.wecan.challenge.entity.UserChallenge;
 import omg.wecan.challenge.repository.UserChallengeRepository;
 import omg.wecan.challenge.service.ChallengeService;
@@ -18,6 +19,8 @@ import omg.wecan.shop.service.ItemService;
 import omg.wecan.user.entity.User;
 import omg.wecan.user.repository.UserRepository;
 import omg.wecan.util.event.BuyItemEvent;
+import omg.wecan.util.event.PayChallengeEvent;
+import org.hibernate.Hibernate;
 import org.springframework.context.ApplicationEventPublisher;
 import org.springframework.stereotype.Service;
 
@@ -41,7 +44,6 @@ public class OrderService {
 
         Order order = orderDto.toEntity(userId);
         orderRepository.save(order);
-        //eventPublish();
 
         return new OrderResponse(order, user);
     }
@@ -62,8 +64,6 @@ public class OrderService {
             challengeLogic(user, orderObjId);
         else if (orderType == OrderType.ITEM)
             itemLogic(user, orderObjId);
-        else if (orderType == OrderType.FINE)
-            fineLogic();
         else {
             throw new CustomException(ErrorCode.ORDER_TYPE_INVALID);
         }
@@ -73,19 +73,16 @@ public class OrderService {
 
     private void itemLogic(User user, Long itemId) {
         itemService.buyItemV2(user, itemId);
+        eventPublisher.publishEvent(new BuyItemEvent(user, itemService.getItemById(itemId)));
     }
 
     private void challengeLogic(User user, Long challengeId) {
         UserChallenge userChallenge = userChallengeRepository.findByChallengeIdAndUser(challengeId, user)
                 .orElseThrow(() -> new CustomException(ErrorCode.CHALLENGE_NOT_FOUND));
+        Challenge challenge = userChallenge.getChallenge();
+        Hibernate.initialize(challenge);
 
         userChallenge.setPayed(true);
-    }
-
-    private void fineLogic() {
-
-    }
-    private void eventPublish(OrderType orderType) {
-
+        eventPublisher.publishEvent(new PayChallengeEvent(user, challenge));
     }
 }
