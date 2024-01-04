@@ -25,10 +25,10 @@ public class EventHandler {
     @EventListener
     @Async
     public void handleRecruitCommentEvent(RecruitCommentEvent recruitCommentEvent) {
-        //로그인하면 레디스에 유저아이디, 토큰 저장?
+        //로그인하면 레디스에?db에? 유저아이디, 토큰 저장?
         notificationRepository.save(new Notifications(recruitCommentEvent));
 //        Notification notification = Notification.builder()
-//                .setTitle("누군가 " + recruitCommentEvent.getUser().getNickName() + " 님을 멘션했어요.")
+//                .setTitle("{누군가} " + recruitCommentEvent.getUser().getNickName() + " 님을 멘션했어요.")
 //                .setBody(recruitCommentEvent.getContent())
 //                .build();
 //
@@ -51,7 +51,10 @@ public class EventHandler {
     @Async
     public void handleMinimumParticipateEvent(MinimumParticipateEvent minimumParticipateEvent) {
         for (Participate participate : minimumParticipateEvent.getParticipateList()) {
-            notificationRepository.save(new Notifications(participate, minimumParticipateEvent.getRecruitTitle()));
+            if (participate.isLeader()) {
+                notificationRepository.save(new Notifications(participate, "모집한"));
+            }
+            notificationRepository.save(new Notifications(participate, "신청한"));
         }
 //
 //        Notification notification = Notification.builder()
