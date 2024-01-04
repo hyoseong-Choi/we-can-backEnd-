@@ -24,6 +24,8 @@ public class QUserChallenge extends EntityPathBase<UserChallenge> {
 
     public final QChallenge challenge;
 
+    public final NumberPath<Integer> failNum = createNumber("failNum", Integer.class);
+
     public final NumberPath<Long> id = createNumber("id", Long.class);
 
     public final BooleanPath leader = createBoolean("leader");
