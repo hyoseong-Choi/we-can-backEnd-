@@ -8,12 +8,10 @@
       "analyzer": "korean"
     },
     "endDate": {
-      "type": "date",
-      "format": "uuuu-MM-dd"
+      "type": "text"
     },
     "challengeEndTime": {
-      "type": "date",
-      "format": "uuuu-MM-dd"
+      "type": "text"
     },
     "type": {
       "type": "keyword"

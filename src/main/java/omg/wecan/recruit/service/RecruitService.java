@@ -39,6 +39,7 @@ public class RecruitService {
     private final RecruitCommentRepository recruitCommentRepository;
     private final FileStore fileStore;
     private final ApplicationEventPublisher eventPublisher;
+    private final ElasticRecruitService elasticRecruitService;
     
     public RecruitDetailOutput addRecruit(User loginUser, RecruitInput recruitInput) {
         Optional<Charity> optionalCharityByName = charityRepository.findByName(recruitInput.getCharityName());
@@ -47,11 +48,13 @@ public class RecruitService {
             Recruit recruit = Recruit.createRecruitByCharityNotInDb(loginUser, recruitInput, imgEndPoint);
             recruit = recruitRepository.save(recruit);
             participateRepository.save(Participate.createLeaderParticipate(loginUser, recruit));
+            elasticRecruitService.addRecruit(recruit.getId(), recruitInput, imgEndPoint);
             return new RecruitDetailOutput(recruit, 1, true, false, Collections.emptyList());
         }
         Recruit recruit = Recruit.createRecruit(loginUser, optionalCharityByName.get(), recruitInput, imgEndPoint);
         recruit = recruitRepository.save(recruit);
         participateRepository.save(Participate.createLeaderParticipate(loginUser, recruit));
+        elasticRecruitService.addRecruit(recruit.getId(), recruitInput, imgEndPoint);
         return new RecruitDetailOutput(recruit, 1, true, false, Collections.emptyList());
     }
     

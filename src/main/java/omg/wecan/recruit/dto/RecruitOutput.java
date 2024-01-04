@@ -6,6 +6,7 @@ import omg.wecan.recruit.entity.Recruit;
 import org.springframework.core.io.UrlResource;
 
 import java.io.IOException;
+import java.time.LocalDate;
 import java.util.Base64;
 
 
@@ -34,7 +35,7 @@ public class RecruitOutput {
     public RecruitOutput(ElasticRecruit recruit, boolean isHeart) {
         this.id = recruit.getId();
         this.title = recruit.getTitle();
-        this.challengePeriod = recruit.getEndDate().plusDays(1) + " ~ " + recruit.getChallengeEndTime().toString();
+        this.challengePeriod = LocalDate.parse(recruit.getEndDate()).plusDays(1) + " ~ " + LocalDate.parse(recruit.getChallengeEndTime());
         this.category = recruit.getType().toLowerCase();
         try {
             this.coverImage = Base64.getEncoder().encodeToString(new UrlResource("file:" + recruit.getCoverImageEndpoit()).getContentAsByteArray());
