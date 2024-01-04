@@ -3,6 +3,7 @@ package omg.wecan.challenge.controller;
 import lombok.RequiredArgsConstructor;
 import omg.wecan.auth.presentation.AuthenticationPrincipal;
 import omg.wecan.challenge.dto.*;
+import omg.wecan.challenge.entity.UserChallenge;
 import omg.wecan.challenge.service.ChallengeService;
 import omg.wecan.user.entity.User;
 import omg.wecan.util.ApiResponse;
@@ -22,6 +23,15 @@ public class ChallengeController {
     public ResponseEntity<ApiResponse<List<ChallengeDto>>> getActiveChallengeByUser(@PathVariable Long userId) {
         List<ChallengeDto> activeChallenges = challengeService.getActiveChallengesByUser(userId);
         return ResponseEntity.ok(ApiResponse.success(activeChallenges));
+    }
+
+    @GetMapping("active/{challengeId}")
+    public ResponseEntity<ApiResponse<UserChallengeDto>> getUserChallenge(
+            @AuthenticationPrincipal User user,
+            @PathVariable Long challengeId
+    ) {
+        UserChallengeDto userChallengeDto = challengeService.getUserChallengeByUserAndChallengeId(user, challengeId);
+        return ResponseEntity.ok(ApiResponse.success(userChallengeDto));
     }
 
     // 유저의 참여 예정인 챌린지 조회

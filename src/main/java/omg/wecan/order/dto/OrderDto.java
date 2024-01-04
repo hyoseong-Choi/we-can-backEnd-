@@ -1,6 +1,6 @@
-package omg.wecan.order.dto.request;
+package omg.wecan.order.dto;
 
-import jakarta.validation.constraints.NotNull;
+import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.Setter;
 import omg.wecan.order.entity.Order;
@@ -8,14 +8,10 @@ import omg.wecan.order.entity.OrderType;
 
 @Getter
 @Setter
-public class OrderCreateRequest {
-    @NotNull
+public class OrderDto {
     private String orderName;
-    @NotNull
     private OrderType type;
-    @NotNull
     private Long totalCandy;
-    @NotNull
     private Long objId;
 
     public Order toEntity(Long userId){
