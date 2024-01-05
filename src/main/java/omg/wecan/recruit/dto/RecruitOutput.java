@@ -38,7 +38,7 @@ public class RecruitOutput {
         this.challengePeriod = LocalDate.parse(recruit.getEndDate()).plusDays(1) + " ~ " + LocalDate.parse(recruit.getChallengeEndTime());
         this.category = recruit.getType().toLowerCase();
         try {
-            this.coverImage = Base64.getEncoder().encodeToString(new UrlResource("file:" + recruit.getCoverImageEndpoit()).getContentAsByteArray());
+            this.coverImage = Base64.getEncoder().encodeToString(new UrlResource("file:" + recruit.getCoverImageEndpoint()).getContentAsByteArray());
         } catch (IOException e) {
             throw new RuntimeException(e);
         }

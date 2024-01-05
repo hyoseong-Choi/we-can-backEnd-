@@ -11,6 +11,8 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.scheduling.annotation.Async;
 import org.springframework.stereotype.Service;
 
+import java.util.Arrays;
+
 @Service
 @RequiredArgsConstructor
 public class ElasticRecruitService {
@@ -22,13 +24,9 @@ public class ElasticRecruitService {
     }
     
     public Page<RecruitOutput> findRecruit(RecruitFindCond recruitFindCond, Pageable pageable) {
-        return elasticRecruitRepository.findByTitle(recruitFindCond.getTitle(), pageable).map(elasticRecruit -> new RecruitOutput(elasticRecruit, false));
-        
-    }
-    
-    public Page<RecruitOutput> findRecruit2(RecruitFindCond recruitFindCond, Pageable pageable) {
-        return elasticRecruitRepository.searchSimilar(new ElasticRecruit(recruitFindCond.getTitle()), new String[]{"title"}, pageable)
+        return elasticRecruitRepository.findByTitleIn(Arrays.stream(recruitFindCond.getTitle().split(" ")).toList(), pageable)
                 .map(elasticRecruit -> new RecruitOutput(elasticRecruit, false));
         
     }
+    
 }

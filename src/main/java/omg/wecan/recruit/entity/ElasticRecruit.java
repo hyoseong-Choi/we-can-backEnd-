@@ -23,7 +23,7 @@ public class ElasticRecruit {
     private String endDate;
     private String challengeEndTime;
     private String type;
-    private String coverImageEndpoit;
+    private String coverImageEndpoint;
     
     public ElasticRecruit(Long id, RecruitInput recruitInput, String imgEndPoint) {
         this.id = id;
@@ -31,10 +31,7 @@ public class ElasticRecruit {
         this.endDate = recruitInput.getChallengeStartDate().minusDays(1).toString();
         this.challengeEndTime = recruitInput.getChallengeEndDate().toString();
         this.type = recruitInput.getChallengeType();
-        this.coverImageEndpoit = imgEndPoint;
+        this.coverImageEndpoint = imgEndPoint;
     }
     
-    public ElasticRecruit(String title) {
-        this.title = title;
-    }
 }

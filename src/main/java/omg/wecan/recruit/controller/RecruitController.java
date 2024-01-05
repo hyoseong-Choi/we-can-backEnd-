@@ -25,7 +25,7 @@ public class RecruitController {
     }
     
     @PatchMapping("/recruit")
-    public ResponseEntity<ApiResponse<Long>> recruitUpdate(@AuthenticationPrincipal User loginUser, @RequestBody RecruitInput recruitInput) {
+    public ResponseEntity<ApiResponse<Long>> recruitUpdate(@AuthenticationPrincipal User loginUser, @ModelAttribute RecruitInput recruitInput) {
         return ResponseEntity.ok(ApiResponse.success(recruitService.updateRecruit(recruitInput)));
     }
     

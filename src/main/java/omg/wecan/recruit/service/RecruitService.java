@@ -62,6 +62,11 @@ public class RecruitService {
     public Long updateRecruit(RecruitInput recruitInput) {
         String imgEndPoint = fileStore.storeFile(recruitInput.getCoverImage());
         Recruit recruit = recruitRepository.findById(recruitInput.getId()).get();
+        Optional<Charity> optionalCharityByName = charityRepository.findByName(recruitInput.getCharityName());
+        if (optionalCharityByName.isEmpty()) {
+            recruit.changeRecruitByCharityNotInDb(recruitInput, imgEndPoint);
+            return recruit.getId();
+        }
         Charity charity = charityRepository.findByName(recruitInput.getCharityName()).get();
         recruit.changeRecruit(charity, recruitInput, imgEndPoint);
         return recruit.getId();
