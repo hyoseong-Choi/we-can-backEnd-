@@ -19,7 +19,8 @@ public interface HeartRepository extends JpaRepository<Heart, Long> {
     Boolean existsByUserAndRecruit(User user, Recruit recruit);
     
     @Transactional(readOnly = true)
-    List<Heart> findAllByUser(User user);
+    @Query(value = "select h from Heart h join fetch h.user join fetch h.recruit where h.user=:user and h.recruit.finished=false")
+    List<Heart> findAllByUser(@Param("user")User user);
     
     @Transactional(readOnly = true)
     Optional<Heart> findByUserAndRecruit(User user, Recruit recruit);

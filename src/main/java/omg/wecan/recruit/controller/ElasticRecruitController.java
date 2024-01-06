@@ -25,4 +25,5 @@ public class ElasticRecruitController {
                                                                         @ModelAttribute RecruitFindCond recruitFindCond, @PageableDefault(size = 12) Pageable pageable) {
         return ResponseEntity.ok(ApiResponse.success(elasticRecruitService.findRecruit(recruitFindCond, pageable)));
     }
+    
 }

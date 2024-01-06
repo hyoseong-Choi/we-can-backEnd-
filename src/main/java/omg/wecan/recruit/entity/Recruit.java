@@ -141,6 +141,29 @@ public class Recruit extends BaseEntity {
         this.finished = false;
     }
     
+    public void changeRecruitByCharityNotInDb(RecruitInput recruitInput, String coverImageEndpoint) {
+        this.charityNotInDb = recruitInput.getCharityName();
+        this.type = ChallengeType.from(recruitInput.getChallengeType());
+        this.startDate = LocalDate.now();
+        this.endDate = recruitInput.getChallengeStartDate().minusDays(1);
+        if (this.endDate.isBefore(LocalDate.now())) {
+            throw new InvalidChallengeDateException(RECRUIT_DATE_INVALID);
+        }
+        this.challengeEndTime = recruitInput.getChallengeEndDate();
+        if (this.challengeEndTime.isBefore(LocalDate.now().plusDays(7))) {
+            throw new InvalidChallengeDateException(RECRUIT_DATE_INVALID);
+        }
+        this.minPeople = recruitInput.getMinPeople();
+        this.checkDay = recruitInput.getCheckDay();
+        this.paymentType = PaymentType.from(recruitInput.getPaymentType());
+        if (recruitInput.getContent() != null) {
+            this.content = recruitInput.getContent();
+        }
+        this.coverImageEndpoint = coverImageEndpoint;
+        this.fine = recruitInput.getFine();
+        this.finished = false;
+    }
+    
     public void changeFinished() {
         this.finished = true;
     }
