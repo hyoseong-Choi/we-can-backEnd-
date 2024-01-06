@@ -1,28 +1,33 @@
 package omg.wecan.util;
 
+import com.amazonaws.services.s3.AmazonS3Client;
+import com.amazonaws.services.s3.model.ObjectMetadata;
+import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Component;
 import org.springframework.web.multipart.MultipartFile;
 
-import java.io.File;
 import java.io.IOException;
 import java.util.UUID;
 
 @Component
+@RequiredArgsConstructor
 public class FileStore {
-    
-    public String getFullPath(String filename) {
-        return "/image/" + filename;
-//        return "C:\\Users\\gytjd\\" + filename;
-    }
-    
+    private static final String bucketName = "wecanbucket";
+    private final AmazonS3Client amazonS3Client;
+
     public String storeFile(MultipartFile multipartFile) {
-        String storeFilePath = getFullPath(createStoreFileName(multipartFile.getOriginalFilename()));
+        String fileName = createStoreFileName(multipartFile.getOriginalFilename());
         try {
-            multipartFile.transferTo(new File(storeFilePath));
+            ObjectMetadata objectMetadata = new ObjectMetadata();
+            objectMetadata.setContentType(multipartFile.getContentType());
+            objectMetadata.setContentLength(multipartFile.getInputStream().available());
+
+            amazonS3Client.putObject(bucketName, fileName, multipartFile.getInputStream(), objectMetadata);
+
+            return amazonS3Client.getUrl(bucketName, fileName).toString();
         } catch (IOException e) {
             throw new RuntimeException(e);
         }
-        return storeFilePath;
     }
     private String createStoreFileName(String originalFilename) {
         return UUID.randomUUID() + "." + extractExt(originalFilename);

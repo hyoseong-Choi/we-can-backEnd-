@@ -48,13 +48,11 @@ public class RecruitService {
             Recruit recruit = Recruit.createRecruitByCharityNotInDb(loginUser, recruitInput, imgEndPoint);
             recruit = recruitRepository.save(recruit);
             participateRepository.save(Participate.createLeaderParticipate(loginUser, recruit));
-            elasticRecruitService.addRecruit(recruit.getId(), recruitInput, imgEndPoint);
             return new RecruitDetailOutput(recruit, 1, true, false, Collections.emptyList());
         }
         Recruit recruit = Recruit.createRecruit(loginUser, optionalCharityByName.get(), recruitInput, imgEndPoint);
         recruit = recruitRepository.save(recruit);
         participateRepository.save(Participate.createLeaderParticipate(loginUser, recruit));
-        elasticRecruitService.addRecruit(recruit.getId(), recruitInput, imgEndPoint);
         return new RecruitDetailOutput(recruit, 1, true, false, Collections.emptyList());
     }
     
@@ -71,9 +69,10 @@ public class RecruitService {
         recruit.changeRecruit(charity, recruitInput, imgEndPoint);
         return recruit.getId();
     }
-    
+    @Transactional
     public Long deleteRecruit(Long id) {
         recruitRepository.deleteById(id);
+        elasticRecruitService.deleteRecruit(id);
         return id;
     }
     
