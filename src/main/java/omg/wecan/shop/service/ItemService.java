@@ -1,6 +1,8 @@
 package omg.wecan.shop.service;
 
 import lombok.RequiredArgsConstructor;
+import omg.wecan.exception.customException.CustomException;
+import omg.wecan.exception.customException.ErrorCode;
 import omg.wecan.exception.shopException.LackOfCandyException;
 import omg.wecan.shop.dto.ItemDetailOutput;
 import omg.wecan.shop.dto.ItemsOutput;
@@ -21,6 +23,7 @@ import org.springframework.transaction.annotation.Transactional;
 import java.util.List;
 import java.util.stream.Collectors;
 
+import static omg.wecan.exception.customException.ErrorCode.ITEM_NOT_FOUND;
 import static omg.wecan.exception.customException.ErrorCode.REJECT_PAYMENT;
 import static omg.wecan.shop.entity.UserItem.createUserItem;
 
@@ -55,6 +58,12 @@ public class ItemService {
         Item item = itemRepository.findById(id).get();
         return new ItemDetailOutput(item);
     }
+
+    public Item getItemById(Long id) {
+        return itemRepository.findById(id).orElseThrow(
+                () -> new CustomException(ITEM_NOT_FOUND)
+        );
+    }
     
     @Transactional
     public Long buyItem(User loginUser, Long id) {
@@ -66,5 +75,12 @@ public class ItemService {
             return userItem.getId();
         }
         throw new LackOfCandyException(REJECT_PAYMENT);
+    }
+
+    @Transactional
+    public Long buyItemV2(User loginUser, Long id) {
+        Item item = getItemById(id);
+        UserItem userItem = userItemRepository.save(createUserItem(loginUser, item));
+        return userItem.getId();
     }
 }

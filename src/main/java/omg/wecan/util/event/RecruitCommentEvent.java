@@ -8,5 +8,6 @@ import omg.wecan.user.entity.User;
 @RequiredArgsConstructor
 public class RecruitCommentEvent {
     private final User user;
+    private final User mentionedUser;
     private final String content;
 }

@@ -55,7 +55,7 @@ public class Challenge {
         challenge.title = recruit.getTitle();
         challenge.chattingRoom = new ChattingRoom(challenge);
         challenge.challengeType = recruit.getType();
-        challenge.startDate = recruit.getChallengeStartTime();
+        challenge.startDate = recruit.getEndDate().plusDays(1);
         challenge.endDate = recruit.getChallengeEndTime();
         challenge.peopleNum = peopleNum;
         challenge.checkDay = recruit.getCheckDay();
@@ -64,7 +64,7 @@ public class Challenge {
         challenge.coverImageEndpoint = recruit.getCoverImageEndpoint();
         challenge.state = Upcoming;
         challenge.finePerOnce = recruit.getFine();
-        challenge.donationCandy = recruit.getDonationCandy();
+//        challenge.donationCandy = recruit.getDonationCandy();
         challenge.totalCheckNum = countCheckDays(challenge.checkDay, challenge.startDate, challenge.endDate);
 
         return challenge;

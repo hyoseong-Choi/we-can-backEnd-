@@ -12,6 +12,8 @@ import omg.wecan.recruit.Enum.PaymentType;
 import omg.wecan.recruit.dto.RecruitInput;
 import omg.wecan.user.entity.User;
 
+import java.io.UnsupportedEncodingException;
+import java.nio.charset.StandardCharsets;
 import java.time.LocalDate;
 import java.util.List;
 
@@ -38,7 +40,6 @@ public class Recruit extends BaseEntity {
     private ChallengeType type;
     private LocalDate startDate;
     private LocalDate endDate;
-    private LocalDate challengeStartTime;
     private LocalDate challengeEndTime;
     private int minPeople;
     private String checkDay;
@@ -54,7 +55,6 @@ public class Recruit extends BaseEntity {
     private boolean finished;
     private int heartNum;
     private String charityNotInDb;
-    private int donationCandy;
     @OneToMany(mappedBy = "recruit", cascade = CascadeType.REMOVE)
     private List<Participate> participate;
     @OneToMany(mappedBy = "recruit", cascade = CascadeType.REMOVE)
@@ -95,7 +95,12 @@ public class Recruit extends BaseEntity {
         Recruit recruit = new Recruit();
         recruit.writer = user;
         recruit.charityNotInDb = recruitInput.getCharityName();
-        recruit.title = recruitInput.getTitle();
+        //new String(file.getOriginalFilename().getBytes("8859_1"), StandardCharsets.UTF_8)
+        try {
+            recruit.title = new String(recruitInput.getTitle().getBytes("8859_1"), StandardCharsets.UTF_8);
+        } catch (UnsupportedEncodingException e) {
+            throw new RuntimeException(e);
+        }
         recruit.type = ChallengeType.from(recruitInput.getChallengeType());
         recruit.startDate = LocalDate.now();
         recruit.endDate = recruitInput.getChallengeStartDate().minusDays(1);
@@ -122,6 +127,29 @@ public class Recruit extends BaseEntity {
     
     public void changeRecruit(Charity charity, RecruitInput recruitInput, String coverImageEndpoint) {
         this.charity = charity;
+        this.type = ChallengeType.from(recruitInput.getChallengeType());
+        this.startDate = LocalDate.now();
+        this.endDate = recruitInput.getChallengeStartDate().minusDays(1);
+        if (this.endDate.isBefore(LocalDate.now())) {
+            throw new InvalidChallengeDateException(RECRUIT_DATE_INVALID);
+        }
+        this.challengeEndTime = recruitInput.getChallengeEndDate();
+        if (this.challengeEndTime.isBefore(LocalDate.now().plusDays(7))) {
+            throw new InvalidChallengeDateException(RECRUIT_DATE_INVALID);
+        }
+        this.minPeople = recruitInput.getMinPeople();
+        this.checkDay = recruitInput.getCheckDay();
+        this.paymentType = PaymentType.from(recruitInput.getPaymentType());
+        if (recruitInput.getContent() != null) {
+            this.content = recruitInput.getContent();
+        }
+        this.coverImageEndpoint = coverImageEndpoint;
+        this.fine = recruitInput.getFine();
+        this.finished = false;
+    }
+    
+    public void changeRecruitByCharityNotInDb(RecruitInput recruitInput, String coverImageEndpoint) {
+        this.charityNotInDb = recruitInput.getCharityName();
         this.type = ChallengeType.from(recruitInput.getChallengeType());
         this.startDate = LocalDate.now();
         this.endDate = recruitInput.getChallengeStartDate().minusDays(1);

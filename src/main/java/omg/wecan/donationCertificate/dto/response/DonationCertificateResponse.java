@@ -15,7 +15,7 @@ public class DonationCertificateResponse {
 
     public DonationCertificateResponse(DonationCertificate donationCertificate){
         this.id = donationCertificate.getId();
-        this.title = donationCertificate.getTile();
+        this.title = donationCertificate.getTitle();
         this.explanation = donationCertificate.getExplanation();
         this.imgEndpoint = donationCertificate.getImgEndpoint();
     }

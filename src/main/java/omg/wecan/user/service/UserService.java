@@ -29,7 +29,7 @@ public class UserService {
         );
     }
 
-    public User findById(Long id) {
+    public User getById(Long id) {
         return userRepository.findById(id).orElseThrow(
                 () -> new CustomException(ErrorCode.USER_NOT_FOUND, "user Id: " + id));
     }
@@ -67,7 +67,7 @@ public class UserService {
     }
 
     public void addCandy(Long userId, long candyCnt){
-        User user = findById(userId);
+        User user = getById(userId);
         long currentCandy = user.getCandy();
         user.setCandy(currentCandy + candyCnt);
     }

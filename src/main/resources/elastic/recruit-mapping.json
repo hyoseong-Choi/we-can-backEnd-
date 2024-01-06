@@ -1,0 +1,23 @@
+{
+  "properties": {
+    "id": {
+      "type": "long"
+    },
+    "title": {
+      "type": "text",
+      "analyzer": "korean"
+    },
+    "endDate": {
+      "type": "text"
+    },
+    "challengeEndTime": {
+      "type": "text"
+    },
+    "type": {
+      "type": "keyword"
+    },
+    "coverImageEndpoint": {
+      "type": "text"
+    }
+  }
+}

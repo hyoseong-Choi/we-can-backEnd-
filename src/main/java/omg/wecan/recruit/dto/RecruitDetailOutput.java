@@ -5,11 +5,7 @@ import omg.wecan.recruit.Enum.ChallengeType;
 import omg.wecan.recruit.Enum.PaymentType;
 import omg.wecan.recruit.entity.Recruit;
 import omg.wecan.recruit.entity.RecruitComment;
-import org.springframework.core.io.UrlResource;
-
-import java.io.IOException;
 import java.time.LocalDate;
-import java.util.Base64;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -35,7 +31,7 @@ public class RecruitDetailOutput {
     private int heartNum;
     private int commentsNum;
     private List<CommentOutput> comments;
-    
+
     public RecruitDetailOutput(Recruit recruit, int participatePeople, boolean isParticipate,
                                boolean isHeart, List<RecruitComment> recruitComments) {
         this.id = recruit.getId();
@@ -54,11 +50,8 @@ public class RecruitDetailOutput {
         this.checkDay = recruit.getCheckDay();
         this.paymentType = recruit.getPaymentType();
         this.content = recruit.getContent();
-        try {
-            this.coverImage = Base64.getEncoder().encodeToString(new UrlResource("file:" + recruit.getCoverImageEndpoint()).getContentAsByteArray());
-        } catch (IOException e) {
-            throw new RuntimeException(e);
-        }
+        this.coverImage = recruit.getCoverImageEndpoint();
+
         this.fine = recruit.getFine();
         this.finished = recruit.isFinished();
         this.isHeart = isHeart;
