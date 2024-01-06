@@ -36,7 +36,6 @@ dependencies {
 	compileOnly 'org.projectlombok:lombok'
 	runtimeOnly 'com.mysql:mysql-connector-j'
 	annotationProcessor 'org.projectlombok:lombok'
-
 	testImplementation 'org.springframework.boot:spring-boot-starter-test'
 
 	//JWT dependency
@@ -59,8 +58,13 @@ dependencies {
 	//모니터링 추가
 	implementation 'org.springframework.boot:spring-boot-starter-actuator'
 	implementation 'io.micrometer:micrometer-registry-prometheus'
+
+	//ModelMapper
+	implementation 'org.modelmapper:modelmapper:3.1.1'
+
+	implementation 'org.springframework.boot:spring-boot-configuration-processor'
 }
 
-tasks.named('test') {
-	useJUnitPlatform()
-}
+//tasks.named('test') {
+//	useJUnitPlatform()
+//}

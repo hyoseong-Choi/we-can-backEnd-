@@ -42,8 +42,13 @@ public enum ErrorCode {
     ORDER_AMOUNT_MISMATCH(HttpStatus.BAD_REQUEST,"8400", "주문 금액이 다릅니다."),
 
     //toss
-    TOSS_FAIL(HttpStatus.BAD_REQUEST, "9400", "토스 요청에 실패했습니다");
+    TOSS_FAIL(HttpStatus.BAD_REQUEST, "9400", "토스 요청에 실패했습니다"),
 
+    //order
+    ORDER_TYPE_INVALID(HttpStatus.BAD_REQUEST, "10400", "유효하지 않은 order type입니다."),
+
+    //item
+    ITEM_NOT_FOUND(HttpStatus.BAD_REQUEST, "11404", "해당 item을 찾을 수 없습니다.");
 
     private final HttpStatus status;
     private final String code;

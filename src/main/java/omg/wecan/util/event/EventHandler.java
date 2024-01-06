@@ -135,4 +135,18 @@ public class EventHandler {
 //            log.error("cannot send to user push message. error info : {}", e.getMessage());
 //        }
     }
+
+    @TransactionalEventListener
+    @Async
+    @Transactional(propagation = Propagation.REQUIRES_NEW)
+    public void handlePayChallengeEvent(PayChallengeEvent payChallengeEvent) {
+        notificationRepository.save(new Notifications(payChallengeEvent));
+    }
+
+    @TransactionalEventListener
+    @Async
+    @Transactional(propagation = Propagation.REQUIRES_NEW)
+    public void handleSettleChallengeEvent(SettleChallengeEvent settleChallengeEvent) {
+        notificationRepository.save(new Notifications(settleChallengeEvent));
+    }
 }
