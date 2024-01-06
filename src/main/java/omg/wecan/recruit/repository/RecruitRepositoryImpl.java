@@ -36,14 +36,14 @@ public class RecruitRepositoryImpl implements RecruitRepositoryCustom{
                 .limit(pageable.getPageSize())
                 .fetch();
         
-        queryFactory
+        Long l = queryFactory
                 .select(recruit.count())
                 .from(recruit)
                 .where(titleContains(recruitFindCond.getTitle()),
                         categoryEq(recruitFindCond.getCategory()),
                         recruit.finished.eq(false))
                 .fetchOne();
-        return new PageImpl<>(results, pageable, results.size());
+        return new PageImpl<>(results, pageable, l);
     }
 
     private BooleanExpression titleContains(String title) {

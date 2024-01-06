@@ -39,6 +39,7 @@ public class RecruitService {
     private final RecruitCommentRepository recruitCommentRepository;
     private final FileStore fileStore;
     private final ApplicationEventPublisher eventPublisher;
+    private final ElasticRecruitService elasticRecruitService;
     
     public RecruitDetailOutput addRecruit(User loginUser, RecruitInput recruitInput) {
         Optional<Charity> optionalCharityByName = charityRepository.findByName(recruitInput.getCharityName());
@@ -59,13 +60,19 @@ public class RecruitService {
     public Long updateRecruit(RecruitInput recruitInput) {
         String imgEndPoint = fileStore.storeFile(recruitInput.getCoverImage());
         Recruit recruit = recruitRepository.findById(recruitInput.getId()).get();
+        Optional<Charity> optionalCharityByName = charityRepository.findByName(recruitInput.getCharityName());
+        if (optionalCharityByName.isEmpty()) {
+            recruit.changeRecruitByCharityNotInDb(recruitInput, imgEndPoint);
+            return recruit.getId();
+        }
         Charity charity = charityRepository.findByName(recruitInput.getCharityName()).get();
         recruit.changeRecruit(charity, recruitInput, imgEndPoint);
         return recruit.getId();
     }
-    
+    @Transactional
     public Long deleteRecruit(Long id) {
         recruitRepository.deleteById(id);
+        elasticRecruitService.deleteRecruit(id);
         return id;
     }
     
@@ -125,7 +132,7 @@ public class RecruitService {
             Optional<User> mentionedUser = userRepository.findByNickName(content.substring(1, content.indexOf(" ")));
             if (mentionedUser.isPresent()) {
                 log.info("퍼블전 Thread Id : {}", Thread.currentThread().getId());
-                eventPublisher.publishEvent(new RecruitCommentEvent(mentionedUser.get(), content.substring(content.indexOf(" ")+1)));
+                eventPublisher.publishEvent(new RecruitCommentEvent(loginUser, mentionedUser.get(), content.substring(content.indexOf(" ")+1)));
             }
             return new CommentOutput(recruitCommentRepository.save(RecruitComment.createRecruitComment(loginUser, recruit, commentAddInput)));
         }
@@ -140,7 +147,7 @@ public class RecruitService {
             log.info("퍼블전 Thread Id : {}", Thread.currentThread().getId());
             eventPublisher.publishEvent(new MinimumParticipateEvent(participateRepository.findUserByRecruit(recruit), recruit.getTitle()));
         }
-        return recruit.getParticipate().size();
+        return participateNum;
     }
     
     public Integer deleteParticipate(User loginUser, DeleteParticipateAndHeartInput deleteParticipateAndHeartInput) {

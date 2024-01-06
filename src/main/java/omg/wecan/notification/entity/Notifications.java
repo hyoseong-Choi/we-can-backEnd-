@@ -23,30 +23,38 @@ public class Notifications extends BaseEntity {
     private User targetUser;
     private String title;
     private String content;
-//    private boolean isRead;
-    
-    public Notifications(RecruitCommentEvent recruitCommentEvent) {
-        this.targetUser = recruitCommentEvent.getUser();
-        this.title = "누군가 " + recruitCommentEvent.getUser().getNickName() + " 님을 멘션했어요.";
-        this.content = recruitCommentEvent.getContent();
+    private boolean newNotice;
+
+    public void readNotifications() {
+        this.newNotice = false;
     }
     
-    public Notifications(Participate participate, String recruitTitle) {
+    public Notifications(RecruitCommentEvent recruitCommentEvent) {
+        this.targetUser = recruitCommentEvent.getMentionedUser();
+        this.title = recruitCommentEvent.getUser() + " 님이 " + recruitCommentEvent.getUser().getNickName() + " 님을 멘션했어요.";
+        this.content = recruitCommentEvent.getContent();
+        this.newNotice = true;
+    }
+    
+    public Notifications(Participate participate, String content) {
         this.targetUser = participate.getUser();
         this.title = "챌린지 최소 모집 인원이 다 모였어요.";
-        this.content ="모집이 끝나면 " + recruitTitle + " 챌린지를 시작할 수 있어요.";
+        this.content = participate.getUser().getNickName() + " 님이 " + content + " 챌린지를 시작할 수 있어요.";
+        this.newNotice = true;
     }
     
     public Notifications(String recruitTitle, Participate participate) {
         this.targetUser = participate.getUser();
-        this.title = "내일 " + recruitTitle + " 챌린지가 시작돼요.";
-        this.content = participate.getUser().getNickName() + " 님이 챌린지에 성공하기를 응원할게요.";
+        this.title = participate.getUser().getNickName() + " 님의 챌린지 시작이 하루 남았어요.";
+        this.content = "내일 " + recruitTitle + " 챌린지가 시작돼요.";
+        this.newNotice = true;
     }
     
     public Notifications(BuyItemEvent buyItemEvent) {
         this.targetUser = buyItemEvent.getUser();
         this.title = "결제 완료 알림";
-        this.content = buyItemEvent.getItem().getName() + " 구매가 완료되었습니다";
+        this.content = buyItemEvent.getItem().getPrice() + "캔디로 " + buyItemEvent.getItem().getName() + " 구매가 완료되었습니다";
+        this.newNotice = true;
     }
 
     public Notifications(PayChallengeEvent payChallengeEvent) {
