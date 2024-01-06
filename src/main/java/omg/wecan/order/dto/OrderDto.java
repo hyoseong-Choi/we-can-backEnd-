@@ -20,6 +20,7 @@ public class OrderDto {
                 .type(this.type)
                 .totalCandy(this.totalCandy)
                 .userId(userId)
+                .objId(this.objId)
                 .build();
     }
 }

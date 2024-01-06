@@ -29,4 +29,7 @@ public class Order extends BaseEntity {
 
     @Column(nullable = false)
     private Long userId;
+
+    @Column(nullable = false)
+    private Long objId; //itemId or challengeId (UserChallengeId면 안됨)
 }
