@@ -16,7 +16,7 @@ public class OrderResponse {
     public OrderResponse(Order order, User user){
         this.orderId = order.getOrderId();
         this.userName = user.getName();
-        this.orderName = getOrderName();
+        this.orderName = order.getOrderName();
         this.currentUserCandy = user.getCandy();
     }
 }
