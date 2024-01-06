@@ -8,6 +8,9 @@ import omg.wecan.donationCertificate.dto.response.DonationCertificateResponses;
 import omg.wecan.donationCertificate.entity.DonationCertificate;
 import omg.wecan.donationCertificate.repository.DonationCertificateRepository;
 import omg.wecan.util.FileStore;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -22,16 +25,22 @@ public class DonationCertificateService {
     private final String basicImgUrl = "";
 
     public DonationCertificateResponse save(DonationCertificateCreateRequest donationCertificateCreateRequest) {
-        String imgUrl = fileStore.storeFile(donationCertificateCreateRequest.getCoverImage());
+        String imgUrl = null;
+        if(donationCertificateCreateRequest.getCoverImage() != null)
+            imgUrl = fileStore.storeFile(donationCertificateCreateRequest.getCoverImage());
+
         DonationCertificate donationCertificate = donationCertificateCreateRequest.toEntity(imgUrl);
         donationCertificateRepository.save(donationCertificate);
         return new DonationCertificateResponse(donationCertificate);
     }
 
-    public DonationCertificateResponses findAll() {
-            List<DonationCertificateResponse> certificates = donationCertificateRepository
-                    .findAll(Sort.by(Sort.Direction.ASC, "createdAt"))
-                .stream().map(DonationCertificateResponse::new).toList();
+    public DonationCertificateResponses find(int page, int size) {
+        Sort sort = Sort.by(Sort.Direction.DESC, "createdAt");
+        Pageable pageable = PageRequest.of(page, size, sort);
+
+        Page<DonationCertificate> retPage = donationCertificateRepository.findAll(pageable);
+        List<DonationCertificateResponse> certificates =
+                retPage.stream().map(DonationCertificateResponse::new).toList();
 
         return new DonationCertificateResponses(certificates);
     }

@@ -26,8 +26,8 @@ public class DonationCertificateController {
     }
 
     @GetMapping("/donationCertificates")
-    public ResponseEntity<ApiResponse<DonationCertificateResponses>> findAll() {
-        DonationCertificateResponses innerResponse = donationCertificateService.findAll();
+    public ResponseEntity<ApiResponse<DonationCertificateResponses>> find(@RequestParam(defaultValue = "0") int page, @RequestParam(defaultValue = "9") int size) {
+        DonationCertificateResponses innerResponse = donationCertificateService.find(page, size);
         return ResponseEntity.ok().body(ApiResponse.success(innerResponse));
     }
 
