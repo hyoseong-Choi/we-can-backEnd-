@@ -26,9 +26,4 @@ public class ElasticRecruitController {
         return ResponseEntity.ok(ApiResponse.success(elasticRecruitService.findRecruit(recruitFindCond, pageable)));
     }
     
-    @GetMapping("/recruits/search2")
-    public ResponseEntity<ApiResponse<Page<RecruitOutput>>> recruitFind2(@AuthenticationPrincipal User loginUser,
-                                                                        @ModelAttribute RecruitFindCond recruitFindCond, @PageableDefault(size = 12) Pageable pageable) {
-        return ResponseEntity.ok(ApiResponse.success(elasticRecruitService.findRecruit(recruitFindCond, pageable)));
-    }
 }

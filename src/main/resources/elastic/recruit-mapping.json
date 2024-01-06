@@ -1,6 +1,6 @@
 {
   "properties": {
-    "recruit_id": {
+    "id": {
       "type": "long"
     },
     "title": {
@@ -16,7 +16,7 @@
     "type": {
       "type": "keyword"
     },
-    "coverImageEndpoit": {
+    "coverImageEndpoint": {
       "type": "text"
     }
   }
