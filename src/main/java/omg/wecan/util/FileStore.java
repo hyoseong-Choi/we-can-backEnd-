@@ -13,7 +13,7 @@ import java.util.UUID;
 @Component
 @RequiredArgsConstructor
 public class FileStore {
-    private static final String bucketName = "wecanbucket";
+    private static final String bucketName = "omg-image-storage";
     private final AmazonS3Client amazonS3Client;
 
     public String storeFile(MultipartFile multipartFile) {
