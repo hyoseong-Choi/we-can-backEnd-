@@ -1,11 +1,9 @@
 package omg.wecan.donationCertificate.entity;
 
-import com.fasterxml.jackson.databind.ser.Serializers;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
-import omg.wecan.donationCertificate.dto.request.DonationCertificateUpdateRequest;
 import omg.wecan.global.entity.BaseEntity;
 
 @Entity
@@ -18,7 +16,7 @@ public class DonationCertificate extends BaseEntity {
     private Long id;
 
     @Column
-    private String tile;
+    private String title;
 
     @Column
     private String explanation;
@@ -30,18 +28,14 @@ public class DonationCertificate extends BaseEntity {
 
     }
 
-    public void change(DonationCertificateUpdateRequest donationCertificateUpdateRequest){
-        String newTitle = donationCertificateUpdateRequest.getTitle();
-        String newExplanation = donationCertificateUpdateRequest.getExplanation();
-        String newImgEndpoint = donationCertificateUpdateRequest.getImgEndpoint();
-
+    public void change(String newTitle, String newExplanation, String newImgUrl){
         if(newTitle != null)
-            this.tile = newTitle;
+            this.title = newTitle;
 
         if(newExplanation != null)
             this.explanation = newExplanation;
 
-        if(newImgEndpoint != null)
-            this.imgEndpoint = newImgEndpoint;
+        if(newImgUrl != null)
+            this.imgEndpoint = newImgUrl;
     }
 }
