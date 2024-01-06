@@ -46,6 +46,17 @@ public class ChallengeService {
                 .collect(Collectors.toList());
     }
 
+    public UserChallengeDto getUserChallengeByUserAndChallengeId(User user, Long challengeId){
+        UserChallenge userChallenge = userChallengeRepository.findByChallengeIdAndUser(challengeId, user)
+                .orElseThrow(
+                        () -> new CustomException(ErrorCode.CHALLENGE_NOT_FOUND,
+                                "challengeId: " + challengeId + " " + "userId: " + user.getUserId())
+        );
+
+        UserChallengeDto userChallengeDto = userChallenge.toDto();
+        return userChallengeDto;
+    }
+
     public List<ChallengeDto> getUpcomingChallengesByUser(Long userId) {
         List<UserChallenge> userChallenges = userChallengeRepository.findByUserUserId(userId);
         List<Challenge> upcomingChallenges = userChallenges.stream()
