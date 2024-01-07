@@ -19,6 +19,7 @@ public enum ErrorCode {
 
     //Recruit
     RECRUIT_DATE_INVALID(HttpStatus.BAD_REQUEST,"5003", "챌린지 날짜가 유효하지 않습니다."),
+    RECRUIT_ATTRIBUTE_INVALID(HttpStatus.BAD_REQUEST,"5400", "챌린지 입력값이 잘못돼었습니다."),
 
     //charity
     CHARITY_NOT_FOUND(HttpStatus.NOT_FOUND,"3404", "해당 기부 단체는 존재하지 않습니다."),
