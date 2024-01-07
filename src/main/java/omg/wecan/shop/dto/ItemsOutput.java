@@ -2,10 +2,6 @@ package omg.wecan.shop.dto;
 
 import lombok.Data;
 import omg.wecan.shop.entity.Item;
-import org.springframework.core.io.UrlResource;
-
-import java.io.IOException;
-import java.util.Base64;
 
 @Data
 public class ItemsOutput {
@@ -18,10 +14,6 @@ public class ItemsOutput {
         this.id = item.getId();
         this.name = item.getName();
         this.price = item.getPrice();
-        try {
-            this.img = Base64.getEncoder().encodeToString(new UrlResource("file:" + item.getImgEndpoint()).getContentAsByteArray());
-        } catch (IOException e) {
-            throw new RuntimeException(e);
-        }
+        this.img = item.getImgEndpoint();
     }
 }
