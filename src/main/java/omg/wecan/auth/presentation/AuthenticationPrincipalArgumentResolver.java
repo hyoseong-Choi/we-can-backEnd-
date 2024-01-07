@@ -3,7 +3,6 @@ package omg.wecan.auth.presentation;
 
 import jakarta.servlet.http.HttpServletRequest;
 import lombok.RequiredArgsConstructor;
-import omg.wecan.auth.dto.LoginUser;
 import omg.wecan.jwt.exception.InvalidTokenException;
 import omg.wecan.jwt.service.JWTService;
 import omg.wecan.user.service.UserService;
@@ -39,6 +38,6 @@ public class AuthenticationPrincipalArgumentResolver implements HandlerMethodArg
                 }
         );
 
-        return userService.findById(id);
+        return userService.getById(id);
     }
 }

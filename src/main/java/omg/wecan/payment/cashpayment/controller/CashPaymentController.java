@@ -2,7 +2,6 @@ package omg.wecan.payment.cashpayment.controller;
 
 import lombok.RequiredArgsConstructor;
 import omg.wecan.auth.presentation.AuthenticationPrincipal;
-import omg.wecan.exception.customException.ErrorResponse;
 import omg.wecan.payment.cashpayment.client.TossPaymentClient;
 import omg.wecan.payment.cashpayment.dto.request.CashPaymentRequest;
 import omg.wecan.payment.cashpayment.dto.response.CashPaymentResponse;
