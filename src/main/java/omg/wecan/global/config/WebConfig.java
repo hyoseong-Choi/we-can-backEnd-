@@ -21,13 +21,13 @@ public class WebConfig implements WebMvcConfigurer {
         this.corsOrigins = corsOrigins;
         this.authenticationPrincipalArgumentResolver = authenticationPrincipalArgumentResolver;
     }
-    @Override
-    public void addCorsMappings(CorsRegistry registry) {
-
-        registry.addMapping("/**")
-                .allowedOrigins("*")
-                .allowedMethods("*");
-    }
+//    @Override
+//    public void addCorsMappings(CorsRegistry registry) {
+//
+//        registry.addMapping("/**")
+//                .allowedOrigins("*")
+//                .allowedMethods("*");
+//    }
 
     @Override
     public void addFormatters(FormatterRegistry registry) {
