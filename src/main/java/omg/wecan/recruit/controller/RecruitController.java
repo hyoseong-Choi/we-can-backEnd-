@@ -10,22 +10,24 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.web.PageableDefault;
 import org.springframework.http.ResponseEntity;
+import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
 @RestController
 @RequiredArgsConstructor
+@CrossOrigin(origins = "*", allowedHeaders = "*")
 public class RecruitController {
     private final RecruitService recruitService;
     
     @PostMapping("/recruit")
-    public ResponseEntity<ApiResponse<RecruitDetailOutput>> recruitAdd(@AuthenticationPrincipal User loginUser, @ModelAttribute RecruitInput recruitInput) {
+    public ResponseEntity<ApiResponse<RecruitDetailOutput>> recruitAdd(@AuthenticationPrincipal User loginUser, @Validated @ModelAttribute RecruitInput recruitInput) {
         return ResponseEntity.ok(ApiResponse.success(recruitService.addRecruit(loginUser, recruitInput)));
     }
     
     @PatchMapping("/recruit")
-    public ResponseEntity<ApiResponse<Long>> recruitUpdate(@AuthenticationPrincipal User loginUser, @ModelAttribute RecruitInput recruitInput) {
+    public ResponseEntity<ApiResponse<Long>> recruitUpdate(@AuthenticationPrincipal User loginUser, @Validated @ModelAttribute RecruitInput recruitInput) {
         return ResponseEntity.ok(ApiResponse.success(recruitService.updateRecruit(recruitInput)));
     }
     
