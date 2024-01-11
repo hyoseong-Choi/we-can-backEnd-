@@ -1,4 +1,4 @@
-package omg.wecan.challenge.S3Config;
+package omg.wecan.global.config;
 
 import com.amazonaws.auth.AWSStaticCredentialsProvider;
 import com.amazonaws.auth.BasicAWSCredentials;
