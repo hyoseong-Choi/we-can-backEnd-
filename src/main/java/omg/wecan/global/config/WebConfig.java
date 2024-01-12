@@ -21,22 +21,13 @@ public class WebConfig implements WebMvcConfigurer {
         this.corsOrigins = corsOrigins;
         this.authenticationPrincipalArgumentResolver = authenticationPrincipalArgumentResolver;
     }
-    @Override
-    public void addCorsMappings(CorsRegistry registry) {
-        String[] corsOriginPattern = corsOrigins.stream().toArray(String[]::new);
-
-        registry.addMapping("/**")
-                .allowedOrigins("*")
-                .allowedMethods(
-                        HttpMethod.GET.name(),
-                        HttpMethod.POST.name(),
-                        HttpMethod.PUT.name(),
-                        HttpMethod.DELETE.name(),
-                        HttpMethod.PATCH.name()
-                )
-                .allowCredentials(true)
-                .exposedHeaders("*");
-    }
+//    @Override
+//    public void addCorsMappings(CorsRegistry registry) {
+//
+//        registry.addMapping("/**")
+//                .allowedOrigins("*")
+//                .allowedMethods("*");
+//    }
 
     @Override
     public void addFormatters(FormatterRegistry registry) {
