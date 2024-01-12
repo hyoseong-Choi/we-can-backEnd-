@@ -38,6 +38,7 @@ public class User extends BaseEntity {
     @Enumerated(EnumType.STRING)
     private ROLE role;
     String refreshToken;
+    private String fcmToken;
     @OneToMany(mappedBy = "user", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<ChallengeCheck> challengeChecks;
     @OneToMany(mappedBy = "user", cascade = CascadeType.ALL, orphanRemoval = true)
