@@ -26,7 +26,7 @@ public class WebConfig implements WebMvcConfigurer {
         String[] corsOriginPattern = corsOrigins.stream().toArray(String[]::new);
 
         registry.addMapping("/**")
-                .allowedOrigins("*")
+                .allowedOriginPatterns(corsOriginPattern)
                 .allowedMethods(
                         HttpMethod.GET.name(),
                         HttpMethod.POST.name(),

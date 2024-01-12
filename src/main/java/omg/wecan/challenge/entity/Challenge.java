@@ -8,7 +8,6 @@ import omg.wecan.recruit.Enum.ChallengeType;
 import omg.wecan.recruit.Enum.PaymentType;
 import omg.wecan.recruit.entity.Recruit;
 import omg.wecan.review.entity.Review;
-import omg.wecan.user.entity.User;
 
 import java.time.DayOfWeek;
 import java.time.LocalDate;
@@ -25,8 +24,7 @@ public class Challenge {
     @Column(name = "challenge_id")
     private Long id;
     private String title;
-    @OneToOne(cascade = CascadeType.ALL, fetch = FetchType.LAZY)
-    private ChattingRoom chattingRoom;
+    private String chattingRoomId;
     @OneToMany(mappedBy = "challenge", cascade = CascadeType.REMOVE)
     private List<UserChallenge> userChallenge;
     @Enumerated(value = EnumType.STRING)
@@ -53,7 +51,6 @@ public class Challenge {
     public static Challenge createChallenge(Recruit recruit, int peopleNum) {
         Challenge challenge = new Challenge();
         challenge.title = recruit.getTitle();
-        challenge.chattingRoom = new ChattingRoom(challenge);
         challenge.challengeType = recruit.getType();
         challenge.startDate = recruit.getEndDate().plusDays(1);
         challenge.endDate = recruit.getChallengeEndTime();
@@ -64,7 +61,7 @@ public class Challenge {
         challenge.coverImageEndpoint = recruit.getCoverImageEndpoint();
         challenge.state = Upcoming;
         challenge.finePerOnce = recruit.getFine();
-//        challenge.donationCandy = recruit.getDonationCandy();
+        challenge.donationCandy = challenge.totalCheckNum * challenge.finePerOnce;
         challenge.totalCheckNum = countCheckDays(challenge.checkDay, challenge.startDate, challenge.endDate);
 
         return challenge;
