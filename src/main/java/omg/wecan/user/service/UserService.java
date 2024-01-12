@@ -3,6 +3,7 @@ package omg.wecan.user.service;
 import jakarta.persistence.EntityManager;
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
+import omg.wecan.challenge.entity.UserChallenge;
 import omg.wecan.exception.customException.CustomException;
 import omg.wecan.exception.customException.ErrorCode;
 import omg.wecan.infrastructure.oauth.basic.domain.OauthServerType;
@@ -45,6 +46,11 @@ public class UserService {
     }
 
     public User save(User user) {
+        Optional<User> findUser = userRepository.findByEmail(user.getEmail());
+
+        if(!findUser.isEmpty())
+            throw new CustomException(ErrorCode.USER_EMAIL_DUPLICATED);
+
         return userRepository.saveAndFlush(user);
     }
 
@@ -55,12 +61,14 @@ public class UserService {
     }
 
     public User login(String email, String password) {
+        boolean success = true;
+
         User findUser = userRepository.findByEmail(email).orElseGet(() -> {
-            throw new NoSuchEmailUser();
+            throw new CustomException(ErrorCode.LOGIN_INFO_INVALID);
         });
 
         if (!findUser.getPassword().equals(password)) {
-            throw new MismatchedPasswordUser();
+            throw new CustomException(ErrorCode.LOGIN_INFO_INVALID);
         }
 
         return findUser;
