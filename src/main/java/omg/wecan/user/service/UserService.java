@@ -6,10 +6,14 @@ import lombok.RequiredArgsConstructor;
 import omg.wecan.exception.customException.CustomException;
 import omg.wecan.exception.customException.ErrorCode;
 import omg.wecan.infrastructure.oauth.basic.domain.OauthServerType;
+import omg.wecan.user.dto.request.UpdateUserRequest;
+import omg.wecan.user.dto.response.UserProfileResponse;
 import omg.wecan.user.entity.User;
 import omg.wecan.user.exception.MismatchedPasswordUser;
 import omg.wecan.user.exception.NoSuchEmailUser;
 import omg.wecan.user.repository.UserRepository;
+import omg.wecan.util.FileStore;
+import org.modelmapper.ModelMapper;
 import org.springframework.stereotype.Service;
 
 import java.util.Optional;
@@ -19,7 +23,9 @@ import java.util.Optional;
 @Transactional
 public class UserService {
     private final UserRepository userRepository;
+    private final FileStore fileStore;
     private final EntityManager em;
+    private final ModelMapper modelMapper;
 
     public User findByEmail(String email) {
         return userRepository.findByEmail(email).orElseThrow(
@@ -70,5 +76,30 @@ public class UserService {
         User user = getById(userId);
         long currentCandy = user.getCandy();
         user.setCandy(currentCandy + candyCnt);
+    }
+
+    public UserProfileResponse updateUserProfile(Long userId, UpdateUserRequest request){
+        User user = userRepository.findById(userId).get();
+
+        String currentImgUrl = user.getImgEndPoint();
+        String newImgUrl = null;
+
+        if(currentImgUrl != null)
+            fileStore.deleteFile(currentImgUrl);
+
+        if(request.getProfileImage() != null) {
+            newImgUrl = fileStore.storeFile(request.getProfileImage());
+        }
+
+        user.setNickName(request.getNickName());
+        user.setImgEndPoint(newImgUrl);
+
+        return modelMapper.map(user, UserProfileResponse.class);
+    }
+
+    public UserProfileResponse getUserProfile(Long userId) {
+        User user = userRepository.findById(userId).get();
+
+        return modelMapper.map(user, UserProfileResponse.class);
     }
 }

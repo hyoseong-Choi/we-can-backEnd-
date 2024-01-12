@@ -3,12 +3,15 @@ package omg.wecan.user.controller;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import omg.wecan.auth.dto.authResponse.AuthResponse;
+import omg.wecan.auth.presentation.AuthenticationPrincipal;
 import omg.wecan.jwt.domain.AuthToken;
 import omg.wecan.jwt.service.JWTService;
 import omg.wecan.user.dto.*;
 import omg.wecan.user.dto.request.SignInDto;
 import omg.wecan.user.dto.request.SignUpDto;
+import omg.wecan.user.dto.request.UpdateUserRequest;
 import omg.wecan.user.dto.request.UserDto;
+import omg.wecan.user.dto.response.UserProfileResponse;
 import omg.wecan.user.dto.response.UserResponse;
 import omg.wecan.user.entity.User;
 import omg.wecan.user.service.UserFindPasswordService;
@@ -76,5 +79,17 @@ public class UserController {
         User user = userService.login(userDto.getEmail(), userDto.getPassword());
         userService.deleteUser(user);
         return new ResponseEntity<>("User deleted successfully", HttpStatus.OK);
+    }
+
+    @GetMapping("/user/profile")
+    public ResponseEntity<ApiResponse<UserProfileResponse>> getUserProfile(@AuthenticationPrincipal User user){
+        UserProfileResponse response = userService.getUserProfile(user.getUserId());
+        return ResponseEntity.ok(ApiResponse.success(response));
+    }
+    @PutMapping("/user/profile")
+    public ResponseEntity<ApiResponse<UserProfileResponse>> updateUserProfile(@AuthenticationPrincipal User user,
+                                                                              @Valid @ModelAttribute UpdateUserRequest request) {
+        UserProfileResponse response = userService.updateUserProfile(user.getUserId(), request);
+        return ResponseEntity.ok(ApiResponse.success(response));
     }
 }
