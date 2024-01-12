@@ -15,6 +15,7 @@ import org.springframework.web.bind.annotation.*;
 
 @RestController
 @RequiredArgsConstructor
+@CrossOrigin(origins = "*", allowedHeaders = "*")
 public class DonationCertificateController {
     private final DonationCertificateService donationCertificateService;
     private final ModelMapper modelMapper;

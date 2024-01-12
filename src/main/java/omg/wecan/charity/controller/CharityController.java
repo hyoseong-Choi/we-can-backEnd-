@@ -17,6 +17,7 @@ import java.net.URI;
 @RequestMapping("/charities")
 @RestController
 @RequiredArgsConstructor
+@CrossOrigin(origins = "*", allowedHeaders = "*")
 public class CharityController {
     private final CharityService charityService;
 

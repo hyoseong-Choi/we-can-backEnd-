@@ -20,10 +20,7 @@ import omg.wecan.util.ApiResponse;
 import omg.wecan.util.event.BuyItemEvent;
 import org.modelmapper.ModelMapper;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import static omg.wecan.exception.customException.ErrorCode.REJECT_PAYMENT;
 import static omg.wecan.shop.entity.UserItem.createUserItem;
@@ -31,6 +28,7 @@ import static omg.wecan.shop.entity.UserItem.createUserItem;
 @RestController
 @RequestMapping("/orders")
 @RequiredArgsConstructor
+@CrossOrigin(origins = "*", allowedHeaders = "*")
 public class OrderController {
     private final ModelMapper mapper;
     private final OrderService orderService;
