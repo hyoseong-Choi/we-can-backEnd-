@@ -24,6 +24,7 @@ import java.io.IOException;
 @RequiredArgsConstructor
 @RestController
 @RequestMapping("/payment/toss")
+@CrossOrigin(origins = "*", allowedHeaders = "*")
 public class CashPaymentController {
     private final CashPaymentService cashPaymentService;
     private final UserService userService;
