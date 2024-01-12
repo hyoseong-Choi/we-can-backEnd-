@@ -10,14 +10,15 @@ import java.util.UUID;
 @Setter
 public class ChatRoom {
     private String roomId; // 채팅방 아이디
-    private String roomName; // 채팅방 이름
-    private long userCount; // 채팅방 인원수
-    private HashMap<String, String> userList = new HashMap<String, String>();
+    private Long challengeId; // 해당 챌린지 id
+    private int userCount; // 채팅방 인원수
+    private HashMap<Long, String> userList = new HashMap<Long, String>();
 
-    public ChatRoom create(String roomName){
+    public ChatRoom create(Long challengeId){
         ChatRoom chatRoom = new ChatRoom();
         chatRoom.roomId = UUID.randomUUID().toString();
-        chatRoom.roomName = roomName;
+        chatRoom.challengeId = challengeId;
+        chatRoom.userCount = 0;
 
         return chatRoom;
     }

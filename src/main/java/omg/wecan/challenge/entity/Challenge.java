@@ -64,7 +64,7 @@ public class Challenge {
         challenge.coverImageEndpoint = recruit.getCoverImageEndpoint();
         challenge.state = Upcoming;
         challenge.finePerOnce = recruit.getFine();
-//        challenge.donationCandy = recruit.getDonationCandy();
+        challenge.donationCandy = challenge.totalCheckNum * challenge.finePerOnce;
         challenge.totalCheckNum = countCheckDays(challenge.checkDay, challenge.startDate, challenge.endDate);
 
         return challenge;
