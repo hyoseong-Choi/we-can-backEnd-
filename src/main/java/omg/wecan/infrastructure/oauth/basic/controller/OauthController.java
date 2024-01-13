@@ -17,6 +17,7 @@ import org.springframework.web.bind.annotation.*;
 @RequiredArgsConstructor
 @RequestMapping("/oauth")
 @RestController
+@CrossOrigin(origins = "*", allowedHeaders = "*")
 public class OauthController {
 
     private final OauthService oauthService;

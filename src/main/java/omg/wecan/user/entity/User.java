@@ -2,6 +2,7 @@ package omg.wecan.user.entity;
 
 import jakarta.persistence.*;
 import lombok.Getter;
+import lombok.Setter;
 import omg.wecan.challenge.entity.ChallengeCheck;
 import omg.wecan.challenge.entity.ChallengeCheckImage;
 import omg.wecan.challenge.entity.DislikeCheck;
@@ -15,19 +16,18 @@ import java.util.regex.Pattern;
 
 @Entity
 @Getter
+@Setter
 public class User extends BaseEntity {
     private static final Pattern EMAIL_PATTERN = Pattern.compile("^[a-z0-9._-]+@[a-z]+[.]+[a-z]{2,3}$");
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long userId;
-    @Column(nullable = false, unique = true)
+    @Column(unique = true)
     private String email;
-    @Column(nullable = false)
     private String password;
     private String name;
     private String nickName;
-    @Column(nullable = false)
     private String phone;
     private String imgEndPoint;
     private Long candy;
