@@ -47,7 +47,7 @@ public class RecruitController {
     }
     
     @GetMapping("/recruits")
-    public ResponseEntity<ApiResponse<Page<RecruitOutput>>> recruitFind(@AuthenticationPrincipal User loginUser, @ModelAttribute RecruitFindCond recruitFindCond, @PageableDefault(size = 12)Pageable pageable) {
+    public ResponseEntity<ApiResponse<Page<RecruitOutput>>> recruitFind(@AuthenticationPrincipal(required = false) User loginUser, @ModelAttribute RecruitFindCond recruitFindCond, @PageableDefault(size = 15)Pageable pageable) {
         return ResponseEntity.ok(ApiResponse.success(recruitService.findRecruit(loginUser, recruitFindCond, pageable)));
     }
 
