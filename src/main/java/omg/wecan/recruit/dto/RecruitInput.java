@@ -36,7 +36,7 @@ public class RecruitInput {
     private String paymentType;
     
     private String content;
-    @NotBlank
+    @NotNull
     private MultipartFile coverImage;
     @NotNull
     @Min(value = 1)
