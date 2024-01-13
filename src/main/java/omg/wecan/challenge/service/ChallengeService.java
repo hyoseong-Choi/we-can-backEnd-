@@ -57,18 +57,6 @@ public class ChallengeService {
         return userChallengeDto;
     }
 
-    public List<ChallengeDto> getUpcomingChallengesByUser(Long userId) {
-        List<UserChallenge> userChallenges = userChallengeRepository.findByUserUserId(userId);
-        List<Challenge> upcomingChallenges = userChallenges.stream()
-                .filter(userChallenge -> userChallenge.getChallenge().getState().equals(ChallengeStateType.Upcoming))
-                .map(UserChallenge::getChallenge)
-                .collect(Collectors.toList());
-
-        return upcomingChallenges.stream()
-                .map(ChallengeDto::fromEntity)
-                .collect(Collectors.toList());
-    }
-
     public List<ChallengeDto> getCompletedChallengesByUser(Long userId) {
         List<UserChallenge> userChallenges = userChallengeRepository.findByUserUserId(userId);
         List<Challenge> completedChallenges = userChallenges.stream()
