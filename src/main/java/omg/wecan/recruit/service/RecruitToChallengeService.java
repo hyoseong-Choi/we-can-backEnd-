@@ -32,7 +32,7 @@ public class RecruitToChallengeService {
     @Scheduled(cron = "1 0 0 * * *")
     public void recruitToChallenge() {
         List<Recruit> finishedRecruits = recruitRepository.findByEndDateIs(LocalDate.now().minusDays(1));
-        System.out.println(LocalDate.now().minusDays(1));
+
         for (Recruit recruit : finishedRecruits) {
             recruit.changeFinished();
             List<Participate> participatesByRecruit = participateRepository.findByRecruit(recruit);
@@ -41,7 +41,6 @@ public class RecruitToChallengeService {
             newChallenge.setChattingRoomId(chattingRoom.getRoomId());
             challengeRepository.save(newChallenge);
 
-            System.out.println(chattingRoom.getRoomId());
             for (Participate participate : participatesByRecruit) {
                 userChallengeRepository.save(UserChallenge.createUserChallenge(participate, newChallenge));
             }
