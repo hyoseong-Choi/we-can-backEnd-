@@ -13,7 +13,7 @@ import org.springframework.web.bind.annotation.*;
 @RestController
 @Slf4j
 @RequiredArgsConstructor
-@RequestMapping("/chatroom")
+@RequestMapping("/chatroom")@CrossOrigin(origins = "*", allowedHeaders = "*")
 public class ChatRoomController {
 
     private final ChatService chatService;
