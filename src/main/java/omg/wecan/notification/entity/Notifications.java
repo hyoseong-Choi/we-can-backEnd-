@@ -42,6 +42,14 @@ public class Notifications extends BaseEntity {
         this.content = participate.getUser().getNickName() + " 님이 " + content + " 챌린지를 시작할 수 있습니다.";
         this.newNotice = true;
     }
+
+    public Notifications(Participate participate, String content, String fail) {
+        this.targetUser = participate.getUser();
+        this.title = "챌린지 최소 모집 인원 미달이에요.";
+        this.content = content + " 챌린지는 정원 미달로 열리지 않았아요.";
+        this.newNotice = true;
+    }
+
     
     public Notifications(String recruitTitle, Participate participate) {
         this.targetUser = participate.getUser();
@@ -61,6 +69,7 @@ public class Notifications extends BaseEntity {
         this.targetUser = payChallengeEvent.getUser();
         this.title = "챌린지 입장 비용 결제 알림";
         this.content = payChallengeEvent.getChallenge().getTitle() + "에 대한 결제가 완료되었습니다.";
+        this.newNotice = true;
     }
 
     public Notifications(SettleChallengeEvent settleChallengeEvent) {
@@ -68,6 +77,7 @@ public class Notifications extends BaseEntity {
 
         this.targetUser = settleChallengeEvent.getUser();
         this.title = "챌린지 정산 알림";
+        this.newNotice = true;
 
         if(refundCandy != 0L)
             this.content = settleChallengeEvent.getChallenge().getTitle() + "챌린지에 대한 캔디 " + refundCandy + "개가 환급되었습니다.";

@@ -70,6 +70,16 @@ public class EventHandler {
 //            log.error("cannot send to user push message. error info : {}", e.getMessage());
 //        }
     }
+
+    @EventListener
+    @Async
+    public void handleParticipateFailEvent(ParticipateFailEvent participateFailEvent) {
+        String title = participateFailEvent.getRecruitTitle();
+
+        for (Participate participate : participateFailEvent.getParticipateList()) {
+            notificationRepository.save(new Notifications(participate, title, "fail"));
+        }
+    }
     
     @EventListener
     @Async
