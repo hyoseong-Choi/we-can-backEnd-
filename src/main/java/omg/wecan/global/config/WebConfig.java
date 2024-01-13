@@ -21,6 +21,7 @@ public class WebConfig implements WebMvcConfigurer {
         this.corsOrigins = corsOrigins;
         this.authenticationPrincipalArgumentResolver = authenticationPrincipalArgumentResolver;
     }
+  
     @Override
     public void addCorsMappings(CorsRegistry registry) {
         String[] corsOriginPattern = corsOrigins.stream().toArray(String[]::new);
@@ -37,6 +38,7 @@ public class WebConfig implements WebMvcConfigurer {
                 .allowCredentials(true)
                 .exposedHeaders("*");
     }
+
 
     @Override
     public void addFormatters(FormatterRegistry registry) {
