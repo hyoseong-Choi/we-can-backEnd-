@@ -29,6 +29,7 @@ public enum ErrorCode {
 
     //user
     USER_NOT_FOUND(HttpStatus.NOT_FOUND, "6404", "해당 사용자가 존재하지 않습니다."),
+    USER_EMAIL_DUPLICATED(HttpStatus.CONFLICT, "6409", "해당 이메일이 이미 존재합니다"),
     USER_EMAIL_MISMATCH(HttpStatus.BAD_REQUEST,"6400", "해당 이메일을 가진 사용자가 없습니다."),
     USER_NAME_EMAIL_MISMATCH(HttpStatus.BAD_REQUEST,"6400", "해당 이메일, 이름을 가진 사용자가 없습니다."),
     OTP_MISMATCH(HttpStatus.BAD_REQUEST,"6400", "인증 번호가 틀렸습니다."),
@@ -49,8 +50,10 @@ public enum ErrorCode {
     ORDER_TYPE_INVALID(HttpStatus.BAD_REQUEST, "10400", "유효하지 않은 order type입니다."),
 
     //item
-    ITEM_NOT_FOUND(HttpStatus.BAD_REQUEST, "11404", "해당 item을 찾을 수 없습니다.");
+    ITEM_NOT_FOUND(HttpStatus.BAD_REQUEST, "11404", "해당 item을 찾을 수 없습니다."),
 
+    //login
+    LOGIN_INFO_INVALID(HttpStatus.UNAUTHORIZED, "12401", "로그인 정보가 유효하지 않습니다.");
     private final HttpStatus status;
     private final String code;
     private final String message;
