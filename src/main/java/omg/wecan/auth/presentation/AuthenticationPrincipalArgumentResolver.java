@@ -7,6 +7,7 @@ import omg.wecan.jwt.exception.InvalidTokenException;
 import omg.wecan.jwt.service.JWTService;
 import omg.wecan.user.entity.User;
 import omg.wecan.user.service.UserService;
+import org.apache.http.HttpHeaders;
 import org.springframework.core.MethodParameter;
 import org.springframework.stereotype.Component;
 import org.springframework.web.bind.support.WebDataBinderFactory;
@@ -30,11 +31,10 @@ public class AuthenticationPrincipalArgumentResolver implements HandlerMethodArg
     public Object resolveArgument(final MethodParameter parameter, final ModelAndViewContainer mavContainer,
                                   final NativeWebRequest webRequest, final WebDataBinderFactory binderFactory) {
         AuthenticationPrincipal annotation = parameter.getParameterAnnotation(AuthenticationPrincipal.class);
-
-        if(annotation.required() == false)
+        HttpServletRequest request = webRequest.getNativeRequest(HttpServletRequest.class);
+        if(request.getHeader(HttpHeaders.AUTHORIZATION) == null  && annotation.required() == false)
             return null;
 
-        HttpServletRequest request = webRequest.getNativeRequest(HttpServletRequest.class);
         String accessToken = AuthorizationExtractor.extract(request);
 
         jwtService.validateToken(accessToken);
