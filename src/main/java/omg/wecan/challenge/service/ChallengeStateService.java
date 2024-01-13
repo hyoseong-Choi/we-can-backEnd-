@@ -23,12 +23,6 @@ public class ChallengeStateService {
     @Scheduled(cron = "00 00 00 * * *")
     public void challengeStateService() {
 
-        //시작 일에 도달한 챌린지 상태 변경
-        List<Challenge> activeChallenges = challengeRepository.findByStartDateIs(LocalDate.now());
-        for (Challenge challenge : activeChallenges) {
-            challenge.setState(ChallengeStateType.Active);
-        }
-
         //종료 일에 도달한 챌린지 상태 변경
         List<Challenge> completedChallenges = challengeRepository.findByEndDateIs(LocalDate.now().minusDays(1));
         for (Challenge challenge : completedChallenges) {

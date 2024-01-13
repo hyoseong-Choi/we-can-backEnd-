@@ -13,7 +13,7 @@ import java.time.DayOfWeek;
 import java.time.LocalDate;
 import java.util.List;
 
-import static omg.wecan.challenge.Enum.ChallengeStateType.Upcoming;
+import static omg.wecan.challenge.Enum.ChallengeStateType.Active;
 
 @Entity
 @Data
@@ -59,7 +59,7 @@ public class Challenge {
         challenge.paymentType = recruit.getPaymentType();
         challenge.charityName = initCharityName(recruit);
         challenge.coverImageEndpoint = recruit.getCoverImageEndpoint();
-        challenge.state = Upcoming;
+        challenge.state = Active;
         challenge.finePerOnce = recruit.getFine();
         challenge.donationCandy = challenge.totalCheckNum * challenge.finePerOnce;
         challenge.totalCheckNum = countCheckDays(challenge.checkDay, challenge.startDate, challenge.endDate);
