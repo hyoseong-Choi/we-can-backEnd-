@@ -4,6 +4,7 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import omg.wecan.charity.entity.Charity;
 import omg.wecan.charity.repository.CharityRepository;
+import omg.wecan.exception.recruitException.RecruitIsFinishedException;
 import omg.wecan.util.FileStore;
 import omg.wecan.recruit.dto.*;
 import omg.wecan.recruit.entity.Heart;
@@ -26,6 +27,8 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.*;
+
+import static omg.wecan.exception.customException.ErrorCode.RECRUIT_WAS_FINISHED;
 
 @Service
 @RequiredArgsConstructor
@@ -141,13 +144,16 @@ public class RecruitService {
     
     public Integer addParticipate(User loginUser, AddParticipateInput addParticipateInput) {
         Recruit recruit = recruitRepository.findById(addParticipateInput.getRecruitId()).get();
-        participateRepository.save(Participate.createParticipate(loginUser, recruit));
-        int participateNum = recruit.getParticipate().size();
-        if (participateNum == recruit.getMinPeople()) {
-            log.info("퍼블전 Thread Id : {}", Thread.currentThread().getId());
-            eventPublisher.publishEvent(new MinimumParticipateEvent(participateRepository.findUserByRecruit(recruit), recruit.getTitle()));
+        if (!recruit.isFinished()) {
+            participateRepository.save(Participate.createParticipate(loginUser, recruit));
+            int participateNum = recruit.getParticipate().size();
+            if (participateNum == recruit.getMinPeople()) {
+                log.info("퍼블전 Thread Id : {}", Thread.currentThread().getId());
+                eventPublisher.publishEvent(new MinimumParticipateEvent(participateRepository.findUserByRecruit(recruit), recruit.getTitle()));
+            }
+            return participateNum;
         }
-        return participateNum;
+        throw new RecruitIsFinishedException(RECRUIT_WAS_FINISHED);
     }
     
     public Integer deleteParticipate(User loginUser, DeleteParticipateAndHeartInput deleteParticipateAndHeartInput) {
@@ -155,7 +161,7 @@ public class RecruitService {
         participateRepository.deleteByUserAndRecruit(loginUser, recruit);
         return recruit.getParticipate().size();
     }
-    
+
     @Transactional
     public Integer addHeart(User loginUser, AddHeartInput addHeartInput) {
         Recruit recruit = recruitRepository.findById(addHeartInput.getRecruitId()).get();
