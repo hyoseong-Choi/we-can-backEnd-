@@ -11,7 +11,7 @@ public class CommentOutput {
     
     public CommentOutput(RecruitComment recruitComment) {
         this.id = recruitComment.getId();
-        this.userName = recruitComment.getUser().getName();
+        this.userName = recruitComment.getUser().getNickName();
         this.content = recruitComment.getContent();
     }
 }
