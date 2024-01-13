@@ -29,8 +29,19 @@ public class RecruitExceptionHandler {
             throw new RecruitPostModelAttributeException(RECRUIT_ATTRIBUTE_INVALID);
         }
     }
-    
+
+    @ExceptionHandler
     public ResponseEntity<ErrorResponse> RecruitPostModelAttributeException(RecruitPostModelAttributeException e) {
+        ErrorResponse errorResponse = ErrorResponse.builder()
+                .code(e.getCode().getCode())
+                .message(e.getMessage())
+                .build();
+        return ResponseEntity.status(e.getCode().getStatus())
+                .body(errorResponse);
+    }
+
+    @ExceptionHandler
+    public ResponseEntity<ErrorResponse> RecruitIsFinishedException(RecruitIsFinishedException e) {
         ErrorResponse errorResponse = ErrorResponse.builder()
                 .code(e.getCode().getCode())
                 .message(e.getMessage())
