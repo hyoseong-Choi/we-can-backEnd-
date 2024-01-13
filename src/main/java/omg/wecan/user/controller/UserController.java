@@ -46,7 +46,7 @@ public class UserController {
         AuthToken authToken = jwtService.createAuthToken(user.getUserId());
         userService.updateRefreshToken(user.getUserId(), authToken.getRefreshToken());
 
-        AuthResponse innerResponse = new AuthResponse(authToken);
+        AuthResponse innerResponse = new AuthResponse(authToken, user);
 
         return ResponseEntity.ok().body(ApiResponse.success(innerResponse));
     }
