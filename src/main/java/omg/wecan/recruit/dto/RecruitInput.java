@@ -21,13 +21,13 @@ public class RecruitInput {
     private String title;
     @NotBlank
     private String challengeType;
-    @NotBlank
+    @NotNull
     @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd", timezone = "Asia/Seoul")
     private LocalDate challengeStartDate;
-    @NotBlank
+    @NotNull
     @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd", timezone = "Asia/Seoul")
     private LocalDate challengeEndDate;
-    @NotBlank
+    @NotNull
     @Min(value = 5)
     private int minPeople;
     @NotBlank
@@ -36,7 +36,7 @@ public class RecruitInput {
     private String paymentType;
     
     private String content;
-    @NotBlank
+    @NotNull
     private MultipartFile coverImage;
     @NotNull
     @Min(value = 1)
