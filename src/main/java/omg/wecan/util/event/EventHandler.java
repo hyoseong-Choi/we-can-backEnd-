@@ -26,7 +26,7 @@ public class EventHandler {
     @Async
     public void handleRecruitCommentEvent(RecruitCommentEvent recruitCommentEvent) {
         Notifications notifications = new Notifications(recruitCommentEvent);
-//
+        notificationRepository.save(notifications);
 //        Message message = Message.builder()
 //                .setToken(notifications.getTargetUser().getFcmToken())
 //                .setNotification(Notification.builder()
@@ -48,14 +48,14 @@ public class EventHandler {
     @Async
     public void handleMinimumParticipateEvent(MinimumParticipateEvent minimumParticipateEvent) {
         List<Notifications> notifications = new LinkedList<>();
-//        for (Participate participate : minimumParticipateEvent.getParticipateList()) {
-//            if (participate.isLeader()) {
-//                notifications.add(new Notifications(participate, "모집한"));
-//                continue;
-//            }
-//            notifications.add(new Notifications(participate, "신청한"));
-//        }
-//
+        for (Participate participate : minimumParticipateEvent.getParticipateList()) {
+            if (participate.isLeader()) {
+                notifications.add(new Notifications(participate, "모집한"));
+                continue;
+            }
+            notifications.add(new Notifications(participate, "신청한"));
+        }
+        notificationRepository.saveAll(notifications);
 //        try {
 //            BatchResponse batchResponse = FirebaseMessaging.getInstance().sendEach(notifications.stream()
 //                    .map(notification -> Message.builder().setToken(notification.getTargetUser().getFcmToken())
@@ -85,10 +85,10 @@ public class EventHandler {
     @Async
     public void handleChallengeStartEvent(ChallengeStartEvent challengeStartEvent) {
         List<Notifications> notifications = new LinkedList<>();
-//        for (Participate participate : challengeStartEvent.getParticipateList()) {
-//            notifications.add(new Notifications(challengeStartEvent.getRecruitTitle(), participate));
-//        }
-//
+        for (Participate participate : challengeStartEvent.getParticipateList()) {
+            notifications.add(new Notifications(challengeStartEvent.getRecruitTitle(), participate));
+        }
+        notificationRepository.saveAll(notifications);
 //        try {
 //            BatchResponse batchResponse = FirebaseMessaging.getInstance().sendEach(notifications.stream()
 //                    .map(notification -> Message.builder().setToken(notification.getTargetUser().getFcmToken())
@@ -109,7 +109,7 @@ public class EventHandler {
     @Transactional(propagation = Propagation.REQUIRES_NEW)
     public void handleBuyItemEvent(BuyItemEvent buyItemEvent) {
         Notifications notification = new Notifications(buyItemEvent);
-//
+        notificationRepository.save(notification);
 //        try {
 //            String response = FirebaseMessaging.getInstance().send(Message.builder()
 //                    .setToken(buyItemEvent.getUser().getFcmToken())
