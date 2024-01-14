@@ -26,7 +26,7 @@ public class ReviewController {
     private final ReviewService reviewService;
 
     //리뷰 작성
-    @PostMapping("/create")
+    @PostMapping()
     public ResponseEntity<ApiResponse<ReviewDto>> createReview(@AuthenticationPrincipal User user, @RequestBody @Valid ReviewCreateDto reviewDto) {
         ReviewDto createdReview = reviewService.createReview(user, reviewDto);
         return ResponseEntity.ok(ApiResponse.success(createdReview));
