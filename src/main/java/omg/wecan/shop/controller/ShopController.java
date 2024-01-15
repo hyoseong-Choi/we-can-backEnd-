@@ -38,17 +38,17 @@ public class ShopController {
     }
     
     @GetMapping("/shop/emoticon")
-    public ResponseEntity<ApiResponse<Page<ItemsOutput>>> emoticonFind(@AuthenticationPrincipal User loginUser, @PageableDefault(size = 6) Pageable pageable) {
+    public ResponseEntity<ApiResponse<Page<ItemsOutput>>> emoticonFind(@PageableDefault(size = 6) Pageable pageable) {
         return ResponseEntity.ok(ApiResponse.success(itemService.findEmoticon(pageable)));
     }
     
     @GetMapping("/shop/item")
-    public ResponseEntity<ApiResponse<Page<ItemsOutput>>> ItemFind(@AuthenticationPrincipal User loginUser, @PageableDefault(size = 6) Pageable pageable) {
+    public ResponseEntity<ApiResponse<Page<ItemsOutput>>> ItemFind(@PageableDefault(size = 6) Pageable pageable) {
         return ResponseEntity.ok(ApiResponse.success(itemService.findItem(pageable)));
     }
     
     @GetMapping("/shop/{id}")
-    public ResponseEntity<ApiResponse<ItemDetailOutput>> ItemDetail(@AuthenticationPrincipal User loginUser, @PathVariable Long id) {
+    public ResponseEntity<ApiResponse<ItemDetailOutput>> ItemDetail(@PathVariable Long id) {
         return ResponseEntity.ok(ApiResponse.success(itemService.findItemDetail(id)));
     }
     
