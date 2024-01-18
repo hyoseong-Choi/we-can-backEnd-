@@ -2,18 +2,20 @@ package omg.wecan.shop.service;
 
 import lombok.RequiredArgsConstructor;
 import omg.wecan.exception.customException.CustomException;
-import omg.wecan.exception.customException.ErrorCode;
 import omg.wecan.exception.shopException.LackOfCandyException;
 import omg.wecan.shop.dto.ItemDetailOutput;
 import omg.wecan.shop.dto.ItemsOutput;
 import omg.wecan.shop.dto.MyItemsOutput;
+import omg.wecan.shop.entity.Exemption;
 import omg.wecan.shop.entity.Item;
 import omg.wecan.shop.entity.ItemType;
 import omg.wecan.shop.entity.UserItem;
+import omg.wecan.shop.repository.ExemptionRepository;
 import omg.wecan.shop.repository.ItemRepository;
 import omg.wecan.shop.repository.UserItemRepository;
 import omg.wecan.user.entity.User;
 import omg.wecan.util.event.BuyItemEvent;
+import org.apache.commons.lang3.RandomStringUtils;
 import org.springframework.context.ApplicationEventPublisher;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -25,7 +27,8 @@ import java.util.stream.Collectors;
 
 import static omg.wecan.exception.customException.ErrorCode.ITEM_NOT_FOUND;
 import static omg.wecan.exception.customException.ErrorCode.REJECT_PAYMENT;
-import static omg.wecan.shop.entity.UserItem.createUserItem;
+import static omg.wecan.shop.entity.UserItem.createUserItemEmoticon;
+import static omg.wecan.shop.entity.UserItem.createUserItemItem;
 
 @Service
 @RequiredArgsConstructor
@@ -33,6 +36,7 @@ public class ItemService {
     private final ItemRepository itemRepository;
     private final UserItemRepository userItemRepository;
     private final ApplicationEventPublisher eventPublisher;
+    private final ExemptionRepository exemptionRepository;
     
     public List<ItemsOutput> findThreeItem() {
         return itemRepository.findRandom().stream().map(ItemsOutput::new).collect(Collectors.toList());
@@ -70,7 +74,14 @@ public class ItemService {
         Item item = itemRepository.findById(id).get();
         if (loginUser.getCandy() >= item.getPrice()) {
             loginUser.minusCandy(item.getPrice());
-            UserItem userItem = userItemRepository.save(createUserItem(loginUser, item));
+            if (item.getItemType().equals(ItemType.ITEM)) {
+                UserItem userItem = createUserItemItem(loginUser, item);
+                exemptionRepository.save(new Exemption(userItem, RandomStringUtils.randomAlphabetic(20)));
+                userItemRepository.save(userItem);
+                eventPublisher.publishEvent(new BuyItemEvent(loginUser, item));
+                return userItem.getId();
+            }
+            UserItem userItem = userItemRepository.save(createUserItemEmoticon(loginUser, item));
             eventPublisher.publishEvent(new BuyItemEvent(loginUser, item));
             return userItem.getId();
         }
@@ -80,7 +91,7 @@ public class ItemService {
     @Transactional
     public Long buyItemV2(User loginUser, Long id) {
         Item item = getItemById(id);
-        UserItem userItem = userItemRepository.save(createUserItem(loginUser, item));
+        UserItem userItem = userItemRepository.save(createUserItemEmoticon(loginUser, item));
         return userItem.getId();
     }
 }
