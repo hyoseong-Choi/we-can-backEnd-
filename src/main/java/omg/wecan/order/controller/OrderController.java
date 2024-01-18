@@ -23,7 +23,6 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import static omg.wecan.exception.customException.ErrorCode.REJECT_PAYMENT;
-import static omg.wecan.shop.entity.UserItem.createUserItem;
 
 @RestController
 @RequestMapping("/orders")
