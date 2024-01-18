@@ -3,8 +3,10 @@ package omg.wecan.shop.controller;
 import lombok.RequiredArgsConstructor;
 import omg.wecan.auth.presentation.AuthenticationPrincipal;
 import omg.wecan.shop.dto.ItemDetailOutput;
+import omg.wecan.shop.dto.ItemInput;
 import omg.wecan.shop.dto.ItemsOutput;
 import omg.wecan.shop.dto.MyItemsOutput;
+import omg.wecan.shop.entity.Item;
 import omg.wecan.shop.service.ItemService;
 import omg.wecan.user.entity.User;
 import omg.wecan.util.ApiResponse;
@@ -55,6 +57,11 @@ public class ShopController {
     @PostMapping("/shop/{id}/buy")
     public ResponseEntity<ApiResponse<Long>> itemBuy(@AuthenticationPrincipal User loginUser, @PathVariable Long id) {
         return ResponseEntity.ok(ApiResponse.success(itemService.buyItem(loginUser, id)));
+    }
+    
+    @PostMapping("/item")
+    public Item itemadd(@ModelAttribute ItemInput itemInput) {
+        return itemService.addItem(itemInput);
     }
     
     
