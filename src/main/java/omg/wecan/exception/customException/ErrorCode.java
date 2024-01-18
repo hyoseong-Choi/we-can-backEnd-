@@ -54,7 +54,10 @@ public enum ErrorCode {
     ITEM_NOT_FOUND(HttpStatus.BAD_REQUEST, "11404", "해당 item을 찾을 수 없습니다."),
 
     //login
-    LOGIN_INFO_INVALID(HttpStatus.UNAUTHORIZED, "12401", "로그인 정보가 유효하지 않습니다.");
+    LOGIN_INFO_INVALID(HttpStatus.UNAUTHORIZED, "12401", "로그인 정보가 유효하지 않습니다."),
+
+    CHATTING_ROOM_NOT_FOUND(HttpStatus.NOT_FOUND,"13404", "해당 채팅방은 존재하지 않습니다."),
+    CHATTING_ROOM_USER_NOT_FOUND(HttpStatus.NOT_FOUND,"13404", "채팅방에 해당 유저가 존재하지 않습니다.");
     private final HttpStatus status;
     private final String code;
     private final String message;
