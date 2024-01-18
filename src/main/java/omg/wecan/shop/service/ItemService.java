@@ -4,6 +4,7 @@ import lombok.RequiredArgsConstructor;
 import omg.wecan.exception.customException.CustomException;
 import omg.wecan.exception.shopException.LackOfCandyException;
 import omg.wecan.shop.dto.ItemDetailOutput;
+import omg.wecan.shop.dto.ItemInput;
 import omg.wecan.shop.dto.ItemsOutput;
 import omg.wecan.shop.dto.MyItemsOutput;
 import omg.wecan.shop.entity.Exemption;
@@ -14,6 +15,7 @@ import omg.wecan.shop.repository.ExemptionRepository;
 import omg.wecan.shop.repository.ItemRepository;
 import omg.wecan.shop.repository.UserItemRepository;
 import omg.wecan.user.entity.User;
+import omg.wecan.util.FileStore;
 import omg.wecan.util.event.BuyItemEvent;
 import org.apache.commons.lang3.RandomStringUtils;
 import org.springframework.context.ApplicationEventPublisher;
@@ -37,6 +39,7 @@ public class ItemService {
     private final UserItemRepository userItemRepository;
     private final ApplicationEventPublisher eventPublisher;
     private final ExemptionRepository exemptionRepository;
+    private final FileStore fileStore;
     
     public List<ItemsOutput> findThreeItem() {
         return itemRepository.findRandom().stream().map(ItemsOutput::new).collect(Collectors.toList());
@@ -93,5 +96,15 @@ public class ItemService {
         Item item = getItemById(id);
         UserItem userItem = userItemRepository.save(createUserItemEmoticon(loginUser, item));
         return userItem.getId();
+    }
+    
+    public Item addItem(ItemInput itemInput) {
+        String imgEndpoint = fileStore.storeFile(itemInput.getCoverImage());
+        return itemRepository.save(new Item(itemInput, imgEndpoint));
+    }
+    
+    
+    public void useExemption(String certificationString) {
+        exemptionRepository.deleteByCertificationString(certificationString);
     }
 }
