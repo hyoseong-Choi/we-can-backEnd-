@@ -37,12 +37,12 @@ public class RecruitController {
     }
     
     @GetMapping("/recruit/{id}")
-    public ResponseEntity<ApiResponse<RecruitDetailOutput>> recruitDetails(@AuthenticationPrincipal User loginUser, @PathVariable Long id) {
+    public ResponseEntity<ApiResponse<RecruitDetailOutput>> recruitDetails(@AuthenticationPrincipal(required = false) User loginUser, @PathVariable Long id) {
         return ResponseEntity.ok(ApiResponse.success(recruitService.findRecruitDetail(loginUser, id)));
     }
     
     @GetMapping("/recruits/home")
-    public ResponseEntity<ApiResponse<List<RecruitOutput>>> recruitFindThree(@AuthenticationPrincipal User loginUser) {
+    public ResponseEntity<ApiResponse<List<RecruitOutput>>> recruitFindThree(@AuthenticationPrincipal(required = false) User loginUser) {
         return ResponseEntity.ok(ApiResponse.success(recruitService.findThreeRecruit(loginUser)));
     }
     

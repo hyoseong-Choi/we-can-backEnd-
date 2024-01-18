@@ -12,8 +12,6 @@ import omg.wecan.recruit.Enum.PaymentType;
 import omg.wecan.recruit.dto.RecruitInput;
 import omg.wecan.user.entity.User;
 
-import java.io.UnsupportedEncodingException;
-import java.nio.charset.StandardCharsets;
 import java.time.LocalDate;
 import java.util.List;
 
@@ -95,12 +93,7 @@ public class Recruit extends BaseEntity {
         Recruit recruit = new Recruit();
         recruit.writer = user;
         recruit.charityNotInDb = recruitInput.getCharityName();
-        //new String(file.getOriginalFilename().getBytes("8859_1"), StandardCharsets.UTF_8)
-        try {
-            recruit.title = new String(recruitInput.getTitle().getBytes("8859_1"), StandardCharsets.UTF_8);
-        } catch (UnsupportedEncodingException e) {
-            throw new RuntimeException(e);
-        }
+        recruit.title = recruitInput.getTitle();
         recruit.type = ChallengeType.from(recruitInput.getChallengeType());
         recruit.startDate = LocalDate.now();
         recruit.endDate = recruitInput.getChallengeStartDate().minusDays(1);
