@@ -202,6 +202,6 @@ public class ChallengeService {
         Long chattingRoomId = optionalChattingRoom.map(ChattingRoom::getId)
                 .orElseThrow(() -> new CustomException(ErrorCode.CHATTING_ROOM_NOT_FOUND, "challengeId: " + challengeId));
 
-        return new ChallengeInfoDto(challenge, successRate, chattingRoomId, chatService.chattingRoomUserList(chattingRoomId), chatService.getChatList(chattingRoomId));
+        return new ChallengeInfoDto(challenge, successRate, chattingRoomId, chatService.getChatList(chattingRoomId));
     }
 }

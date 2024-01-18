@@ -22,16 +22,14 @@ public class ChallengeInfoDto {
     private LocalDate endDate;
     private String  successRate;
     private Long chattingRoomId;
-    private List<ChattingUserDto> currentChattingUser;
     private List<ChatDto> chattingList;
 
-    public ChallengeInfoDto(Challenge challenge, int successRate, Long chattingRoomId, List<ChattingUserDto> chattingUserDto, List<ChatDto> chatDtoList){
+    public ChallengeInfoDto(Challenge challenge, int successRate, Long chattingRoomId, List<ChatDto> chatDtoList){
         this.title = challenge.getTitle();
         this.startDate = challenge.getStartDate();
         this.endDate = challenge.getEndDate();
         this.successRate = successRate + "%";
         this.chattingRoomId = chattingRoomId;
-        this.currentChattingUser = chattingUserDto;
         this.chattingList = chatDtoList;
 
     }

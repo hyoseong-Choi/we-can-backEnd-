@@ -89,7 +89,7 @@ public class ChatService {
         chatting.setChattingRoom(chattingRoomRepository.findById(chatDto.getRoomId())
                 .orElseThrow(() -> new CustomException(ErrorCode.CHATTING_ROOM_NOT_FOUND, "roomId: " + chatDto.getRoomId())));
 
-        chatting.setChattingRoomUser(chattingRoomUserRepository.findByUserUserId(chatDto.getUserId())
+        chatting.setChattingRoomUser(chattingRoomUserRepository.findByChattingRoomIdAndUserUserId(chatDto.getRoomId(), chatDto.getUserId())
                 .orElseThrow(() -> new CustomException(ErrorCode.CHATTING_ROOM_USER_NOT_FOUND, "userId: " + chatDto.getUserId())));
 
         chatting.setMessage(chatDto.getMessage());

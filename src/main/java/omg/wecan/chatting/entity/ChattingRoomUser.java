@@ -38,4 +38,12 @@ public class ChattingRoomUser {
         chattingRoomUser.chattingRoom = chattingRoom;
         return chattingRoomUser;
     }
+
+    public static ChattingRoomUser autoCreate(Participate participate, ChattingRoom chattingRoom) {
+        ChattingRoomUser chattingRoomUser = new ChattingRoomUser();
+        chattingRoomUser.user = participate.getUser();
+        chattingRoomUser.chattingRoom = chattingRoom;
+        return chattingRoomUser;
+    }
+
 }
