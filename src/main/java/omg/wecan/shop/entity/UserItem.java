@@ -19,7 +19,7 @@ public class UserItem extends BaseEntity {
     private Item item;
     private int totalPrice;
 
-    @OneToOne(mappedBy = "userItem")
+    @OneToOne(mappedBy = "userItem", fetch = FetchType.LAZY)
     private Exemption exemption;
     
     public static UserItem createUserItemEmoticon(User user, Item item) {
