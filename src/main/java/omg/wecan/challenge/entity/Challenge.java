@@ -4,6 +4,7 @@ import jakarta.persistence.*;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 import omg.wecan.challenge.Enum.ChallengeStateType;
+import omg.wecan.chatting.entity.ChattingRoom;
 import omg.wecan.recruit.Enum.ChallengeType;
 import omg.wecan.recruit.Enum.PaymentType;
 import omg.wecan.recruit.entity.Recruit;
@@ -47,6 +48,8 @@ public class Challenge {
     private List<ChallengeCheck> challengeChecks;
     @OneToMany(mappedBy = "challenge", cascade = CascadeType.ALL)
     private List<Review> reviews;
+    @OneToOne(mappedBy = "challenge", cascade = CascadeType.ALL)
+    private ChattingRoom chattingRoom;
 
     public static Challenge createChallenge(Recruit recruit, int peopleNum) {
         Challenge challenge = new Challenge();
@@ -61,8 +64,8 @@ public class Challenge {
         challenge.coverImageEndpoint = recruit.getCoverImageEndpoint();
         challenge.state = Active;
         challenge.finePerOnce = recruit.getFine();
-        challenge.donationCandy = challenge.totalCheckNum * challenge.finePerOnce;
         challenge.totalCheckNum = countCheckDays(challenge.checkDay, challenge.startDate, challenge.endDate);
+        challenge.donationCandy = challenge.totalCheckNum * challenge.finePerOnce;
 
         return challenge;
     }
