@@ -41,10 +41,8 @@ public class RecruitRepositoryImpl implements RecruitRepositoryCustom{
                 .offset(pageable.getOffset())
                 .limit(pageable.getPageSize());
         for (Sort.Order order : pageable.getSort()) {
-            PathBuilder pathBuilder = new PathBuilder(recruit.getType(),
-                    recruit.getMetadata());
-            query.orderBy(new OrderSpecifier(order.isAscending() ? Order.ASC : Order.DESC,
-                    pathBuilder.get(order.getProperty())));
+            PathBuilder pathBuilder = new PathBuilder(recruit.getType(), recruit.getMetadata());
+            query.orderBy(new OrderSpecifier(order.isAscending() ? Order.ASC : Order.DESC, pathBuilder.get(order.getProperty())));
         }
         List<Recruit> results = query.orderBy().fetch();
         Long l = queryFactory
