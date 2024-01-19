@@ -2,9 +2,8 @@ package omg.wecan.shop.controller;
 
 import lombok.RequiredArgsConstructor;
 import omg.wecan.auth.presentation.AuthenticationPrincipal;
-import omg.wecan.shop.dto.ItemDetailOutput;
-import omg.wecan.shop.dto.ItemsOutput;
-import omg.wecan.shop.dto.MyItemsOutput;
+import omg.wecan.shop.dto.*;
+import omg.wecan.shop.entity.Item;
 import omg.wecan.shop.service.ItemService;
 import omg.wecan.user.entity.User;
 import omg.wecan.util.ApiResponse;
@@ -37,6 +36,11 @@ public class ShopController {
         return ResponseEntity.ok(ApiResponse.success(itemService.findMyItem(loginUser, pageable)));
     }
     
+    @GetMapping("/shop/me/item/{id}")
+    public ResponseEntity<ApiResponse<ExemptionOutput>> exemptionDetail(@PathVariable Long id) {
+        return ResponseEntity.ok(ApiResponse.success(itemService.findExemptionDetail(id)));
+    }
+    
     @GetMapping("/shop/emoticon")
     public ResponseEntity<ApiResponse<Page<ItemsOutput>>> emoticonFind(@PageableDefault(size = 6) Pageable pageable) {
         return ResponseEntity.ok(ApiResponse.success(itemService.findEmoticon(pageable)));
@@ -55,6 +59,11 @@ public class ShopController {
     @PostMapping("/shop/{id}/buy")
     public ResponseEntity<ApiResponse<Long>> itemBuy(@AuthenticationPrincipal User loginUser, @PathVariable Long id) {
         return ResponseEntity.ok(ApiResponse.success(itemService.buyItem(loginUser, id)));
+    }
+    
+    @PostMapping("/item")
+    public Item itemadd(@ModelAttribute ItemInput itemInput) {
+        return itemService.addItem(itemInput);
     }
     
     

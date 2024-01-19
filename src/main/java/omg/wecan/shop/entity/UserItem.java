@@ -18,12 +18,24 @@ public class UserItem extends BaseEntity {
     @ManyToOne(fetch = FetchType.LAZY)
     private Item item;
     private int totalPrice;
+
+    @OneToOne(mappedBy = "userItem", fetch = FetchType.LAZY)
+    private Exemption exemption;
     
-    public static UserItem createUserItem(User user, Item item) {
+    public static UserItem createUserItemEmoticon(User user, Item item) {
         UserItem userItem = new UserItem();
         userItem.user = user;
         userItem.item = item;
         userItem.totalPrice = item.getPrice();
         return userItem;
     }
+
+    public static UserItem createUserItemItem(User user, Item item) {
+        UserItem userItem = new UserItem();
+        userItem.user = user;
+        userItem.item = item;
+        userItem.totalPrice = item.getPrice();
+        return userItem;
+    }
+
 }
