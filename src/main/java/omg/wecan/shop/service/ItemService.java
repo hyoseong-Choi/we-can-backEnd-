@@ -3,10 +3,7 @@ package omg.wecan.shop.service;
 import lombok.RequiredArgsConstructor;
 import omg.wecan.exception.customException.CustomException;
 import omg.wecan.exception.shopException.LackOfCandyException;
-import omg.wecan.shop.dto.ItemDetailOutput;
-import omg.wecan.shop.dto.ItemInput;
-import omg.wecan.shop.dto.ItemsOutput;
-import omg.wecan.shop.dto.MyItemsOutput;
+import omg.wecan.shop.dto.*;
 import omg.wecan.shop.entity.Exemption;
 import omg.wecan.shop.entity.Item;
 import omg.wecan.shop.entity.ItemType;
@@ -51,6 +48,10 @@ public class ItemService {
     
     public Page<MyItemsOutput> findMyItem(User loginUser, Pageable pageable) {
         return userItemRepository.findItemByUser(loginUser, pageable);
+    }
+    
+    public ExemptionOutput findExemptionDetail(Long id) {
+        return new ExemptionOutput(exemptionRepository.findById(id).get());
     }
     
     public Page<ItemsOutput> findEmoticon(Pageable pageable) {
