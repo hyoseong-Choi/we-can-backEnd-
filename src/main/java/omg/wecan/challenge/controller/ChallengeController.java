@@ -19,9 +19,9 @@ public class ChallengeController {
     private final ChallengeService challengeService;
 
     // 유저의 참여 중인 챌린지 조회
-    @GetMapping("active/user/{userId}")
-    public ResponseEntity<ApiResponse<List<ChallengeDto>>> getActiveChallengeByUser(@PathVariable Long userId) {
-        List<ChallengeDto> activeChallenges = challengeService.getActiveChallengesByUser(userId);
+    @GetMapping("active")
+    public ResponseEntity<ApiResponse<List<ChallengeDto>>> getActiveChallengeByUser(@AuthenticationPrincipal User user) {
+        List<ChallengeDto> activeChallenges = challengeService.getActiveChallengesByUser(user.getUserId());
         return ResponseEntity.ok(ApiResponse.success(activeChallenges));
     }
 
@@ -36,9 +36,9 @@ public class ChallengeController {
 
 
     // 유저의 참여 완료 챌린지 조회
-    @GetMapping("completed/user/{userId}")
-    public ResponseEntity<ApiResponse<List<ChallengeDto>>> getCompletedChallengeByUser(@PathVariable Long userId) {
-        List<ChallengeDto> completedChallenges = challengeService.getCompletedChallengesByUser(userId);
+    @GetMapping("completed")
+    public ResponseEntity<ApiResponse<List<ChallengeDto>>> getCompletedChallengeByUser(@AuthenticationPrincipal User user) {
+        List<ChallengeDto> completedChallenges = challengeService.getCompletedChallengesByUser(user.getUserId());
         return ResponseEntity.ok(ApiResponse.success(completedChallenges));
     }
 
