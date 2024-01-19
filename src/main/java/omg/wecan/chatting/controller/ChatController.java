@@ -11,6 +11,8 @@ import org.springframework.messaging.simp.SimpMessageSendingOperations;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.RestController;
 
+import java.time.LocalDateTime;
+
 @Slf4j
 @RequiredArgsConstructor
 @RestController
@@ -22,9 +24,8 @@ public class ChatController {
 
     @MessageMapping("/enterUser")
     public void enterUser(@Payload ChatDto chat, SimpMessageHeaderAccessor headerAccessor) {
-        chatService.plusUserCnt(chat.getRoomId());
-        Long userID = chatService.addUser(chat.getRoomId(), chat.getUserId());
-        headerAccessor.getSessionAttributes().put("userUUID", userID);
+        chatService.enterRoom(chat.getRoomId(), chat.getUserId());
+        headerAccessor.getSessionAttributes().put("userID", chat.getUserId());
         headerAccessor.getSessionAttributes().put("roomId", chat.getRoomId());
 
         chat.setMessage("채팅방 입장");
@@ -34,8 +35,10 @@ public class ChatController {
     @MessageMapping("/sendMessage")
     public void sendMessage(@Payload ChatDto chat) {
         log.info("CHAT {}", chat);
+        chat.setTime(LocalDateTime.now());
         chat.setMessage(chat.getMessage());
-        template.convertAndSend("/sub/chat/room/" + chat.getRoomId(), chat);
+        chatService.saveMessage(chat);
+        template.convertAndSend("/sub/chat/room/" + chat.getRoomId().toString(), chat);
 
     }
 }

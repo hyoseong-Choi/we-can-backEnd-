@@ -8,6 +8,9 @@ import omg.wecan.challenge.Enum.ChallengeStateType;
 import omg.wecan.challenge.dto.*;
 import omg.wecan.challenge.entity.*;
 import omg.wecan.challenge.repository.*;
+import omg.wecan.chatting.entity.ChattingRoom;
+import omg.wecan.chatting.repository.ChattingRoomRepository;
+import omg.wecan.chatting.service.ChatService;
 import omg.wecan.exception.customException.CustomException;
 import omg.wecan.exception.customException.ErrorCode;
 import omg.wecan.recruit.Enum.PaymentType;
@@ -19,6 +22,7 @@ import java.io.IOException;
 import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 import java.util.stream.Collectors;
 
 @Service
@@ -32,6 +36,8 @@ public class ChallengeService {
     private final UserChallengeRepository userChallengeRepository;
     private final ChallengeCheckImageRepository challengeCheckImageRepository;
     private final DislikeCheckRepository dislikeCheckRepository;
+    private final ChattingRoomRepository chattingRoomRepository;
+    private final ChatService chatService;
 
     // 유저의 참여 중인 챌린지 조회
     public List<ChallengeDto> getActiveChallengesByUser(Long userId) {
@@ -181,15 +187,21 @@ public class ChallengeService {
         Challenge challenge = challengeRepository.findById(challengeId)
                 .orElseThrow(() -> new CustomException(ErrorCode.CHALLENGE_NOT_FOUND, "challengeId: "+challengeId));
 
-        int donationCandy = challenge.getDonationCandy();
+        UserChallenge userChallenge = userChallengeRepository.findByChallengeIdAndUser(challengeId, user)
+                .orElseThrow(() -> new CustomException(ErrorCode.USER_NOT_FOUND));
 
-        if (PaymentType.PERSONAL.equals(challenge.getPaymentType())) {
-            UserChallenge userChallenge = userChallengeRepository.findByChallengeIdAndUser(challengeId, user)
-                    .orElseThrow(() -> new CustomException(ErrorCode.USER_NOT_FOUND));
+        int failNum = userChallenge.getFailNum();
+        int totalCheckNum = challenge.getTotalCheckNum();
+        int successRate = 0;
 
-            donationCandy = challenge.decreaseDonationCandy(userChallenge.getFailNum());
+        if (totalCheckNum > 0) {
+            successRate = (int) (((double) (totalCheckNum - failNum) / totalCheckNum) * 100);
         }
 
-        return new ChallengeInfoDto(challenge.getTitle(), challenge.getStartDate(), challenge.getEndDate(), donationCandy);
+        Optional<ChattingRoom> optionalChattingRoom = chattingRoomRepository.findFirstByChallengeId(challengeId);
+        Long chattingRoomId = optionalChattingRoom.map(ChattingRoom::getId)
+                .orElseThrow(() -> new CustomException(ErrorCode.CHATTING_ROOM_NOT_FOUND, "challengeId: " + challengeId));
+
+        return new ChallengeInfoDto(challenge, successRate, chattingRoomId, chatService.getChatList(chattingRoomId));
     }
 }
