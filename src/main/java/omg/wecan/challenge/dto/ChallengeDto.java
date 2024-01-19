@@ -1,25 +1,22 @@
 package omg.wecan.challenge.dto;
 
-import jakarta.validation.constraints.NotNull;
-import jakarta.validation.constraints.Size;
 import lombok.Data;
 import omg.wecan.challenge.entity.Challenge;
-
-import java.time.LocalDate;
+import omg.wecan.recruit.Enum.ChallengeType;
 
 @Data
 public class ChallengeDto {
-    private Long challengeId;
+    private Long id;
     private String title;
-    private LocalDate startDate;
-    private LocalDate endDate;
+    private String challengePeriod;
+    private String coverImage;
 
     public static ChallengeDto fromEntity(Challenge challenge) {
         ChallengeDto challengeDto = new ChallengeDto();
-        challengeDto.setChallengeId(challenge.getId());
+        challengeDto.setId(challenge.getId());
         challengeDto.setTitle(challenge.getTitle());
-        challengeDto.setStartDate(challenge.getStartDate());
-        challengeDto.setEndDate(challenge.getEndDate());
+        challengeDto.setChallengePeriod(challenge.getStartDate()+" ~ "+challenge.getEndDate());
+        challengeDto.setCoverImage(challenge.getCoverImageEndpoint());
         return challengeDto;
     }
 }
