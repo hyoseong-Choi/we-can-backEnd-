@@ -2,10 +2,7 @@ package omg.wecan.shop.controller;
 
 import lombok.RequiredArgsConstructor;
 import omg.wecan.auth.presentation.AuthenticationPrincipal;
-import omg.wecan.shop.dto.ItemDetailOutput;
-import omg.wecan.shop.dto.ItemInput;
-import omg.wecan.shop.dto.ItemsOutput;
-import omg.wecan.shop.dto.MyItemsOutput;
+import omg.wecan.shop.dto.*;
 import omg.wecan.shop.entity.Item;
 import omg.wecan.shop.service.ItemService;
 import omg.wecan.user.entity.User;
@@ -37,6 +34,11 @@ public class ShopController {
     @GetMapping("/shop/me/item")
     public ResponseEntity<ApiResponse<Page<MyItemsOutput>>> myItemFind(@AuthenticationPrincipal User loginUser, @PageableDefault(size = 3) Pageable pageable) {
         return ResponseEntity.ok(ApiResponse.success(itemService.findMyItem(loginUser, pageable)));
+    }
+    
+    @GetMapping("/shop/me/item/{id}")
+    public ResponseEntity<ApiResponse<ExemptionOutput>> exemptionDetail(@PathVariable Long id) {
+        return ResponseEntity.ok(ApiResponse.success(itemService.findExemptionDetail(id)));
     }
     
     @GetMapping("/shop/emoticon")
