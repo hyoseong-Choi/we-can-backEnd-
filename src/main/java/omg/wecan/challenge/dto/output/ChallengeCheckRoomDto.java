@@ -1,10 +1,10 @@
-package omg.wecan.challenge.dto;
+package omg.wecan.challenge.dto.output;
 
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
-import omg.wecan.challenge.entity.ChallengeCheck;
+import omg.wecan.challenge.dto.ChallengeCheckImageDto;
 
 import java.util.List;
 

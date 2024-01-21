@@ -1,17 +1,14 @@
 package omg.wecan.challenge.entity;
 import jakarta.persistence.*;
-import lombok.AccessLevel;
-import lombok.AllArgsConstructor;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
+import lombok.*;
 import omg.wecan.user.entity.User;
 
 import java.util.UUID;
 
 @Entity
 @AllArgsConstructor
-@NoArgsConstructor(access = AccessLevel.PROTECTED)
-@Getter
+@NoArgsConstructor()
+@Data
 public class ChallengeCheckImage {
 
     @Id
@@ -41,8 +38,12 @@ public class ChallengeCheckImage {
         this.imageUrl = "";
     }
 
-    public void setImageUrl(String imageUrl) {
-        this.imageUrl = imageUrl;
+    public ChallengeCheckImage imageSave(ChallengeCheck challengeCheck, String imageUrl) {
+        ChallengeCheckImage challengeCheckImage = new ChallengeCheckImage();
+        challengeCheckImage.setUser(challengeCheck.getUser());
+        challengeCheckImage.setChallengeCheck(challengeCheck);
+        challengeCheckImage.setImageUrl(imageUrl);
+        return challengeCheckImage;
     }
 
     // 이미지 파일의 확장자 추출 메소드
@@ -51,7 +52,6 @@ public class ChallengeCheckImage {
 
         return originName.substring(index, originName.length());
     }
-
 
     public String getFileName(String originName) {
         return UUID.randomUUID() + "." + extractExtension(originName);

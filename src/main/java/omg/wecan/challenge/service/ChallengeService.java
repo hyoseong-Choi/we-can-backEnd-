@@ -6,6 +6,10 @@ import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import omg.wecan.challenge.Enum.ChallengeStateType;
 import omg.wecan.challenge.dto.*;
+import omg.wecan.challenge.dto.input.ChallengeCheckExemptionDto;
+import omg.wecan.challenge.dto.input.ChallengeCheckDto;
+import omg.wecan.challenge.dto.input.CheckDislikeExemptionDto;
+import omg.wecan.challenge.dto.output.*;
 import omg.wecan.challenge.entity.*;
 import omg.wecan.challenge.repository.*;
 import omg.wecan.chatting.entity.ChattingRoom;
@@ -13,7 +17,11 @@ import omg.wecan.chatting.repository.ChattingRoomRepository;
 import omg.wecan.chatting.service.ChatService;
 import omg.wecan.exception.customException.CustomException;
 import omg.wecan.exception.customException.ErrorCode;
-import omg.wecan.recruit.Enum.PaymentType;
+import omg.wecan.shop.entity.Exemption;
+import omg.wecan.shop.entity.Item;
+import omg.wecan.shop.repository.ExemptionRepository;
+import omg.wecan.shop.repository.ItemRepository;
+import omg.wecan.shop.repository.UserItemRepository;
 import omg.wecan.user.entity.User;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
@@ -37,6 +45,9 @@ public class ChallengeService {
     private final ChallengeCheckImageRepository challengeCheckImageRepository;
     private final DislikeCheckRepository dislikeCheckRepository;
     private final ChattingRoomRepository chattingRoomRepository;
+    private final ExemptionRepository exemptionRepository;
+    private final UserItemRepository userItemRepository;
+    private final ItemRepository itemRepository;
     private final ChatService chatService;
 
     // 유저의 참여 중인 챌린지 조회
@@ -75,7 +86,7 @@ public class ChallengeService {
                 .collect(Collectors.toList());
     }
 
-    public ChallengeCheckResultDto saveChallengeCheck(User user, ChallengeCheckInputDto challengeCheckInputDto) {
+    public ChallengeCheckResultDto saveChallengeCheck(User user, ChallengeCheckDto challengeCheckInputDto) {
         Challenge challenge = challengeRepository.findById(challengeCheckInputDto.getChallengeId())
                 .orElseThrow(() -> new CustomException(ErrorCode.CHALLENGE_NOT_FOUND, "challengeId: "+challengeCheckInputDto.getChallengeId()));
         ChallengeCheck challengeCheck = new ChallengeCheck(user, challenge);
@@ -183,7 +194,7 @@ public class ChallengeService {
 
     }
 
-    public ChallengeInfoDto getChallengeInfo(User user,Long challengeId) {
+    public ChallengeInfoDto getChallengeInfo(User user, Long challengeId) {
         Challenge challenge = challengeRepository.findById(challengeId)
                 .orElseThrow(() -> new CustomException(ErrorCode.CHALLENGE_NOT_FOUND, "challengeId: "+challengeId));
 
@@ -204,4 +215,48 @@ public class ChallengeService {
 
         return new ChallengeInfoDto(challenge, successRate, chattingRoomId, chatService.getChatList(chattingRoomId));
     }
+
+    public ChallengeCheckRoomDto challengeCheckExemption(User user, ChallengeCheckExemptionDto challengeCheckExemptionDto) {
+
+        Exemption exemptionToDelete = exemptionRepository.findByCertificationString(challengeCheckExemptionDto.getExemptionString())
+                .orElseThrow(() -> new CustomException(ErrorCode.USERITEM_NOT_FOUND));
+        exemptionRepository.delete(exemptionToDelete);
+        userItemRepository.delete(exemptionToDelete.getUserItem());
+
+        Challenge checkChallenge = challengeRepository.findById(challengeCheckExemptionDto.getChallengeId())
+                .orElseThrow(() -> new CustomException(ErrorCode.CHALLENGE_NOT_FOUND));
+
+        ChallengeCheck challengeCheck = new ChallengeCheck(user, checkChallenge);
+
+        challengeCheckRepository.save(challengeCheck);
+
+        ChallengeCheckImage challengeCheckImage = new ChallengeCheckImage();
+        challengeCheckImageRepository.save(challengeCheckImage.imageSave(challengeCheck, exemptionToDelete.getUserItem().getItem().getImgEndpoint()));
+
+
+        return getChallengeCheckRoomInfo(challengeCheckExemptionDto.getChallengeId());
+    }
+
+
+    public ChallengeCheckRoomDto dislikeExemption(User user, CheckDislikeExemptionDto checkDislikeExemptionDto) {
+
+        Item useItem = itemRepository.findItemAndReduceDislikeByItemId(checkDislikeExemptionDto.getItemId());
+
+        LocalDate currentDate = LocalDate.now();
+
+        challengeCheckRepository.findByChallengeIdAndUser(checkDislikeExemptionDto.getChallengeId(), user)
+                .filter(challengeCheck -> challengeCheck.getCheckDate().toLocalDate().isEqual(currentDate))
+                .ifPresent(challengeCheck -> {
+                    challengeCheck.setDislike(challengeCheck.getDislike() - useItem.getReduceDislike());
+                    challengeCheckRepository.save(challengeCheck);
+
+                    ChallengeCheckImage challengeCheckImage = new ChallengeCheckImage();
+                    challengeCheckImageRepository.save(challengeCheckImage.imageSave(challengeCheck, useItem.getImgEndpoint()));
+
+                    userItemRepository.deleteById(checkDislikeExemptionDto.getItemId());
+                });
+
+        return getChallengeCheckRoomInfo(checkDislikeExemptionDto.getChallengeId());
+    }
+
 }
