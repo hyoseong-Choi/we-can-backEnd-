@@ -60,7 +60,7 @@ public class UserService {
         return findUser;
     }
 
-    public User login(String email, String password) {
+    public User login(String email, String password, String fcmToken) {
         boolean success = true;
 
         User findUser = userRepository.findByEmail(email).orElseGet(() -> {
@@ -70,7 +70,10 @@ public class UserService {
         if (!findUser.getPassword().equals(password)) {
             throw new CustomException(ErrorCode.LOGIN_INFO_INVALID);
         }
-
+        
+        if (fcmToken != null) {
+            findUser.setFcmToken(fcmToken);
+        }
         return findUser;
     }
 
