@@ -6,6 +6,7 @@ import omg.wecan.recruit.dto.RecruitOutput;
 import omg.wecan.recruit.repository.ElasticRecruitRepository;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
+import org.springframework.scheduling.annotation.Async;
 import org.springframework.stereotype.Service;
 
 import java.util.Arrays;
@@ -20,7 +21,7 @@ public class ElasticRecruitService {
                 .map(elasticRecruit -> new RecruitOutput(elasticRecruit, false));
         
     }
-
+    @Async
     public void deleteRecruit(Long id) {
         elasticRecruitRepository.deleteById(id);
     }

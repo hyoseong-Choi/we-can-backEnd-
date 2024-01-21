@@ -12,7 +12,6 @@ import omg.wecan.recruit.entity.Participate;
 import omg.wecan.recruit.entity.Recruit;
 import omg.wecan.recruit.repository.ParticipateRepository;
 import omg.wecan.recruit.repository.RecruitRepository;
-import omg.wecan.util.event.MinimumParticipateEvent;
 import omg.wecan.util.event.ParticipateFailEvent;
 import org.springframework.context.ApplicationEventPublisher;
 import org.springframework.scheduling.annotation.Scheduled;
@@ -20,7 +19,6 @@ import org.springframework.stereotype.Component;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.time.LocalDate;
-import java.util.EventListener;
 import java.util.List;
 
 @Component
@@ -33,6 +31,7 @@ public class RecruitToChallengeService {
     private final UserChallengeRepository userChallengeRepository;
     private final ChatService chatService;
     private final ApplicationEventPublisher eventPublisher;
+    private final ElasticRecruitService elasticRecruitService;
 
     //끝난 모집글 가져와서 피시니 해주고 참여한 애들 챌린지 만들어주고 userchallenge로 보내주고
     @Transactional
@@ -42,6 +41,7 @@ public class RecruitToChallengeService {
 
         for (Recruit recruit : finishedRecruits) {
             recruit.changeFinished();
+            elasticRecruitService.deleteRecruit(recruit.getId());
 
             int minPeople = recruit.getMinPeople();
             List<Participate> participatesByRecruit = participateRepository.findByRecruit(recruit);
