@@ -67,11 +67,11 @@ public class Recruit extends BaseEntity {
         recruit.title = recruitInput.getTitle();
         recruit.type = ChallengeType.from(recruitInput.getChallengeType());
         recruit.startDate = LocalDate.now();
-        recruit.endDate = recruitInput.getChallengeStartDate().minusDays(1);
+        recruit.endDate = LocalDate.parse(recruitInput.getChallengeStartDate()).minusDays(1);
         if (recruit.endDate.isBefore(LocalDate.now())) {
             throw new InvalidChallengeDateException(RECRUIT_DATE_INVALID);
         }
-        recruit.challengeEndTime = recruitInput.getChallengeEndDate();
+        recruit.challengeEndTime = LocalDate.parse(recruitInput.getChallengeEndDate());
         if (recruit.challengeEndTime.isBefore(LocalDate.now().plusDays(7))) {
             throw new InvalidChallengeDateException(RECRUIT_DATE_INVALID);
         }
@@ -96,11 +96,11 @@ public class Recruit extends BaseEntity {
         recruit.title = recruitInput.getTitle();
         recruit.type = ChallengeType.from(recruitInput.getChallengeType());
         recruit.startDate = LocalDate.now();
-        recruit.endDate = recruitInput.getChallengeStartDate().minusDays(1);
+        recruit.endDate = LocalDate.parse(recruitInput.getChallengeStartDate()).minusDays(1);
         if (recruit.endDate.isBefore(LocalDate.now())) {
             throw new InvalidChallengeDateException(RECRUIT_DATE_INVALID);
         }
-        recruit.challengeEndTime = recruitInput.getChallengeEndDate();
+        recruit.challengeEndTime = LocalDate.parse(recruitInput.getChallengeEndDate());
         if (recruit.challengeEndTime.isBefore(LocalDate.now().plusDays(7))) {
             throw new InvalidChallengeDateException(RECRUIT_DATE_INVALID);
         }
@@ -122,11 +122,11 @@ public class Recruit extends BaseEntity {
         this.charity = charity;
         this.type = ChallengeType.from(recruitInput.getChallengeType());
         this.startDate = LocalDate.now();
-        this.endDate = recruitInput.getChallengeStartDate().minusDays(1);
+        this.endDate = LocalDate.parse(recruitInput.getChallengeStartDate()).minusDays(1);
         if (this.endDate.isBefore(LocalDate.now())) {
             throw new InvalidChallengeDateException(RECRUIT_DATE_INVALID);
         }
-        this.challengeEndTime = recruitInput.getChallengeEndDate();
+        this.challengeEndTime = LocalDate.parse(recruitInput.getChallengeEndDate());
         if (this.challengeEndTime.isBefore(LocalDate.now().plusDays(7))) {
             throw new InvalidChallengeDateException(RECRUIT_DATE_INVALID);
         }
@@ -145,11 +145,11 @@ public class Recruit extends BaseEntity {
         this.charityNotInDb = recruitInput.getCharityName();
         this.type = ChallengeType.from(recruitInput.getChallengeType());
         this.startDate = LocalDate.now();
-        this.endDate = recruitInput.getChallengeStartDate().minusDays(1);
+        this.endDate = LocalDate.parse(recruitInput.getChallengeStartDate()).minusDays(1);
         if (this.endDate.isBefore(LocalDate.now())) {
             throw new InvalidChallengeDateException(RECRUIT_DATE_INVALID);
         }
-        this.challengeEndTime = recruitInput.getChallengeEndDate();
+        this.challengeEndTime = LocalDate.parse(recruitInput.getChallengeEndDate());
         if (this.challengeEndTime.isBefore(LocalDate.now().plusDays(7))) {
             throw new InvalidChallengeDateException(RECRUIT_DATE_INVALID);
         }
