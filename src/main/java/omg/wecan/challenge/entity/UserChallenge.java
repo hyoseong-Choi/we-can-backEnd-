@@ -3,7 +3,7 @@ package omg.wecan.challenge.entity;
 import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
-import omg.wecan.challenge.dto.UserChallengeDto;
+import omg.wecan.challenge.dto.output.UserChallengeDto;
 import omg.wecan.recruit.entity.Participate;
 import omg.wecan.user.entity.User;
 

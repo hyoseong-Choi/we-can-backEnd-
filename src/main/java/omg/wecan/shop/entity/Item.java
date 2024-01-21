@@ -5,6 +5,8 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import omg.wecan.shop.dto.ItemInput;
 
+import java.util.List;
+
 @Entity
 @NoArgsConstructor
 @Getter
@@ -19,6 +21,9 @@ public class Item {
     private ItemType itemType;
     private String explanation;
     private String imgEndpoint;
+    private int reduceDislike;
+    @OneToMany(mappedBy = "item", cascade = CascadeType.ALL)
+    private List<UserItem> userItems;
     
     public Item(ItemInput itemInput, String imgEndpoint) {
         this.name = itemInput.getName();

@@ -1,9 +1,8 @@
 package omg.wecan.shop.repository;
 
-import omg.wecan.shop.dto.ItemsOutput;
+import io.lettuce.core.dynamic.annotation.Param;
 import omg.wecan.shop.entity.Item;
 import omg.wecan.shop.entity.ItemType;
-import omg.wecan.user.entity.User;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
@@ -21,4 +20,8 @@ public interface ItemRepository extends JpaRepository<Item, Long> {
     
     @Transactional(readOnly = true)
     Page<Item> findByItemType(ItemType itemType, Pageable pageable);
+
+    @Query("SELECT i FROM Item i LEFT JOIN i.userItems ui WHERE ui.id = :itemId")
+    Item findItemAndReduceDislikeByItemId(@Param("itemId") Long itemId);
+
 }

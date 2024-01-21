@@ -16,6 +16,4 @@ public interface UserChallengeRepository extends JpaRepository<UserChallenge, Lo
     UserChallenge findByUserAndChallenge(User user, Challenge challenge);
 
     Optional<UserChallenge> findByChallengeIdAndUser(Long challengeId, User user);
-
-    Optional<UserChallenge> findByUserAndChallengeId(User user, Long challengeId);
 }

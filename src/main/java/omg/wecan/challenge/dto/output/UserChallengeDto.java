@@ -1,4 +1,4 @@
-package omg.wecan.challenge.dto;
+package omg.wecan.challenge.dto.output;
 
 import lombok.Data;
 import lombok.NoArgsConstructor;

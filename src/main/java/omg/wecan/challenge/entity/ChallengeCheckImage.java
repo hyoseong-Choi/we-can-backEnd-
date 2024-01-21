@@ -38,8 +38,12 @@ public class ChallengeCheckImage {
         this.imageUrl = "";
     }
 
-    public void setImageUrl(String imageUrl) {
-        this.imageUrl = imageUrl;
+    public ChallengeCheckImage imageSave(ChallengeCheck challengeCheck, String imageUrl) {
+        ChallengeCheckImage challengeCheckImage = new ChallengeCheckImage();
+        challengeCheckImage.setUser(challengeCheck.getUser());
+        challengeCheckImage.setChallengeCheck(challengeCheck);
+        challengeCheckImage.setImageUrl(imageUrl);
+        return challengeCheckImage;
     }
 
     // 이미지 파일의 확장자 추출 메소드
@@ -48,7 +52,6 @@ public class ChallengeCheckImage {
 
         return originName.substring(index, originName.length());
     }
-
 
     public String getFileName(String originName) {
         return UUID.randomUUID() + "." + extractExtension(originName);

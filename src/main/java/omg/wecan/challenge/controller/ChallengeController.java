@@ -3,9 +3,12 @@ package omg.wecan.challenge.controller;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import omg.wecan.auth.presentation.AuthenticationPrincipal;
-import omg.wecan.challenge.dto.*;
+import omg.wecan.challenge.dto.input.ChallengeCheckExemptionDto;
+import omg.wecan.challenge.dto.input.ChallengeCheckIdDto;
+import omg.wecan.challenge.dto.input.ChallengeCheckDto;
+import omg.wecan.challenge.dto.input.CheckDislikeExemptionDto;
+import omg.wecan.challenge.dto.output.*;
 import omg.wecan.challenge.service.ChallengeService;
-import omg.wecan.review.dto.ReviewCreateDto;
 import omg.wecan.user.entity.User;
 import omg.wecan.util.ApiResponse;
 import org.springframework.http.ResponseEntity;
@@ -57,13 +60,13 @@ public class ChallengeController {
     @PostMapping("checkroom/upload")
     public ResponseEntity<ApiResponse<ChallengeCheckResultDto>> saveChallengeCheck(
             @AuthenticationPrincipal User user,
-            @ModelAttribute ChallengeCheckInputDto challengeCheckInputDto
+            @ModelAttribute ChallengeCheckDto challengeCheckInputDto
     ) {
         return ResponseEntity.ok(ApiResponse.success(challengeService.saveChallengeCheck(user, challengeCheckInputDto)));
     }
 
-    @PostMapping("checkroom/item")
-    public ResponseEntity<ApiResponse<ChallengeCheckResultDto>> challengeCheckExemption (
+    @PostMapping("checkroom/exemption")
+    public ResponseEntity<ApiResponse<ChallengeCheckRoomDto>> challengeCheckExemption (
             @AuthenticationPrincipal User user,
             @RequestBody @Valid ChallengeCheckExemptionDto challengeCheckExemptionDto
     ) {
@@ -74,8 +77,16 @@ public class ChallengeController {
     @PostMapping("checkroom/dislike/{challengeCheckId}")
     public ResponseEntity<ApiResponse<ChallengeCheckResultDto>> dislikeChallengeCheck(
             @AuthenticationPrincipal User user,
-            @PathVariable Long challengeCheckId
+            @RequestBody @Valid ChallengeCheckIdDto challengeCheckIdDto
     ) {
-        return ResponseEntity.ok(ApiResponse.success(challengeService.dislikeChallengeCheck(user, challengeCheckId)));
+        return ResponseEntity.ok(ApiResponse.success(challengeService.dislikeChallengeCheck(user, challengeCheckIdDto.getChallengeCheckId())));
+    }
+
+    @PostMapping("checkroom/dislike/exemption")
+    public ResponseEntity<ApiResponse<ChallengeCheckRoomDto>> dislikeExemption(
+            @AuthenticationPrincipal User user,
+            @RequestBody @Valid CheckDislikeExemptionDto checkDislikeExemptionDto
+    ) {
+        return ResponseEntity.ok(ApiResponse.success(challengeService.dislikeExemption(user, checkDislikeExemptionDto)));
     }
 }

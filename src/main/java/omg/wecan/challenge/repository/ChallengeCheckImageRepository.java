@@ -9,4 +9,5 @@ public interface ChallengeCheckImageRepository extends JpaRepository<ChallengeCh
 
 
     List<ChallengeCheckImage> findByChallengeCheck_IdAndUserUserId(Long challengeCheckId, Long userId);
+
 }
