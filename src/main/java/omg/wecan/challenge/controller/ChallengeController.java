@@ -1,9 +1,11 @@
 package omg.wecan.challenge.controller;
 
+import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import omg.wecan.auth.presentation.AuthenticationPrincipal;
 import omg.wecan.challenge.dto.*;
 import omg.wecan.challenge.service.ChallengeService;
+import omg.wecan.review.dto.ReviewCreateDto;
 import omg.wecan.user.entity.User;
 import omg.wecan.util.ApiResponse;
 import org.springframework.http.ResponseEntity;
@@ -21,8 +23,7 @@ public class ChallengeController {
     // 유저의 참여 중인 챌린지 조회
     @GetMapping("active")
     public ResponseEntity<ApiResponse<List<ChallengeDto>>> getActiveChallengeByUser(@AuthenticationPrincipal User user) {
-        List<ChallengeDto> activeChallenges = challengeService.getActiveChallengesByUser(user.getUserId());
-        return ResponseEntity.ok(ApiResponse.success(activeChallenges));
+        return ResponseEntity.ok(ApiResponse.success(challengeService.getActiveChallengesByUser(user.getUserId())));
     }
 
     @GetMapping("active/{challengeId}")
@@ -30,16 +31,14 @@ public class ChallengeController {
             @AuthenticationPrincipal User user,
             @PathVariable Long challengeId
     ) {
-        UserChallengeDto userChallengeDto = challengeService.getUserChallengeByUserAndChallengeId(user, challengeId);
-        return ResponseEntity.ok(ApiResponse.success(userChallengeDto));
+        return ResponseEntity.ok(ApiResponse.success(challengeService.getUserChallengeByUserAndChallengeId(user, challengeId)));
     }
 
 
     // 유저의 참여 완료 챌린지 조회
     @GetMapping("completed")
     public ResponseEntity<ApiResponse<List<ChallengeDto>>> getCompletedChallengeByUser(@AuthenticationPrincipal User user) {
-        List<ChallengeDto> completedChallenges = challengeService.getCompletedChallengesByUser(user.getUserId());
-        return ResponseEntity.ok(ApiResponse.success(completedChallenges));
+        return ResponseEntity.ok(ApiResponse.success(challengeService.getCompletedChallengesByUser(user.getUserId())));
     }
 
     @GetMapping("info/{challengeId}")
@@ -47,14 +46,12 @@ public class ChallengeController {
             @AuthenticationPrincipal User user,
             @PathVariable Long challengeId
     ) {
-        ChallengeInfoDto challengeInfoDto = challengeService.getChallengeInfo(user, challengeId);
-        return ResponseEntity.ok(ApiResponse.success(challengeInfoDto));
+        return ResponseEntity.ok(ApiResponse.success(challengeService.getChallengeInfo(user, challengeId)));
     }
 
     @GetMapping("checkroom/{challengeId}")
     public ResponseEntity<ApiResponse<ChallengeCheckRoomDto>> getChallengeCheckRoomInfo(@PathVariable Long challengeId) {
-        ChallengeCheckRoomDto challengeCheckRoomInfo = challengeService.getChallengeCheckRoomInfo(challengeId);
-        return ResponseEntity.ok(ApiResponse.success(challengeCheckRoomInfo));
+        return ResponseEntity.ok(ApiResponse.success(challengeService.getChallengeCheckRoomInfo(challengeId)));
     }
 
     @PostMapping("checkroom/upload")
@@ -62,8 +59,15 @@ public class ChallengeController {
             @AuthenticationPrincipal User user,
             @ModelAttribute ChallengeCheckInputDto challengeCheckInputDto
     ) {
-        ChallengeCheckResultDto challengeCheckResult = challengeService.saveChallengeCheck(user, challengeCheckInputDto);
-        return ResponseEntity.ok(ApiResponse.success(challengeCheckResult));
+        return ResponseEntity.ok(ApiResponse.success(challengeService.saveChallengeCheck(user, challengeCheckInputDto)));
+    }
+
+    @PostMapping("checkroom/item")
+    public ResponseEntity<ApiResponse<ChallengeCheckResultDto>> challengeCheckExemption (
+            @AuthenticationPrincipal User user,
+            @RequestBody @Valid ChallengeCheckExemptionDto challengeCheckExemptionDto
+    ) {
+        return ResponseEntity.ok(ApiResponse.success(challengeService.challengeCheckExemption(user, challengeCheckExemptionDto)));
     }
 
 
@@ -72,7 +76,6 @@ public class ChallengeController {
             @AuthenticationPrincipal User user,
             @PathVariable Long challengeCheckId
     ) {
-        ChallengeCheckResultDto challengeCheckResult = challengeService.dislikeChallengeCheck(user, challengeCheckId);
-        return ResponseEntity.ok(ApiResponse.success(challengeCheckResult));
+        return ResponseEntity.ok(ApiResponse.success(challengeService.dislikeChallengeCheck(user, challengeCheckId)));
     }
 }

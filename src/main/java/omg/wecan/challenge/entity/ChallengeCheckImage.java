@@ -1,17 +1,14 @@
 package omg.wecan.challenge.entity;
 import jakarta.persistence.*;
-import lombok.AccessLevel;
-import lombok.AllArgsConstructor;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
+import lombok.*;
 import omg.wecan.user.entity.User;
 
 import java.util.UUID;
 
 @Entity
 @AllArgsConstructor
-@NoArgsConstructor(access = AccessLevel.PROTECTED)
-@Getter
+@NoArgsConstructor()
+@Data
 public class ChallengeCheckImage {
 
     @Id
