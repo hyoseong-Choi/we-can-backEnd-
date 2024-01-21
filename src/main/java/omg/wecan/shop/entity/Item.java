@@ -19,6 +19,7 @@ public class Item {
     private ItemType itemType;
     private String explanation;
     private String imgEndpoint;
+    private int reduceDislike;
     
     public Item(ItemInput itemInput, String imgEndpoint) {
         this.name = itemInput.getName();
