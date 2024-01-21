@@ -239,7 +239,6 @@ public class ChallengeService {
 
 
     public ChallengeCheckRoomDto dislikeExemption(User user, CheckDislikeExemptionDto checkDislikeExemptionDto) {
-
         Item useItem = itemRepository.findItemAndReduceDislikeByItemId(checkDislikeExemptionDto.getItemId());
 
         LocalDate currentDate = LocalDate.now();
