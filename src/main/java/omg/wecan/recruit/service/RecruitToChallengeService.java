@@ -35,6 +35,7 @@ public class RecruitToChallengeService {
     private final ChattingRoomUserRepository chattingRoomUserRepository;
     private final ChattingRoomRepository chattingRoomRepository;
     private final ApplicationEventPublisher eventPublisher;
+    private final ElasticRecruitService elasticRecruitService;
 
     //끝난 모집글 가져와서 피시니 해주고 참여한 애들 챌린지 만들어주고 userchallenge로 보내주고
     @Transactional
@@ -44,6 +45,7 @@ public class RecruitToChallengeService {
 
         for (Recruit recruit : finishedRecruits) {
             recruit.changeFinished();
+            elasticRecruitService.deleteRecruit(recruit.getId());
 
             int minPeople = recruit.getMinPeople();
             List<Participate> participatesByRecruit = participateRepository.findByRecruit(recruit);
