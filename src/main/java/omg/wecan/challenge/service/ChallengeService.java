@@ -247,8 +247,21 @@ public class ChallengeService {
         challengeCheckRepository.findByChallengeIdAndUser(checkDislikeExemptionDto.getChallengeId(), user)
                 .filter(challengeCheck -> challengeCheck.getCheckDate().toLocalDate().isEqual(currentDate))
                 .ifPresent(challengeCheck -> {
+                    int beforeDislikeNum = challengeCheck.getDislike();
+                    int peopleNum = challengeCheck.getChallenge().getPeopleNum();
+                    int dislikeThreshold = (int) Math.round(peopleNum * 0.4);
+
                     challengeCheck.setDislike(challengeCheck.getDislike() - useItem.getReduceDislike());
                     challengeCheckRepository.save(challengeCheck);
+
+                    if (beforeDislikeNum >= dislikeThreshold && challengeCheck.getDislike() < dislikeThreshold) {
+
+                        UserChallenge userChallenge = userChallengeRepository.findByUserAndChallengeId(user, checkDislikeExemptionDto.getChallengeId());
+                        if (userChallenge.getFailNum() != 0) {
+                            userChallenge.decreaseFailNum();
+                            userChallengeRepository.save(userChallenge);
+                        }
+                    }
 
                     ChallengeCheckImage challengeCheckImage = new ChallengeCheckImage();
                     challengeCheckImageRepository.save(challengeCheckImage.imageSave(challengeCheck, useItem.getImgEndpoint()));

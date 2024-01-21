@@ -50,4 +50,7 @@ public class UserChallenge {
     public void increaseFailNum() {
         this.failNum++;
     }
+    public void decreaseFailNum() {
+        this.failNum--;
+    }
 }
