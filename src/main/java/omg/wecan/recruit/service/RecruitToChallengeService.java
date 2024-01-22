@@ -1,13 +1,16 @@
 package omg.wecan.recruit.service;
 
+import com.amazonaws.services.kms.model.CloudHsmClusterInUseException;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import omg.wecan.challenge.entity.Challenge;
 import omg.wecan.challenge.entity.UserChallenge;
 import omg.wecan.challenge.repository.ChallengeRepository;
 import omg.wecan.challenge.repository.UserChallengeRepository;
-import omg.wecan.chatting.dto.ChatRoom;
-import omg.wecan.chatting.service.ChatService;
+import omg.wecan.chatting.entity.ChattingRoom;
+import omg.wecan.chatting.entity.ChattingRoomUser;
+import omg.wecan.chatting.repository.ChattingRoomRepository;
+import omg.wecan.chatting.repository.ChattingRoomUserRepository;
 import omg.wecan.recruit.entity.Participate;
 import omg.wecan.recruit.entity.Recruit;
 import omg.wecan.recruit.repository.ParticipateRepository;
@@ -29,7 +32,8 @@ public class RecruitToChallengeService {
     private final ParticipateRepository participateRepository;
     private final ChallengeRepository challengeRepository;
     private final UserChallengeRepository userChallengeRepository;
-    private final ChatService chatService;
+    private final ChattingRoomUserRepository chattingRoomUserRepository;
+    private final ChattingRoomRepository chattingRoomRepository;
     private final ApplicationEventPublisher eventPublisher;
     private final ElasticRecruitService elasticRecruitService;
 
@@ -52,12 +56,11 @@ public class RecruitToChallengeService {
             }
 
             Challenge newChallenge = challengeRepository.save(Challenge.createChallenge(recruit, participatesByRecruit.size()));
-            ChatRoom chattingRoom = chatService.createChatRoom(newChallenge.getId());
-            newChallenge.setChattingRoomId(chattingRoom.getRoomId());
-            challengeRepository.save(newChallenge);
+            ChattingRoom chattingRoom = chattingRoomRepository.save(ChattingRoom.create(newChallenge));
 
             for (Participate participate : participatesByRecruit) {
                 userChallengeRepository.save(UserChallenge.createUserChallenge(participate, newChallenge));
+                chattingRoomUserRepository.save(ChattingRoomUser.autoCreate(participate, chattingRoom));
             }
         }
     }

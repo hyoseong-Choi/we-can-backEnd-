@@ -7,6 +7,7 @@ import omg.wecan.challenge.entity.ChallengeCheck;
 import omg.wecan.challenge.entity.ChallengeCheckImage;
 import omg.wecan.challenge.entity.DislikeCheck;
 import omg.wecan.challenge.entity.UserChallenge;
+import omg.wecan.chatting.entity.ChattingRoomUser;
 import omg.wecan.global.entity.BaseEntity;
 import omg.wecan.infrastructure.oauth.basic.domain.OauthServerType;
 import omg.wecan.review.entity.Review;
@@ -22,6 +23,7 @@ public class User extends BaseEntity {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Column(name = "user_id")
     private Long userId;
     @Column(unique = true)
     private String email;
@@ -49,6 +51,8 @@ public class User extends BaseEntity {
     private List<DislikeCheck> dislikeChecks;
     @OneToMany(mappedBy = "user", cascade = CascadeType.ALL)
     private List<ChallengeCheckImage> challengeCheckImages;
+    @OneToMany(mappedBy = "user", cascade = CascadeType.ALL)
+    private List<ChattingRoomUser> chattingRoomUser;
 
     public User() {
 

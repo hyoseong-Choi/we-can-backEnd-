@@ -57,9 +57,9 @@ public class ReviewController {
 
 
     // 유저 후기 조회
-    @GetMapping("/user/{userId}")
-    public ResponseEntity<ApiResponse<List<ReviewDto>>> getReviewsByUser(@PathVariable Long userId) {
-        List<ReviewDto> userReviews = reviewService.getReviewsByUser(userId);
+    @GetMapping("/user")
+    public ResponseEntity<ApiResponse<List<ReviewDto>>> getReviewsByUser(@AuthenticationPrincipal User user) {
+        List<ReviewDto> userReviews = reviewService.getReviewsByUser(user.getUserId());
         return ResponseEntity.ok(ApiResponse.success(userReviews));
     }
 
