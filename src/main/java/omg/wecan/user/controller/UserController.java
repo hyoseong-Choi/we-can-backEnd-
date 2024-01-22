@@ -40,8 +40,9 @@ public class UserController {
     public ResponseEntity<ApiResponse<AuthResponse>> signInUser(@RequestBody SignInDto signInDto) {
         final String email = signInDto.getEmail();
         final String password = signInDto.getPassword();
+        final String fcmToken = signInDto.getFcmToken();
 
-        User user = userService.login(email, password);
+        User user = userService.login(email, password, fcmToken);
 
         AuthToken authToken = jwtService.createAuthToken(user.getUserId());
         userService.updateRefreshToken(user.getUserId(), authToken.getRefreshToken());
@@ -77,7 +78,7 @@ public class UserController {
     @DeleteMapping("/user/delete")
     public ResponseEntity<String> deleteUser(@Valid @RequestBody UserDto userDto) {
         // 아이디 비번 확인하고 탈퇴
-        User user = userService.login(userDto.getEmail(), userDto.getPassword());
+        User user = userService.login(userDto.getEmail(), userDto.getPassword(), null);
         userService.deleteUser(user);
         return new ResponseEntity<>("User deleted successfully", HttpStatus.OK);
     }

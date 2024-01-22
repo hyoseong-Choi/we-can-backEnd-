@@ -1,4 +1,4 @@
-package omg.wecan.challenge.dto;
+package omg.wecan.challenge.dto.input;
 
 
 import lombok.AllArgsConstructor;
@@ -14,7 +14,7 @@ import lombok.AllArgsConstructor;
 @NoArgsConstructor
 @Getter
 @Setter
-public class ChallengeCheckInputDto {
+public class ChallengeCheckDto {
     private Long challengeId;
     private List<MultipartFile> images = new ArrayList<>();
 }

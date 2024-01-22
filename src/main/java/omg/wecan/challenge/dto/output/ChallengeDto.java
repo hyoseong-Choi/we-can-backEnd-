@@ -1,8 +1,7 @@
-package omg.wecan.challenge.dto;
+package omg.wecan.challenge.dto.output;
 
 import lombok.Data;
 import omg.wecan.challenge.entity.Challenge;
-import omg.wecan.recruit.Enum.ChallengeType;
 
 @Data
 public class ChallengeDto {

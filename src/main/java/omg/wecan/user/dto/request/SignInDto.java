@@ -8,4 +8,5 @@ import lombok.Setter;
 public class SignInDto {
     String email;
     String password;
+    private String fcmToken;
 }

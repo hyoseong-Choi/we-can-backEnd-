@@ -1,4 +1,4 @@
-package omg.wecan.challenge.dto;
+package omg.wecan.challenge.dto.output;
 
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -6,8 +6,6 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 import omg.wecan.challenge.entity.Challenge;
 import omg.wecan.chatting.dto.ChatDto;
-import omg.wecan.chatting.dto.ChattingUserDto;
-import omg.wecan.chatting.entity.ChattingRoomUser;
 
 import java.time.LocalDate;
 import java.util.List;
