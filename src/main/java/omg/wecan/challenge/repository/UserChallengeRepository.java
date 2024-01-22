@@ -1,5 +1,6 @@
 package omg.wecan.challenge.repository;
 
+import omg.wecan.challenge.Enum.ChallengeStateType;
 import omg.wecan.challenge.entity.Challenge;
 import omg.wecan.challenge.entity.UserChallenge;
 import omg.wecan.user.entity.User;
@@ -18,4 +19,6 @@ public interface UserChallengeRepository extends JpaRepository<UserChallenge, Lo
     Optional<UserChallenge> findByChallengeIdAndUser(Long challengeId, User user);
 
     UserChallenge findByUserAndChallengeId(User user, Long challengeId);
+
+    List<UserChallenge> findByChallenge_State(ChallengeStateType challengeStateType);
 }
