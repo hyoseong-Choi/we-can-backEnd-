@@ -45,8 +45,8 @@ public class Notifications extends BaseEntity {
 
     public Notifications(Participate participate, String content, String fail) {
         this.targetUser = participate.getUser();
-        this.title = "챌린지 최소 모집 인원 미달이에요.";
-        this.content = content + " 챌린지는 정원 미달로 열리지 않았아요.";
+        this.title = "챌린지 최소 모집 인원이 채워지지 않았습니다.";
+        this.content = content + " 챌린지는 정원 미달로 열리지 않습니다.";
         this.newNotice = true;
     }
 
