@@ -9,10 +9,12 @@ public class AuthResponse {
     private final AuthToken authToken;
     private final String nickName;
     private final Long userId;
+    private final Long candy;
 
     public AuthResponse(AuthToken authToken, User user) {
         this.authToken = authToken;
         this.nickName = user.getNickName();
         this.userId = user.getUserId();
+        this.candy = user.getCandy();
     }
 }
