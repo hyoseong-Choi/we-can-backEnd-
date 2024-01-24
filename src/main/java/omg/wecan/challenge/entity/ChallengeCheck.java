@@ -29,8 +29,9 @@ public class ChallengeCheck {
 
     private int dislike;
 
-    @Column(name = "checkDate", columnDefinition = "TIMESTAMP DEFAULT CURRENT_TIMESTAMP", nullable = false, updatable = false)
+    @Column(name = "checkDate", nullable = false, updatable = false)
     private LocalDateTime checkDate;
+
 
     @OneToMany(mappedBy = "challengeCheck", cascade = CascadeType.ALL)
     private List<ChallengeCheckImage> challengeCheckImages;
@@ -40,9 +41,10 @@ public class ChallengeCheck {
 
     @PrePersist
     protected void onCreate() {
-        checkDate = LocalDateTime.now();
+        if (checkDate == null) {
+            checkDate = LocalDateTime.now();
+        }
     }
-
     public ChallengeCheck(User user, Challenge challenge) {
         this.user = user;
         this.challenge = challenge;
