@@ -11,7 +11,9 @@ import omg.wecan.review.dto.ReviewDto;
 import omg.wecan.review.entity.Review;
 import omg.wecan.review.repository.ReviewRepository;
 import omg.wecan.user.entity.User;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -94,8 +96,15 @@ public class ReviewService {
                 .collect(toList());
     }
 
+
     public List<ReviewDto> getAllReviews(Pageable pageable) {
-        return reviewRepository.findAll(pageable).map(ReviewDto::new).getContent();
+        Pageable sortedPageable = PageRequest.of(
+                pageable.getPageNumber(),
+                pageable.getPageSize(),
+                Sort.by("createdAt").descending()
+        );
+
+        return reviewRepository.findAll(sortedPageable).map(ReviewDto::new).getContent();
     }
 
 }
