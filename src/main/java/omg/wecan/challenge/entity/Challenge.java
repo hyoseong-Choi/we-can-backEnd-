@@ -116,7 +116,4 @@ public class Challenge {
         return recruit.getCharity().getName();
     }
 
-    public int decreaseDonationCandy(int failNum) {
-       return donationCandy - finePerOnce * failNum;
-    }
 }
