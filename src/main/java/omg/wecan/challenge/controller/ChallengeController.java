@@ -11,9 +11,11 @@ import omg.wecan.challenge.dto.output.*;
 import omg.wecan.challenge.service.ChallengeService;
 import omg.wecan.user.entity.User;
 import omg.wecan.util.ApiResponse;
+import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.time.LocalDate;
 import java.util.List;
 
 @RestController
@@ -52,9 +54,9 @@ public class ChallengeController {
         return ResponseEntity.ok(ApiResponse.success(challengeService.getChallengeInfo(user, challengeId)));
     }
 
-    @GetMapping("checkroom/{challengeId}")
-    public ResponseEntity<ApiResponse<ChallengeCheckRoomDto>> getChallengeCheckRoomInfo(@PathVariable Long challengeId) {
-        return ResponseEntity.ok(ApiResponse.success(challengeService.getChallengeCheckRoomInfo(challengeId)));
+    @GetMapping("checkroom/{challengeId}/{checkDate}")
+    public ResponseEntity<ApiResponse<ChallengeCheckRoomDto>> getChallengeCheckRoomInfo(@PathVariable Long challengeId, @PathVariable @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) LocalDate checkDate) {
+        return ResponseEntity.ok(ApiResponse.success(challengeService.getChallengeCheckRoomInfo(challengeId, checkDate)));
     }
 
     @PostMapping("checkroom/upload")
@@ -66,7 +68,7 @@ public class ChallengeController {
     }
 
     @PostMapping("checkroom/exemption")
-    public ResponseEntity<ApiResponse<ChallengeCheckRoomDto>> challengeCheckExemption (
+    public ResponseEntity<ApiResponse<ChallengeCheckResultDto>> challengeCheckExemption (
             @AuthenticationPrincipal User user,
             @RequestBody @Valid ChallengeCheckExemptionDto challengeCheckExemptionDto
     ) {
@@ -74,7 +76,7 @@ public class ChallengeController {
     }
 
 
-    @PostMapping("checkroom/dislike/{challengeCheckId}")
+    @PostMapping("checkroom/dislike")
     public ResponseEntity<ApiResponse<ChallengeCheckResultDto>> dislikeChallengeCheck(
             @AuthenticationPrincipal User user,
             @RequestBody @Valid ChallengeCheckIdDto challengeCheckIdDto
@@ -83,7 +85,7 @@ public class ChallengeController {
     }
 
     @PostMapping("checkroom/dislike/exemption")
-    public ResponseEntity<ApiResponse<ChallengeCheckRoomDto>> dislikeExemption(
+    public ResponseEntity<ApiResponse<ChallengeCheckResultDto>> dislikeExemption(
             @AuthenticationPrincipal User user,
             @RequestBody @Valid CheckDislikeExemptionDto checkDislikeExemptionDto
     ) {

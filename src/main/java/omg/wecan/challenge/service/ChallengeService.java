@@ -29,6 +29,7 @@ import org.springframework.web.multipart.MultipartFile;
 import java.io.IOException;
 import java.time.LocalDate;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
@@ -142,7 +143,7 @@ public class ChallengeService {
         DislikeCheck dislikeCheck = new DislikeCheck(user, dislikedChallengeCheck);
         dislikeCheckRepository.save(dislikeCheck);
 
-        List<String> imageUrlList = getChallengeCheckImages(challengeCheckId, dislikedChallengeCheck.getUser().getUserId());
+        List<String> imageUrlList = getChallengeCheckImages(challengeCheckId, dislikedChallengeCheck.getUser());
 
         ChallengeCheckImageDto challengeCheckImages = new ChallengeCheckImageDto(dislikedChallengeCheck, imageUrlList, dislikedChallengeCheck.getDislike());
 
@@ -163,21 +164,20 @@ public class ChallengeService {
 
     }
 
-    public ChallengeCheckRoomDto getChallengeCheckRoomInfo(Long challengeId) {
-        LocalDate currentDate = LocalDate.now();
+    public ChallengeCheckRoomDto getChallengeCheckRoomInfo(Long challengeId, LocalDate checkDate) {
 
-        List<ChallengeCheck> todayChallengeChecks = challengeCheckRepository.findByChallengeId(challengeId)
+        List<ChallengeCheck> challengeChecks = challengeCheckRepository.findByChallengeId(challengeId)
                 .stream()
-                .filter(challengeCheck -> challengeCheck.getCheckDate().toLocalDate().isEqual(currentDate))
+                .filter(challengeCheck -> challengeCheck.getCheckDate().toLocalDate().isEqual(checkDate))
                 .collect(Collectors.toList());
 
-        if (todayChallengeChecks.isEmpty()) {
+        if (challengeChecks.isEmpty()) {
             return new ChallengeCheckRoomDto(challengeId, null);
         }
 
-        List<ChallengeCheckImageDto> challengeCheckInfoByUser = todayChallengeChecks.stream()
+        List<ChallengeCheckImageDto> challengeCheckInfoByUser = challengeChecks.stream()
                 .map(challengeCheck -> {
-                    List<String > challengeCheckImages = getChallengeCheckImages(challengeCheck.getId(), challengeCheck.getUser().getUserId());
+                    List<String > challengeCheckImages = getChallengeCheckImages(challengeCheck.getId(), challengeCheck.getUser());
                     return new ChallengeCheckImageDto(challengeCheck, challengeCheckImages,challengeCheck.getDislike());
                 })
                 .collect(Collectors.toList());
@@ -185,8 +185,8 @@ public class ChallengeService {
         return new ChallengeCheckRoomDto(challengeId, challengeCheckInfoByUser);
     }
 
-    private List<String> getChallengeCheckImages(Long challengeCheckId, Long userId) {
-        List<ChallengeCheckImage> imageUrlList = challengeCheckImageRepository.findByChallengeCheck_IdAndUserUserId(challengeCheckId, userId);
+    private List<String> getChallengeCheckImages(Long challengeCheckId, User user) {
+        List<ChallengeCheckImage> imageUrlList = challengeCheckImageRepository.findByChallengeCheck_IdAndUser(challengeCheckId, user);
 
         return imageUrlList.stream()
                 .map(ChallengeCheckImage::getImageUrl)
@@ -216,7 +216,7 @@ public class ChallengeService {
         return new ChallengeInfoDto(challenge, successRate, chattingRoomId, chatService.getChatList(chattingRoomId));
     }
 
-    public ChallengeCheckRoomDto challengeCheckExemption(User user, ChallengeCheckExemptionDto challengeCheckExemptionDto) {
+    public ChallengeCheckResultDto challengeCheckExemption(User user, ChallengeCheckExemptionDto challengeCheckExemptionDto) {
 
         Exemption exemptionToDelete = exemptionRepository.findByCertificationString(challengeCheckExemptionDto.getExemptionString())
                 .orElseThrow(() -> new CustomException(ErrorCode.USERITEM_NOT_FOUND));
@@ -233,42 +233,42 @@ public class ChallengeService {
         ChallengeCheckImage challengeCheckImage = new ChallengeCheckImage();
         challengeCheckImageRepository.save(challengeCheckImage.imageSave(challengeCheck, exemptionToDelete.getUserItem().getItem().getImgEndpoint()));
 
+        ChallengeCheckImageDto challengeCheckImageDto = new ChallengeCheckImageDto(challengeCheck, Arrays.asList(challengeCheckImage.getImageUrl()), 0);
 
-        return getChallengeCheckRoomInfo(challengeCheckExemptionDto.getChallengeId());
+        return new ChallengeCheckResultDto(challengeCheck.getId(), challengeCheckImageDto);
     }
 
 
-    public ChallengeCheckRoomDto dislikeExemption(User user, CheckDislikeExemptionDto checkDislikeExemptionDto) {
+    public ChallengeCheckResultDto dislikeExemption(User user, CheckDislikeExemptionDto checkDislikeExemptionDto) {
         Item useItem = itemRepository.findItemAndReduceDislikeByItemId(checkDislikeExemptionDto.getItemId());
 
         LocalDate currentDate = LocalDate.now();
+        UserChallenge userChallenge = userChallengeRepository.findByUserAndChallengeId(user, checkDislikeExemptionDto.getChallengeId());
 
-        challengeCheckRepository.findByChallengeIdAndUser(checkDislikeExemptionDto.getChallengeId(), user)
+        ChallengeCheck exemptionChallengeCheck = challengeCheckRepository.findByChallengeIdAndUser(checkDislikeExemptionDto.getChallengeId(), user)
                 .filter(challengeCheck -> challengeCheck.getCheckDate().toLocalDate().isEqual(currentDate))
-                .ifPresent(challengeCheck -> {
-                    int beforeDislikeNum = challengeCheck.getDislike();
-                    int peopleNum = challengeCheck.getChallenge().getPeopleNum();
-                    int dislikeThreshold = (int) Math.round(peopleNum * 0.4);
+                .orElseThrow(() -> new CustomException(ErrorCode.USERITEM_NOT_FOUND));
 
-                    challengeCheck.setDislike(challengeCheck.getDislike() - useItem.getReduceDislike());
-                    challengeCheckRepository.save(challengeCheck);
+        int beforeDislikeNum = exemptionChallengeCheck.getDislike();
+        int peopleNum = exemptionChallengeCheck.getChallenge().getPeopleNum();
+        int dislikeThreshold = (int) Math.round(peopleNum * 0.4);
 
-                    if (beforeDislikeNum >= dislikeThreshold && challengeCheck.getDislike() < dislikeThreshold) {
+        exemptionChallengeCheck.setDislike(exemptionChallengeCheck.getDislike() - useItem.getReduceDislike());
+        challengeCheckRepository.save(exemptionChallengeCheck);
 
-                        UserChallenge userChallenge = userChallengeRepository.findByUserAndChallengeId(user, checkDislikeExemptionDto.getChallengeId());
-                        if (userChallenge.getFailNum() != 0) {
-                            userChallenge.decreaseFailNum();
-                            userChallengeRepository.save(userChallenge);
-                        }
-                    }
+        if (beforeDislikeNum >= dislikeThreshold && exemptionChallengeCheck.getDislike() < dislikeThreshold) {
+            if (userChallenge.getFailNum() != 0) {
+                userChallenge.decreaseFailNum();
+                userChallengeRepository.save(userChallenge);
+            }
+        }
 
-                    ChallengeCheckImage challengeCheckImage = new ChallengeCheckImage();
-                    challengeCheckImageRepository.save(challengeCheckImage.imageSave(challengeCheck, useItem.getImgEndpoint()));
+        ChallengeCheckImage challengeCheckImage = challengeCheckImageRepository.save(new ChallengeCheckImage().imageSave(exemptionChallengeCheck, useItem.getImgEndpoint()));
+        userItemRepository.deleteById(checkDislikeExemptionDto.getItemId());
 
-                    userItemRepository.deleteById(checkDislikeExemptionDto.getItemId());
-                });
+        ChallengeCheckImageDto challengeCheckImageDto = new ChallengeCheckImageDto(exemptionChallengeCheck, Arrays.asList(challengeCheckImage.getImageUrl()), exemptionChallengeCheck.getDislike());
 
-        return getChallengeCheckRoomInfo(checkDislikeExemptionDto.getChallengeId());
+        return new ChallengeCheckResultDto(checkDislikeExemptionDto.getChallengeId(), challengeCheckImageDto);
     }
 
 }
