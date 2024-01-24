@@ -14,11 +14,13 @@ import omg.wecan.util.ApiResponse;
 import org.apache.tomcat.util.json.ParseException;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.configurationprocessor.json.JSONException;
+import org.springframework.http.HttpHeaders;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 
 import java.io.IOException;
+import java.net.URI;
 
 @Controller
 @RequiredArgsConstructor
@@ -48,9 +50,10 @@ public class CashPaymentController {
     }
 
     @GetMapping("/success")
-    public ResponseEntity<ApiResponse<CashPaymentResultResponse>> paymentSuccess(@RequestParam String paymentKey,
-                                               @RequestParam String orderId,
-                                               @RequestParam Long amount) throws JSONException, IOException, ParseException {
+    public ResponseEntity<ApiResponse<CashPaymentResultResponse>> paymentSuccess(
+            @RequestParam String orderId,
+            @RequestParam String paymentKey,
+            @RequestParam Long amount) throws JSONException, IOException, ParseException {
         long purchaseCandyCnt;
         CashPayment payment;
 
@@ -71,7 +74,7 @@ public class CashPaymentController {
             @RequestParam String code,
             @RequestParam String message,
             @RequestParam String orderId
-    ){
+    ) {
         ApiResponse response = new ApiResponse(false, code, message, orderId);
 
         return ResponseEntity.ok().body(
