@@ -15,6 +15,7 @@ import java.util.List;
 @Setter
 public class ChallengeCheckRoomDto {
     private Long challengeId;
+    private Long daysUntilDeadline;
     private List<ChallengeCheckImageDto> challengeChecks;
 
 }
