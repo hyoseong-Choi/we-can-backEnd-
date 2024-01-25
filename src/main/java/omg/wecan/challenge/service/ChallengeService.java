@@ -28,6 +28,7 @@ import org.springframework.web.multipart.MultipartFile;
 
 import java.io.IOException;
 import java.time.LocalDate;
+import java.time.temporal.ChronoUnit;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
@@ -103,7 +104,7 @@ public class ChallengeService {
         ChallengeCheckImageDto challengeCheckImageDto = new ChallengeCheckImageDto(newChallengeCheck, imageUrlList, 0);
 
 
-        return new ChallengeCheckResultDto(newChallengeCheck.getId(), challengeCheckImageDto);
+        return new ChallengeCheckResultDto(challengeCheckInputDto.getChallengeId(), challengeCheckImageDto);
 
     }
 
@@ -136,7 +137,11 @@ public class ChallengeService {
         ChallengeCheck dislikedChallengeCheck = challengeCheckRepository.findById(challengeCheckId)
                 .orElseThrow(() -> new CustomException(ErrorCode.CHALLENGE_CHECK_NOT_FOUND, "challengeId: "+challengeCheckId));
 
-        //이미 싫어요 누른 유저 체크 추가 필요
+        DislikeCheck existingDislikeCheck = dislikeCheckRepository.findByUserAndChallengeCheckId(user, challengeCheckId);
+        if (existingDislikeCheck != null) {
+            throw new CustomException(ErrorCode.ALREADY_DISLIKED, "User has already disliked this challengeCheck");
+        }
+
         dislikedChallengeCheck.increaseDislike();
         dislikedChallengeCheck = challengeCheckRepository.save(dislikedChallengeCheck);
 
@@ -172,7 +177,7 @@ public class ChallengeService {
                 .collect(Collectors.toList());
 
         if (challengeChecks.isEmpty()) {
-            return new ChallengeCheckRoomDto(challengeId, null);
+            return new ChallengeCheckRoomDto(challengeId, 0L, null);
         }
 
         List<ChallengeCheckImageDto> challengeCheckInfoByUser = challengeChecks.stream()
@@ -182,7 +187,11 @@ public class ChallengeService {
                 })
                 .collect(Collectors.toList());
 
-        return new ChallengeCheckRoomDto(challengeId, challengeCheckInfoByUser);
+        Challenge challenge = challengeRepository.findById(challengeId)
+                .orElseThrow(() -> new CustomException(ErrorCode.CHALLENGE_NOT_FOUND, "challengeId: "+challengeId));
+
+
+        return new ChallengeCheckRoomDto(challengeId, ChronoUnit.DAYS.between(LocalDate.now(), challenge.getEndDate()), challengeCheckInfoByUser);
     }
 
     private List<String> getChallengeCheckImages(Long challengeCheckId, User user) {

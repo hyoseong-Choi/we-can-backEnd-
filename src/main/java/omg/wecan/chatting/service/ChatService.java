@@ -8,6 +8,7 @@ import omg.wecan.challenge.repository.ChallengeRepository;
 import omg.wecan.chatting.dto.ChatDto;
 import omg.wecan.chatting.dto.ChatRoomDto;
 import omg.wecan.chatting.dto.ChattingUserDto;
+import omg.wecan.chatting.dto.EmoticonDto;
 import omg.wecan.chatting.entity.Chatting;
 import omg.wecan.chatting.entity.ChattingRoom;
 import omg.wecan.chatting.entity.ChattingRoomUser;
@@ -16,6 +17,10 @@ import omg.wecan.chatting.repository.ChattingRoomRepository;
 import omg.wecan.chatting.repository.ChattingRoomUserRepository;
 import omg.wecan.exception.customException.CustomException;
 import omg.wecan.exception.customException.ErrorCode;
+import omg.wecan.shop.entity.Emoticon;
+import omg.wecan.shop.entity.UserItem;
+import omg.wecan.shop.repository.EmoticonRepository;
+import omg.wecan.shop.repository.UserItemRepository;
 import omg.wecan.user.entity.User;
 import omg.wecan.user.repository.UserRepository;
 import org.springframework.stereotype.Service;
@@ -33,6 +38,8 @@ public class ChatService {
     private final ChattingRoomRepository chattingRoomRepository;
     private final ChattingRoomUserRepository chattingRoomUserRepository;
     private final ChattingRepository chattingRepository;
+    private final UserItemRepository userItemRepository;
+    private final EmoticonRepository emoticonRepository;
 
 
     // roomName 로 채팅방 만들기
@@ -98,5 +105,24 @@ public class ChatService {
         Chatting savedChatting = chattingRepository.save(chatting);
 
         return chatDto;
+    }
+
+    public EmoticonDto getEmoticonList(User user) {
+        EmoticonDto emoticonDto = new EmoticonDto();
+        emoticonDto.setUserId(user.getUserId());
+
+        List<String> emoticonList = new ArrayList<>();
+        List<UserItem> userItems = userItemRepository.findByUser(user);
+
+        for (UserItem userItem : userItems) {
+            Emoticon emoticon = emoticonRepository.findByItem(userItem.getItem());
+
+            if (emoticon != null) {
+                emoticonList.add(emoticon.getImageUrl());
+            }
+        }
+        emoticonDto.setEmoticonList(emoticonList);
+        return emoticonDto;
+
     }
 }
