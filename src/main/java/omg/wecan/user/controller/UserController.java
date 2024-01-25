@@ -40,7 +40,10 @@ public class UserController {
     public ResponseEntity<ApiResponse<AuthResponse>> signInUser(@RequestBody SignInDto signInDto) {
         final String email = signInDto.getEmail();
         final String password = signInDto.getPassword();
-        final String fcmToken = signInDto.getFcmToken();
+        final String fcmToken = null;
+        if (signInDto.getFcmToken() != null) {
+            fcmToken = signInDto.getFcmToken();
+        }
 
         User user = userService.login(email, password, fcmToken);
 
