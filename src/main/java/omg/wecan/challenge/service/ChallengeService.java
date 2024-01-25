@@ -28,7 +28,6 @@ import org.springframework.web.multipart.MultipartFile;
 
 import java.io.IOException;
 import java.time.LocalDate;
-import java.time.temporal.ChronoUnit;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
@@ -177,7 +176,7 @@ public class ChallengeService {
                 .collect(Collectors.toList());
 
         if (challengeChecks.isEmpty()) {
-            return new ChallengeCheckRoomDto(challengeId, 0L, null);
+            return new ChallengeCheckRoomDto(challengeId, null, null, null);
         }
 
         List<ChallengeCheckImageDto> challengeCheckInfoByUser = challengeChecks.stream()
@@ -191,7 +190,7 @@ public class ChallengeService {
                 .orElseThrow(() -> new CustomException(ErrorCode.CHALLENGE_NOT_FOUND, "challengeId: "+challengeId));
 
 
-        return new ChallengeCheckRoomDto(challengeId, ChronoUnit.DAYS.between(LocalDate.now(), challenge.getEndDate()), challengeCheckInfoByUser);
+        return new ChallengeCheckRoomDto(challengeId, challenge.getStartDate(), challenge.getEndDate(), challengeCheckInfoByUser);
     }
 
     private List<String> getChallengeCheckImages(Long challengeCheckId, User user) {

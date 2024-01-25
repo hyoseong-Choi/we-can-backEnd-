@@ -6,6 +6,7 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 import omg.wecan.challenge.dto.ChallengeCheckImageDto;
 
+import java.time.LocalDate;
 import java.util.List;
 
 
@@ -15,7 +16,8 @@ import java.util.List;
 @Setter
 public class ChallengeCheckRoomDto {
     private Long challengeId;
-    private Long daysUntilDeadline;
+    private LocalDate startDate;
+    private LocalDate endDate;
     private List<ChallengeCheckImageDto> challengeChecks;
 
 }
