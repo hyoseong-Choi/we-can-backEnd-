@@ -25,7 +25,6 @@ public class Challenge {
     @Column(name = "challenge_id")
     private Long id;
     private String title;
-    private String chattingRoomId;
     @OneToMany(mappedBy = "challenge", cascade = CascadeType.REMOVE)
     private List<UserChallenge> userChallenge;
     @Enumerated(value = EnumType.STRING)

@@ -48,6 +48,7 @@ public class ChallengeCheck {
     public ChallengeCheck(User user, Challenge challenge) {
         this.user = user;
         this.challenge = challenge;
+        this.checkDate = LocalDateTime.now();
         this.dislike = 0;
     }
 
