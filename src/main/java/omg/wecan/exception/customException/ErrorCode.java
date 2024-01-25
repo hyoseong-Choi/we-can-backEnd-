@@ -56,8 +56,13 @@ public enum ErrorCode {
     //login
     LOGIN_INFO_INVALID(HttpStatus.UNAUTHORIZED, "12401", "로그인 정보가 유효하지 않습니다."),
 
+    //chatting
     CHATTING_ROOM_NOT_FOUND(HttpStatus.NOT_FOUND,"13404", "해당 채팅방은 존재하지 않습니다."),
-    CHATTING_ROOM_USER_NOT_FOUND(HttpStatus.NOT_FOUND,"13404", "채팅방에 해당 유저가 존재하지 않습니다.");
+    CHATTING_ROOM_USER_NOT_FOUND(HttpStatus.NOT_FOUND,"13404", "채팅방에 해당 유저가 존재하지 않습니다."),
+
+    //dislike
+    ALREADY_DISLIKED(HttpStatus.BAD_REQUEST, "14400", "이미 싫어요를 누른 유저입니다.");
+
     private final HttpStatus status;
     private final String code;
     private final String message;

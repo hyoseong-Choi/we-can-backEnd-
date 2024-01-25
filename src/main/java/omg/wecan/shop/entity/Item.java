@@ -24,6 +24,8 @@ public class Item {
     private int reduceDislike;
     @OneToMany(mappedBy = "item", cascade = CascadeType.ALL)
     private List<UserItem> userItems;
+    @OneToMany(mappedBy = "item", cascade = CascadeType.ALL)
+    private List<Emoticon> emoticons;
     
     public Item(ItemInput itemInput, String imgEndpoint) {
         this.name = itemInput.getName();

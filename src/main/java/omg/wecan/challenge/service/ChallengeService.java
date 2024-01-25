@@ -136,7 +136,11 @@ public class ChallengeService {
         ChallengeCheck dislikedChallengeCheck = challengeCheckRepository.findById(challengeCheckId)
                 .orElseThrow(() -> new CustomException(ErrorCode.CHALLENGE_CHECK_NOT_FOUND, "challengeId: "+challengeCheckId));
 
-        //이미 싫어요 누른 유저 체크 추가 필요
+        DislikeCheck existingDislikeCheck = dislikeCheckRepository.findByUserAndChallengeCheckId(user, challengeCheckId);
+        if (existingDislikeCheck != null) {
+            throw new CustomException(ErrorCode.ALREADY_DISLIKED, "User has already disliked this challengeCheck");
+        }
+
         dislikedChallengeCheck.increaseDislike();
         dislikedChallengeCheck = challengeCheckRepository.save(dislikedChallengeCheck);
 

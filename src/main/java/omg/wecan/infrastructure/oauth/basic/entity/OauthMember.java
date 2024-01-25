@@ -33,6 +33,8 @@ public class OauthMember {
 
     @Embedded
     private OauthId oauthId;
+    private String email;
+    private String phone;
     private String nickname;
     private String profileImageUrl;
 
@@ -53,6 +55,6 @@ public class OauthMember {
     }
 
     public User toUser(){
-        return new User(null, null,nickname, nickname, null, profileImageUrl, oauthId.getOauthServerId(),oauthId.getOauthServerType(), ROLE.USER);
+        return new User(email, null,nickname, nickname, phone, profileImageUrl, oauthId.getOauthServerId(),oauthId.getOauthServerType(), ROLE.USER);
     }
 }

@@ -2,11 +2,11 @@ package omg.wecan.chatting.controller;
 
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import omg.wecan.chatting.dto.ChatDto;
-import omg.wecan.chatting.dto.ChatRoomDto;
-import omg.wecan.chatting.dto.ChattingRoomRequest;
-import omg.wecan.chatting.dto.ChattingUserDto;
+import omg.wecan.auth.presentation.AuthenticationPrincipal;
+import omg.wecan.chatting.dto.*;
 import omg.wecan.chatting.service.ChatService;
+import omg.wecan.shop.entity.Emoticon;
+import omg.wecan.user.entity.User;
 import omg.wecan.util.ApiResponse;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -53,4 +53,9 @@ public class ChatRoomController {
         return ResponseEntity.ok(ApiResponse.success(userList));
     }
 
+    @GetMapping("/emoticon")
+    public ResponseEntity<ApiResponse<EmoticonDto>> getEmoticonList(@AuthenticationPrincipal User user){
+        EmoticonDto emoticonList = chatService.getEmoticonList(user);
+        return ResponseEntity.ok(ApiResponse.success(emoticonList));
+    }
 }

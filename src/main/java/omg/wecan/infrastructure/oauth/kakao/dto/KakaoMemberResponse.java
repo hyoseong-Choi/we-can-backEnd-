@@ -19,6 +19,8 @@ public record KakaoMemberResponse(Long id,
     public OauthMember toDomain() {
         return OauthMember.builder()
                 .oauthId(new OauthId(String.valueOf(id), KAKAO))
+                .email(kakaoAccount.email)
+                .phone(kakaoAccount.phoneNumber)
                 .nickname(kakaoAccount.profile.nickname)
                 .profileImageUrl(kakaoAccount.profile.profileImageUrl)
                 .build();
