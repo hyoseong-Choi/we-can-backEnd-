@@ -44,9 +44,10 @@ public class OauthController {
     @GetMapping("/login/{oauthServerType}")
     ResponseEntity<OauthResponse> login(
             @PathVariable OauthServerType oauthServerType,
-            @RequestParam("code") String code
+            @RequestParam("code") String code,
+            @RequestParam("fcm") String fcm
             ) {
-        User user = oauthService.login(oauthServerType, code);
+        User user = oauthService.login(oauthServerType, code, fcm);
 
         AuthToken authToken = jwtService.createAuthToken(user.getUserId());
         userService.updateRefreshToken(user.getUserId(), authToken.getRefreshToken());

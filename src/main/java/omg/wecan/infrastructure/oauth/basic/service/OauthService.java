@@ -9,6 +9,7 @@ import omg.wecan.infrastructure.oauth.basic.domain.OauthServerType;
 import omg.wecan.user.entity.User;
 import omg.wecan.user.service.UserService;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 @Service
 @RequiredArgsConstructor
@@ -21,8 +22,8 @@ public class OauthService {
     public String getAuthCodeRequestUrl(OauthServerType oauthServerType) {
         return authCodeRequestUrlProviderComposite.provide(oauthServerType);
     }
-
-    public User login(OauthServerType oauthServerType, String authCode) {
+@Transactional
+    public User login(OauthServerType oauthServerType, String authCode, String fcm) {
         OauthMember oauthMember = oauthMemberClientComposite.fetch(oauthServerType, authCode);
 
         User user = userService.findByOauthServerIdAndSocial(
@@ -30,6 +31,7 @@ public class OauthService {
                         oauthServerType.toString())
                 .orElseGet(() -> userService.save(oauthMember.toUser()));
 
+        user.setFcmToken(fcm);
         return user;
     }
 }
