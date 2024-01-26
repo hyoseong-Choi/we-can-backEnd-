@@ -4,7 +4,7 @@ import lombok.*;
 import omg.wecan.chatting.Enum.MessageType;
 import omg.wecan.chatting.entity.Chatting;
 
-import java.time.format.DateTimeFormatter;
+import java.time.LocalDateTime;
 
 @Getter
 @Setter
