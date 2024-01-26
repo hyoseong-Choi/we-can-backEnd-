@@ -4,7 +4,7 @@ import lombok.*;
 import omg.wecan.chatting.Enum.MessageType;
 import omg.wecan.chatting.entity.Chatting;
 
-import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 
 @Getter
 @Setter
@@ -18,7 +18,7 @@ public class ChatDto {
     private Long userId; // 채팅 보낸 사람
     private String nickName; // 채팅 보낸 사람 이름
     private String message; // 메시지
-    private LocalDateTime time; // 채팅 발송 시간
+    private String time; // 채팅 발송 시간
 
     public static ChatDto create(Chatting chatting) {
         ChatDto chatDto = new ChatDto();
@@ -27,7 +27,9 @@ public class ChatDto {
         chatDto.userId = chatting.getChattingRoomUser().getUser().getUserId();
         chatDto.nickName = chatting.getChattingRoomUser().getUser().getNickName();
         chatDto.message = chatting.getMessage();
-        chatDto.time = chatting.getCreatedAt();
+        chatDto.time = chatting.getCreatedAt().format(
+                DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm")
+        );
 
         return chatDto;
     }
