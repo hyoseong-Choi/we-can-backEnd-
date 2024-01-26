@@ -7,6 +7,7 @@ import lombok.Setter;
 import omg.wecan.user.entity.User;
 
 import java.time.LocalDateTime;
+import java.time.ZoneId;
 import java.util.List;
 
 @Entity
@@ -42,13 +43,13 @@ public class ChallengeCheck {
     @PrePersist
     protected void onCreate() {
         if (checkDate == null) {
-            checkDate = LocalDateTime.now();
+            checkDate = LocalDateTime.now(ZoneId.of("Asia/Seoul"));
         }
     }
     public ChallengeCheck(User user, Challenge challenge) {
         this.user = user;
         this.challenge = challenge;
-        this.checkDate = LocalDateTime.now();
+        this.checkDate = LocalDateTime.now(ZoneId.of("Asia/Seoul"));
         this.dislike = 0;
     }
 
