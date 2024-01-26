@@ -11,7 +11,6 @@ import org.springframework.messaging.simp.SimpMessageSendingOperations;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.RestController;
 
-import java.time.LocalDateTime;
 
 @Slf4j
 @RequiredArgsConstructor
@@ -35,8 +34,6 @@ public class ChatController {
     @MessageMapping("/sendMessage")
     public void sendMessage(@Payload ChatDto chat) {
         log.info("CHAT {}", chat);
-        chat.setTime(LocalDateTime.now());
-        chat.setMessage(chat.getMessage());
         chatService.saveMessage(chat);
         template.convertAndSend("/sub/chat/room/" + chat.getRoomId().toString(), chat);
 

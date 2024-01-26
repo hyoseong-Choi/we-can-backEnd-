@@ -25,6 +25,9 @@ import omg.wecan.user.entity.User;
 import omg.wecan.user.repository.UserRepository;
 import org.springframework.stereotype.Service;
 
+import java.time.LocalDateTime;
+import java.time.ZoneId;
+import java.time.format.DateTimeFormatter;
 import java.util.*;
 import java.util.stream.Collectors;
 
@@ -100,10 +103,13 @@ public class ChatService {
                 .orElseThrow(() -> new CustomException(ErrorCode.CHATTING_ROOM_USER_NOT_FOUND, "userId: " + chatDto.getUserId())));
 
         chatting.setMessage(chatDto.getMessage());
-        chatting.setCreatedAt(chatDto.getTime());
+        chatting.setCreatedAt(LocalDateTime.now(ZoneId.of("Asia/Seoul")));
 
-        Chatting savedChatting = chattingRepository.save(chatting);
+        chattingRepository.save(chatting);
 
+        chatDto.setTime(LocalDateTime.now(ZoneId.of("Asia/Seoul")).format(
+                DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm")
+        ));
         return chatDto;
     }
 
