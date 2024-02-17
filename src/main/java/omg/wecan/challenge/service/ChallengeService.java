@@ -33,10 +33,13 @@ import java.util.Arrays;
 import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 @Service
 @RequiredArgsConstructor
 public class ChallengeService {
+    private static final Logger logger = LoggerFactory.getLogger(ChallengeService.class);
     private static String bucketName = "wecanbucket";
 
     private final AmazonS3Client amazonS3Client;
@@ -69,7 +72,7 @@ public class ChallengeService {
                 .orElseThrow(
                         () -> new CustomException(ErrorCode.CHALLENGE_NOT_FOUND,
                                 "challengeId: " + challengeId + " " + "userId: " + user.getUserId())
-        );
+                );
 
         UserChallengeDto userChallengeDto = userChallenge.toDto();
         return userChallengeDto;
@@ -111,6 +114,7 @@ public class ChallengeService {
     @Transactional
     public String saveImage(MultipartFile multipartFile, ChallengeCheck challengeCheck) {
         String originalName = multipartFile.getOriginalFilename();
+        logger.info("Image name {}", originalName);
         ChallengeCheckImage challengeCheckImage = new ChallengeCheckImage(challengeCheck, originalName);
         String filename = challengeCheckImage.getStoredName();
 
