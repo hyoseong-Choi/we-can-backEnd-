@@ -1,5 +1,6 @@
 package omg.wecan.auth.dto;
 
+//123
 public class LoginUser {
 
     private Long id;
