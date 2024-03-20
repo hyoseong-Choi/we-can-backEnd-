@@ -24,7 +24,7 @@ Maybe you can mention me or this repo in the acknowledgements too
   <a href="https://github.com/IT-s-TIME-4th-OMG/we-can-backEnd-/network/members">
     <img src="https://img.shields.io/github/forks/IT-s-TIME-4th-OMG/we-can-backEnd-" alt="forks" />
   </a>
-  <a href="https://github.com/Louis3797/awesome-readme-template/stargazers">
+  <a href="https://github.com/IT-s-TIME-4th-OMG/we-can-backEnd-/stargazers">
     <img src="https://img.shields.io/github/stars/IT-s-TIME-4th-OMG/we-can-backEnd-" alt="stars" />
   </a>
 </p>
