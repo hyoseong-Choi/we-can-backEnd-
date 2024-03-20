@@ -33,6 +33,8 @@ Maybe you can mention me or this repo in the acknowledgements too
     <a href="https://drive.google.com/file/d/1nWmAliZFKF04DdUZj53G5c2Y48xZITQY/view?usp=sharing">시연 영상</a>
   <span> · </span>
     <a href="https://ancient-stretch-01d.notion.site/c519980ec8324eab90ab20e90ff20201?pvs=4">문서 목록</a>
+  <span> · </span>
+    <a href="https://drive.google.com/file/d/1jb3f55zZTQzKBJJ8S4HA02QfdkD9ePAe/view">소개 자료</a>
   </h4>
 </div>
 
