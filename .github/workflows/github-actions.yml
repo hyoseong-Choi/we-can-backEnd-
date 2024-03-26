@@ -21,6 +21,15 @@ jobs:
           java-version: '17'
           distribution: 'temurin' # https://github.com/actions/setup-java
 
+      - run: touch ./src/main/resources/application.yml
+      - run: echo "${{ secrets.APPLICATION }}" > ./src/main/resources/application.yml
+      - run: touch ./src/main/resources/application.yml
+      - run: echo "${{ secrets.APPLICATION_JWT }}" > ./src/main/resources/application-jwt.yml
+      - run: touch ./src/main/resources/application.yml
+      - run: echo "${{ secrets.APPLICATION_TOSS }}" > ./src/main/resources/application-toss.yml
+      - run: touch ./src/main/resources/firebase/wecan-6752c-firebase-adminsdk-s70dg-f1542ba1ac.json
+      - run: echo "${{ secrets.FIREBASE }}" > ./src/main/resources/firebase/wecan-6752c-firebase-adminsdk-s70dg-f1542ba1ac.json
+
       # gradle caching - 빌드 시간 향상
       - name: Gradle Caching
         uses: actions/cache@v3
