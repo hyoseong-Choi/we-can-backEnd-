@@ -27,7 +27,6 @@ import org.springframework.stereotype.Service;
 
 import java.time.LocalDateTime;
 import java.time.ZoneId;
-import java.time.format.DateTimeFormatter;
 import java.util.*;
 import java.util.stream.Collectors;
 
@@ -107,9 +106,7 @@ public class ChatService {
 
         chattingRepository.save(chatting);
 
-        chatDto.setTime(LocalDateTime.now(ZoneId.of("Asia/Seoul")).format(
-                DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm")
-        ));
+        chatDto.setTime(LocalDateTime.now(ZoneId.of("Asia/Seoul")));
         return chatDto;
     }
 

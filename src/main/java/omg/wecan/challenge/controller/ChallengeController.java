@@ -55,8 +55,8 @@ public class ChallengeController {
     }
 
     @GetMapping("checkroom/{challengeId}/{checkDate}")
-    public ResponseEntity<ApiResponse<ChallengeCheckRoomDto>> getChallengeCheckRoomInfo(@PathVariable Long challengeId, @PathVariable @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) LocalDate checkDate) {
-        return ResponseEntity.ok(ApiResponse.success(challengeService.getChallengeCheckRoomInfo(challengeId, checkDate)));
+    public ResponseEntity<ApiResponse<ChallengeCheckRoomDto>> getChallengeCheckRoomInfo(@AuthenticationPrincipal User user, @PathVariable Long challengeId, @PathVariable @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) LocalDate checkDate) {
+        return ResponseEntity.ok(ApiResponse.success(challengeService.getChallengeCheckRoomInfo(user, challengeId, checkDate)));
     }
 
     @PostMapping("checkroom/upload")

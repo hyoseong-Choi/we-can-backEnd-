@@ -39,7 +39,6 @@ import org.slf4j.LoggerFactory;
 @Service
 @RequiredArgsConstructor
 public class ChallengeService {
-    private static final Logger logger = LoggerFactory.getLogger(ChallengeService.class);
     private static String bucketName = "wecanbucket";
 
     private final AmazonS3Client amazonS3Client;
@@ -103,7 +102,7 @@ public class ChallengeService {
             imageUrlList.add(value);
         }
 
-        ChallengeCheckImageDto challengeCheckImageDto = new ChallengeCheckImageDto(newChallengeCheck, imageUrlList, 0);
+        ChallengeCheckImageDto challengeCheckImageDto = new ChallengeCheckImageDto(newChallengeCheck, imageUrlList, 0, false);
 
 
         return new ChallengeCheckResultDto(challengeCheckInputDto.getChallengeId(), challengeCheckImageDto);
@@ -114,7 +113,6 @@ public class ChallengeService {
     @Transactional
     public String saveImage(MultipartFile multipartFile, ChallengeCheck challengeCheck) {
         String originalName = multipartFile.getOriginalFilename();
-        logger.info("Image name {}", originalName);
         ChallengeCheckImage challengeCheckImage = new ChallengeCheckImage(challengeCheck, originalName);
         String filename = challengeCheckImage.getStoredName();
 
@@ -153,7 +151,7 @@ public class ChallengeService {
 
         List<String> imageUrlList = getChallengeCheckImages(challengeCheckId, dislikedChallengeCheck.getUser());
 
-        ChallengeCheckImageDto challengeCheckImages = new ChallengeCheckImageDto(dislikedChallengeCheck, imageUrlList, dislikedChallengeCheck.getDislike());
+        ChallengeCheckImageDto challengeCheckImages = new ChallengeCheckImageDto(dislikedChallengeCheck, imageUrlList, dislikedChallengeCheck.getDislike(), true);
 
         // dislike 수가 challenge의 peopleNum의 40%를 넘는지 확인
         int peopleNum = dislikedChallengeCheck.getChallenge().getPeopleNum();
@@ -172,7 +170,7 @@ public class ChallengeService {
 
     }
 
-    public ChallengeCheckRoomDto getChallengeCheckRoomInfo(Long challengeId, LocalDate checkDate) {
+    public ChallengeCheckRoomDto getChallengeCheckRoomInfo(User user, Long challengeId, LocalDate checkDate) {
 
         List<ChallengeCheck> challengeChecks = challengeCheckRepository.findByChallengeId(challengeId)
                 .stream()
@@ -186,7 +184,9 @@ public class ChallengeService {
         List<ChallengeCheckImageDto> challengeCheckInfoByUser = challengeChecks.stream()
                 .map(challengeCheck -> {
                     List<String > challengeCheckImages = getChallengeCheckImages(challengeCheck.getId(), challengeCheck.getUser());
-                    return new ChallengeCheckImageDto(challengeCheck, challengeCheckImages,challengeCheck.getDislike());
+                    boolean dislikedClicked = challengeCheck.getDislikeChecks().stream()
+                            .anyMatch(dislikeCheck -> dislikeCheck.getUser().equals(user));
+                    return new ChallengeCheckImageDto(challengeCheck, challengeCheckImages,challengeCheck.getDislike(), dislikedClicked);
                 })
                 .collect(Collectors.toList());
 
@@ -245,7 +245,7 @@ public class ChallengeService {
         ChallengeCheckImage challengeCheckImage = new ChallengeCheckImage();
         challengeCheckImageRepository.save(challengeCheckImage.imageSave(challengeCheck, exemptionToDelete.getUserItem().getItem().getImgEndpoint()));
 
-        ChallengeCheckImageDto challengeCheckImageDto = new ChallengeCheckImageDto(challengeCheck, Arrays.asList(challengeCheckImage.getImageUrl()), 0);
+        ChallengeCheckImageDto challengeCheckImageDto = new ChallengeCheckImageDto(challengeCheck, Arrays.asList(challengeCheckImage.getImageUrl()), 0, false);
 
         return new ChallengeCheckResultDto(challengeCheck.getId(), challengeCheckImageDto);
     }
@@ -278,7 +278,7 @@ public class ChallengeService {
         ChallengeCheckImage challengeCheckImage = challengeCheckImageRepository.save(new ChallengeCheckImage().imageSave(exemptionChallengeCheck, useItem.getImgEndpoint()));
         userItemRepository.deleteById(checkDislikeExemptionDto.getItemId());
 
-        ChallengeCheckImageDto challengeCheckImageDto = new ChallengeCheckImageDto(exemptionChallengeCheck, Arrays.asList(challengeCheckImage.getImageUrl()), exemptionChallengeCheck.getDislike());
+        ChallengeCheckImageDto challengeCheckImageDto = new ChallengeCheckImageDto(exemptionChallengeCheck, Arrays.asList(challengeCheckImage.getImageUrl()), exemptionChallengeCheck.getDislike(), false);
 
         return new ChallengeCheckResultDto(checkDislikeExemptionDto.getChallengeId(), challengeCheckImageDto);
     }

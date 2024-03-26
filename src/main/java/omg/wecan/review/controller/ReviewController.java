@@ -5,13 +5,10 @@ import lombok.RequiredArgsConstructor;
 import omg.wecan.auth.presentation.AuthenticationPrincipal;
 import omg.wecan.review.dto.ReviewCreateDto;
 import omg.wecan.review.dto.ReviewDto;
-import omg.wecan.review.entity.Review;
 import omg.wecan.review.service.ReviewService;
 import omg.wecan.user.entity.User;
 import omg.wecan.util.ApiResponse;
-import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
-import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 

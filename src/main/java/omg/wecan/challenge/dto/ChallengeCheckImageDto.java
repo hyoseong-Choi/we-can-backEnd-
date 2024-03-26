@@ -7,7 +7,6 @@ import lombok.Setter;
 import omg.wecan.challenge.entity.ChallengeCheck;
 
 import java.time.LocalDateTime;
-import java.time.format.DateTimeFormatter;
 import java.util.List;
 
 
@@ -19,18 +18,18 @@ public class ChallengeCheckImageDto {
     private Long challengeCheckId;
     private Long userId;
     private String nickName;
-    private String checkDate;
+    private LocalDateTime checkDate;
     private List<String> checkImages;
     private int dislike;
+    private boolean dislikeClicked;
 
-    public ChallengeCheckImageDto(ChallengeCheck challengeCheck, List<String> checkImages, int dislike) {
+    public ChallengeCheckImageDto(ChallengeCheck challengeCheck, List<String> checkImages, int dislike, boolean dislikeClicked) {
         this.challengeCheckId = challengeCheck.getId();
         this.userId = challengeCheck.getUser().getUserId();
         this.nickName = challengeCheck.getUser().getNickName();
-        this.checkDate = challengeCheck.getCheckDate().format(
-                DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm")
-        );
-        this.checkImages= checkImages;
-        this.dislike= dislike;
+        this.checkDate = challengeCheck.getCheckDate();
+        this.checkImages = checkImages;
+        this.dislike = dislike;
+        this.dislikeClicked = dislikeClicked;
     }
 }

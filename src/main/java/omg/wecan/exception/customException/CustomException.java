@@ -1,8 +1,5 @@
 package omg.wecan.exception.customException;
 
-
-import lombok.Getter;
-
 public class CustomException extends RuntimeException{
 
     private final ErrorCode code;
