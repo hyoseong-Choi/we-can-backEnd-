@@ -27,6 +27,9 @@ jobs:
       - run: echo "${{ secrets.APPLICATION_JWT }}" > ./src/main/resources/application-jwt.yml
       - run: touch ./src/main/resources/application.yml
       - run: echo "${{ secrets.APPLICATION_TOSS }}" > ./src/main/resources/application-toss.yml
+
+      - run : mkdir ./src/main/resources/firebase
+      - run : cd ./src/main/resources/firebase
       - run: touch ./src/main/resources/firebase/wecan-6752c-firebase-adminsdk-s70dg-f1542ba1ac.json
       - run: echo "${{ secrets.FIREBASE }}" > ./src/main/resources/firebase/wecan-6752c-firebase-adminsdk-s70dg-f1542ba1ac.json
 
