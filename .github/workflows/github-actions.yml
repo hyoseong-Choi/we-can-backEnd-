@@ -21,8 +21,8 @@ jobs:
           java-version: '17'
           distribution: 'temurin' # https://github.com/actions/setup-java
 
-      - run: touch ./src/main/resources/application.yml
-      - run: echo "${{ secrets.APPLICATION }}" > ./src/main/resources/application.yml
+      - run: touch ./src/main/resources/application.properties
+      - run: echo "${{ secrets.APPLICATION }}" > ./src/main/resources/application.properties
       - run: touch ./src/main/resources/application-jwt.yml
       - run: echo "${{ secrets.APPLICATION_JWT }}" > ./src/main/resources/application-jwt.yml
       - run: touch ./src/main/resources/application-toss.yml
