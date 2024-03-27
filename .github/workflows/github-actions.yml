@@ -23,9 +23,9 @@ jobs:
 
       - run: touch ./src/main/resources/application.yml
       - run: echo "${{ secrets.APPLICATION }}" > ./src/main/resources/application.yml
-      - run: touch ./src/main/resources/application.yml
+      - run: touch ./src/main/resources/application-jwt.yml
       - run: echo "${{ secrets.APPLICATION_JWT }}" > ./src/main/resources/application-jwt.yml
-      - run: touch ./src/main/resources/application.yml
+      - run: touch ./src/main/resources/application-toss.yml
       - run: echo "${{ secrets.APPLICATION_TOSS }}" > ./src/main/resources/application-toss.yml
 
       - run : mkdir ./src/main/resources/firebase
