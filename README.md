@@ -142,7 +142,7 @@ Maybe you can mention me or this repo in the acknowledgements too
 김수진 -  -
 
 
-이유재 -  -
+이유재 - https://github.com/Lujaec
 
 
 최효성 - https://github.com/hyoseong-Choi -
