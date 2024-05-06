@@ -6,8 +6,8 @@ import org.springframework.data.elasticsearch.client.ClientConfiguration;
 import org.springframework.data.elasticsearch.client.elc.ElasticsearchConfiguration;
 import org.springframework.data.elasticsearch.repository.config.EnableElasticsearchRepositories;
 
-@Configuration
-@EnableElasticsearchRepositories(basePackageClasses = ElasticRecruitRepository.class)
+//@Configuration
+//@EnableElasticsearchRepositories(basePackageClasses = ElasticRecruitRepository.class)
 public class ElasticsearchConfig extends ElasticsearchConfiguration {
     
     @Override

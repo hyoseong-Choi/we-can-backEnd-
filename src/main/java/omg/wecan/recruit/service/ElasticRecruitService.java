@@ -11,7 +11,7 @@ import org.springframework.stereotype.Service;
 
 import java.util.Arrays;
 
-@Service
+//@Service
 @RequiredArgsConstructor
 public class ElasticRecruitService {
     private final ElasticRecruitRepository elasticRecruitRepository;
@@ -21,9 +21,9 @@ public class ElasticRecruitService {
                 .map(elasticRecruit -> new RecruitOutput(elasticRecruit, false));
         
     }
-    @Async
-    public void deleteRecruit(Long id) {
-        elasticRecruitRepository.deleteById(id);
-    }
+//    @Async
+//    public void deleteRecruit(Long id) {
+//        elasticRecruitRepository.deleteById(id);
+//    }
     
 }
