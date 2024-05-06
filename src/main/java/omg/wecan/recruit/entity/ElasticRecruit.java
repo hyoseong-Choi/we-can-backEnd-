@@ -13,7 +13,7 @@ import org.springframework.data.elasticsearch.annotations.Setting;
 @Getter
 @AllArgsConstructor
 @NoArgsConstructor
-@Document(indexName = "elastic_recruit")
+@Document(indexName = "recruit")
 @Mapping(mappingPath = "elastic/recruit-mapping.json")
 @Setting(settingPath = "elastic/recruit-setting.json")
 public class ElasticRecruit {
