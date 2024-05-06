@@ -42,7 +42,7 @@ public class RecruitService {
     private final RecruitCommentRepository recruitCommentRepository;
     private final FileStore fileStore;
     private final ApplicationEventPublisher eventPublisher;
-//    private final ElasticRecruitService elasticRecruitService;
+    private final ElasticRecruitService elasticRecruitService;
     
     public RecruitDetailOutput addRecruit(User loginUser, RecruitInput recruitInput) {
         Optional<Charity> optionalCharityByName = charityRepository.findByName(recruitInput.getCharityName());
@@ -75,7 +75,7 @@ public class RecruitService {
     @Transactional
     public Long deleteRecruit(Long id) {
         recruitRepository.deleteById(id);
-//        elasticRecruitService.deleteRecruit(id);
+        elasticRecruitService.deleteRecruit(id);
         return id;
     }
     

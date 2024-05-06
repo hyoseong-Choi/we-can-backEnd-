@@ -13,9 +13,9 @@ import org.springframework.data.elasticsearch.annotations.Setting;
 @Getter
 @AllArgsConstructor
 @NoArgsConstructor
-//@Document(indexName = "recruit")
-//@Mapping(mappingPath = "elastic/recruit-mapping.json")
-//@Setting(settingPath = "elastic/recruit-setting.json")
+@Document(indexName = "recruit")
+@Mapping(mappingPath = "elastic/recruit-mapping.json")
+@Setting(settingPath = "elastic/recruit-setting.json")
 public class ElasticRecruit {
     @Id
     private Long id;
