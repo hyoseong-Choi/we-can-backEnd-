@@ -61,7 +61,7 @@ jobs:
         with:
           host: ${{ secrets.HOST_EC2 }}
           username: ubuntu
-          password: ${{ secrets.PASSWORD }}
+          key: ${{ secrets.PASSWORD }}
           port: 22
           script: |
             sudo docker rm -f wecan
