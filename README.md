@@ -9,7 +9,7 @@ Maybe you can mention me or this repo in the acknowledgements too
 <div align="center">
 
 
-  <img src="https://cdn.discordapp.com/attachments/1081467110200451092/1219582901109129256/e2c6c08300378849.png?ex=660bd416&is=65f95f16&hm=84f99f7aa38fd523030f4e42a60976e289a627c319ac9708754d43915ba1d0e7&" alt="logo" width="400" height="auto" />
+  <img src="https://drive.google.com/file/d/16kAjpm22KTy3gNj2fdOrRkm4iuPOPaHZ/view?usp=sharing" alt="logo" width="400" height="auto" />
   <h1>벌금 기부를 통한 목표 달성 도모 서비스</h1>
 
   
