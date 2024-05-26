@@ -139,7 +139,7 @@ Maybe you can mention me or this repo in the acknowledgements too
 <!-- Author -->
 ## Author
 
-김수진 -  -
+김수진 - https://github.com/sujin11-kim
 
 
 이유재 - https://github.com/Lujaec
