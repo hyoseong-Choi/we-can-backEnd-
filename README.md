@@ -104,7 +104,7 @@ Maybe you can mention me or this repo in the acknowledgements too
 <!-- API Sheet -->
 ### API Sheet
 - <a href="https://www.notion.so/API-475774be7459434ca0c281a10eb5ecfd">Notion</a>
-- <a href="http://3.35.3.205:8080/swagger-ui/index.html">Swagger</a>
+- <a href="https://wecanomg.shop/swagger-ui/index.html">Swagger</a>
 
 <!-- Features -->
 ### Features
