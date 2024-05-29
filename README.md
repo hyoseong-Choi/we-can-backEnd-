@@ -147,5 +147,5 @@ Maybe you can mention me or this repo in the acknowledgements too
 
 최효성 - https://github.com/hyoseong-Choi -
 
-Project Link:
+Project Link: https://wecan-challenge.netlify.app/
 
