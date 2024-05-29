@@ -9,7 +9,7 @@ Maybe you can mention me or this repo in the acknowledgements too
 <div align="center">
 
 
-  <img src="https://drive.google.com/file/d/16kAjpm22KTy3gNj2fdOrRkm4iuPOPaHZ/view?usp=sharing" alt="logo" width="400" height="auto" />
+  <img src="https://drive.google.com/file/d/16kAjpm22KTy3gNj2fdOrRkm4iuPOPaHZ" alt="logo" width="400" height="auto" />
   <h1>벌금 기부를 통한 목표 달성 도모 서비스</h1>
 
   
