@@ -9,7 +9,7 @@ Maybe you can mention me or this repo in the acknowledgements too
 <div align="center">
 
 
-  <img src="https://drive.google.com/file/d/16kAjpm22KTy3gNj2fdOrRkm4iuPOPaHZ" alt="logo" width="400" height="auto" />
+  <img src="https://wecanbucket1028.s3.ap-northeast-2.amazonaws.com/e2c6c08300378849.png" alt="logo" width="400" height="auto" />
   <h1>벌금 기부를 통한 목표 달성 도모 서비스</h1>
 
   
@@ -59,7 +59,7 @@ Maybe you can mention me or this repo in the acknowledgements too
 ### Screenshots
 
 <div align="center"> 
-  <img src="https://cdn.discordapp.com/attachments/1081467110200451092/1219595793690923008/image.png?ex=660be018&is=65f96b18&hm=2006f16ed24346a2e14da5d9aaa6f8038700adff8f4b4e49b09b5c2ca88ea3a9&" width="600" alt="screenshot" />
+  <img src="https://wecanbucket1028.s3.ap-northeast-2.amazonaws.com/image.png" width="600" alt="screenshot" />
 </div>
 
 
