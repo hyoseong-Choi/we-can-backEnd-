@@ -36,7 +36,7 @@ public class RecruitInput {
     
     private String content;
     @NotNull
-    private MultipartFile coverImage;
+    private String coverImage;
     @NotNull
     private int fine;
 }
