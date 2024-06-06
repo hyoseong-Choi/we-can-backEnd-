@@ -93,7 +93,7 @@ public class Recruit extends BaseEntity {
         Recruit recruit = new Recruit();
         recruit.writer = user;
         recruit.charityNotInDb = recruitInput.getCharityName();
-        recruit.title = recruitInput.getTitle();
+        recruit.title = new String(recruitInput.getTitle().getBytes(StandardCharsets.UTF_8), StandardCharsets.UTF_8);
         recruit.type = ChallengeType.from(recruitInput.getChallengeType());
         recruit.startDate = LocalDate.now();
         recruit.endDate = LocalDate.parse(recruitInput.getChallengeStartDate()).minusDays(1);
@@ -105,7 +105,7 @@ public class Recruit extends BaseEntity {
             throw new InvalidChallengeDateException(RECRUIT_DATE_INVALID);
         }
         recruit.minPeople = recruitInput.getMinPeople();
-        recruit.checkDay = recruitInput.getCheckDay();
+        recruit.checkDay = new String(recruitInput.getCheckDay().getBytes(StandardCharsets.UTF_8), StandardCharsets.UTF_8);
         recruit.paymentType = PaymentType.from(recruitInput.getPaymentType());
         if (recruitInput.getContent() != null) {
             recruit.content = recruitInput.getContent();
