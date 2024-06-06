@@ -22,7 +22,7 @@ public class RecruitController {
     private final RecruitService recruitService;
     
     @PostMapping("/recruit")
-    public ResponseEntity<ApiResponse<RecruitDetailOutput>> recruitAdd(@AuthenticationPrincipal User loginUser, @Validated @ModelAttribute RecruitInput recruitInput) {
+    public ResponseEntity<ApiResponse<RecruitDetailOutput>> recruitAdd(@AuthenticationPrincipal User loginUser, @Validated @RequestBody RecruitInput recruitInput) {
         return ResponseEntity.ok(ApiResponse.success(recruitService.addRecruit(loginUser, recruitInput)));
     }
     
