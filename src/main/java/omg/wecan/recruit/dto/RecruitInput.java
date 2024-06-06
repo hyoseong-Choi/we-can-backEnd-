@@ -28,7 +28,6 @@ public class RecruitInput {
     @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd", timezone = "Asia/Seoul")
     private String challengeEndDate;
     @NotNull
-    @Min(value = 5)
     private int minPeople;
     @NotBlank
     private String checkDay;
@@ -39,6 +38,5 @@ public class RecruitInput {
     @NotNull
     private MultipartFile coverImage;
     @NotNull
-    @Min(value = 1)
     private int fine;
 }
