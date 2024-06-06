@@ -12,6 +12,7 @@ import omg.wecan.recruit.Enum.PaymentType;
 import omg.wecan.recruit.dto.RecruitInput;
 import omg.wecan.user.entity.User;
 
+import java.nio.charset.StandardCharsets;
 import java.time.LocalDate;
 import java.util.List;
 
