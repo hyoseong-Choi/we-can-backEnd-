@@ -18,7 +18,7 @@ jobs:
       - name: 'Set up jdk'
         uses: actions/setup-java@v3
         with:
-          java-version: '17'
+          java-version: '21'
           distribution: 'temurin' # https://github.com/actions/setup-java
 
       - run: touch ./src/main/resources/application.properties
