@@ -29,7 +29,7 @@ public class RecruitOutput {
     public RecruitOutput(ElasticRecruit recruit, boolean isHeart) {
         this.id = recruit.getId();
         this.title = recruit.getTitle();
-        this.challengePeriod = LocalDate.parse(recruit.getEndDate()).plusDays(1) + " ~ " + LocalDate.parse(recruit.getChallengeEndTime());
+        this.challengePeriod = LocalDate.parse(recruit.getEndDate().substring(0, 10)).plusDays(1) + " ~ " + LocalDate.parse(recruit.getChallengeEndTime().substring(0, 10));
         this.category = recruit.getType().toLowerCase();
 
         this.coverImage = recruit.getCoverImageEndpoint();
