@@ -36,8 +36,7 @@ public class RecruitRepositoryImpl implements RecruitRepositoryCustom{
         JPAQuery<Recruit> query = queryFactory
                 .selectFrom(recruit)
                 .where(titleContains(recruitFindCond.getTitle()),
-                        categoryEq(recruitFindCond.getCategory()),
-                        recruit.finished.eq(false))
+                        categoryEq(recruitFindCond.getCategory()))
                 .offset(pageable.getOffset())
                 .limit(pageable.getPageSize());
         for (Sort.Order order : pageable.getSort()) {
@@ -49,8 +48,7 @@ public class RecruitRepositoryImpl implements RecruitRepositoryCustom{
                 .select(recruit.count())
                 .from(recruit)
                 .where(titleContains(recruitFindCond.getTitle()),
-                        categoryEq(recruitFindCond.getCategory()),
-                        recruit.finished.eq(false))
+                        categoryEq(recruitFindCond.getCategory()))
                 .fetchOne();
         return new PageImpl<>(results, pageable, l);
     }
